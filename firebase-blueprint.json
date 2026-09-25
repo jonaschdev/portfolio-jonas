@@ -1,0 +1,47 @@
+{
+  "entities": {
+    "ContactMessage": {
+      "title": "ContactMessage",
+      "description": "Mensagens e recados enviados por visitantes e recrutadores através do portfólio",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Identificador único da mensagem"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 100,
+          "description": "Nome do visitante ou recrutador"
+        },
+        "email": {
+          "type": "string",
+          "format": "email",
+          "maxLength": 150,
+          "description": "E-mail de contato do remetente"
+        },
+        "message": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 1000,
+          "description": "Conteúdo da mensagem enviada"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Data e hora de envio"
+        }
+      },
+      "required": ["name", "email", "message", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/messages/{messageId}": {
+      "schema": {
+        "$ref": "#/entities/ContactMessage"
+      },
+      "description": "Coleção de mensagens recebidas pelo portfólio"
+    }
+  }
+}
