@@ -1,0 +1,56 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Default deny catch-all
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Helper functions
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isAdmin() {
+      return isSignedIn() && (
+        request.auth.token.email == 'jonascc2018@gmail.com' &&
+        request.auth.token.email_verified == true
+      );
+    }
+
+    function isValidMessage(data) {
+      return data.keys().hasAll(['name', 'email', 'message', 'createdAt']) &&
+             data.keys().hasOnly(['name', 'email', 'message', 'createdAt']) &&
+             data.name is string && data.name.size() >= 2 && data.name.size() <= 100 &&
+             data.email is string && data.email.size() >= 3 && data.email.size() <= 150 &&
+             data.message is string && data.message.size() >= 3 && data.message.size() <= 1000 &&
+             data.createdAt == request.time;
+    }
+
+    // Coleção de mensagens recebidas pelo portfólio
+    match /messages/{messageId} {
+      // Qualquer visitante pode enviar uma mensagem válida
+      allow create: if isValidId(messageId) && isValidMessage(incoming());
+      
+      // Apenas o dono do portfólio (admin) pode ler ou excluir mensagens recebidas
+      allow read, delete: if isAdmin();
+      
+      // Mensagens enviadas são imutáveis
+      allow update: if false;
+    }
+
+    // Documento de teste de conexão com o Firestore
+    match /test/{testId} {
+      allow read: if true;
+    }
+  }
+}

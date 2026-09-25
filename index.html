@@ -1,0 +1,595 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Jonas · Formando em Ciência da Computação</title>
+    <meta name="description" content="Portfólio minimalista de Jonas, 22 anos, formando em Ciência da Computação. Desenvolvedor Web Front-End, Python e React Native." />
+    <meta property="og:title" content="Jonas · Formando em Ciência da Computação" />
+    <meta property="og:description" content="Portfólio minimalista de Jonas, 22 anos, formando em Ciência da Computação." />
+    <meta property="og:type" content="website" />
+    
+    <!-- Fontes do Google -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Folha de Estilos em CSS Puro (Caminho relativo para funcionar offline e no ZIP) -->
+    <link rel="stylesheet" href="./src/style.css">
+
+    <!-- Script Inline para evitar Flash de Tema ao carregar a página -->
+    <script>
+      (function() {
+        try {
+          const savedTheme = localStorage.getItem('theme') || 'dark';
+          document.documentElement.setAttribute('data-theme', savedTheme);
+        } catch (e) {}
+      })();
+    </script>
+  </head>
+  <body>
+
+    <!-- =========================================================================
+         FUNDO ANIMADO DE ESTRELAS E CONSTELAÇÕES INTERATIVAS (STARFIELD CANVAS)
+         ========================================================================= -->
+    <canvas id="starfieldCanvas" class="starfield-canvas" aria-hidden="true"></canvas>
+
+    <!-- =========================================================================
+         BARRA DE NAVEGAÇÃO SUPERIOR (CABEÇALHO)
+         ========================================================================= -->
+    <header class="site-header">
+      <div class="container">
+        <div class="header-inner">
+          
+          <!-- LOGOTIPO / INICIAL -->
+          <a href="#inicio" class="brand-link">
+            <span class="brand-badge" aria-label="Símbolo de Desenvolvimento">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="16 18 22 12 16 6"></polyline>
+                <polyline points="8 6 2 12 8 18"></polyline>
+              </svg>
+            </span>
+            <span>Jonas<span class="brand-dot">.port</span></span>
+          </a>
+
+          <!-- LINKS DE NAVEGAÇÃO (DESKTOP) -->
+          <nav class="main-nav" aria-label="Navegação Principal">
+            <a href="#inicio" class="nav-link">Início</a>
+            <a href="#tecnologias" class="nav-link">Linguagens e Tecnologias</a>
+            <a href="#projetos" class="nav-link">Meus Projetos</a>
+            <a href="#contato" class="nav-link">Contato</a>
+          </nav>
+
+          <!-- AÇÕES DO CABEÇALHO -->
+          <div class="header-actions">
+            <!-- PLAYER DE CONTROLE DE MÚSICA TEMA (PLAY / PAUSE) -->
+            <button id="musicPlayerBtn" class="music-player-btn" aria-label="Tocar música tema" title="Tocar música tema" type="button">
+              <span class="music-icon-wrap">
+                <!-- Ícone Play (Pausado) -->
+                <svg class="music-icon-play" width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                  <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                </svg>
+                <!-- Ícone Pause (Tocando) -->
+                <svg class="music-icon-pause" width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                  <rect x="6" y="4" width="4" height="16" rx="1"></rect>
+                  <rect x="14" y="4" width="4" height="16" rx="1"></rect>
+                </svg>
+              </span>
+              <!-- Equalizador de Barras Animadas -->
+              <span class="music-equalizer" aria-hidden="true">
+                <span class="eq-bar bar-1"></span>
+                <span class="eq-bar bar-2"></span>
+                <span class="eq-bar bar-3"></span>
+                <span class="eq-bar bar-4"></span>
+              </span>
+              <span class="music-label" id="musicLabelText">Música</span>
+            </button>
+
+            <!-- BOTÃO ALTERNAR TEMA (CLARO / ESCURO) -->
+            <button id="themeToggleBtn" class="theme-toggle-btn" aria-label="Alternar tema claro e escuro" title="Alternar tema">
+              <!-- Ícone de Sol (ativo no modo escuro para mudar para claro) -->
+              <svg class="theme-icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="5"></circle>
+                <line x1="12" y1="1" x2="12" y2="3"></line>
+                <line x1="12" y1="21" x2="12" y2="23"></line>
+                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                <line x1="1" y1="12" x2="3" y2="12"></line>
+                <line x1="21" y1="12" x2="23" y2="12"></line>
+                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+              </svg>
+              <!-- Ícone de Lua (ativo no modo claro para mudar para escuro) -->
+              <svg class="theme-icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+              </svg>
+            </button>
+
+            <!-- BOTÃO DE AÇÃO DIRETA -->
+            <a href="#contato" class="btn-header">
+              <span>Falar Comigo</span>
+            </a>
+
+            <!-- BOTÃO MENU MOBILE -->
+            <button id="mobileMenuBtn" class="mobile-menu-btn" aria-label="Abrir Menu de Navegação" aria-expanded="false">
+              ☰
+            </button>
+          </div>
+
+        </div>
+
+        <!-- MENU MOBILE EXPANSÍVEL -->
+        <nav id="mobileNav" class="mobile-nav" aria-label="Menu Mobile">
+          <a href="#inicio" class="nav-link">Início</a>
+          <a href="#tecnologias" class="nav-link">Linguagens e Tecnologias</a>
+          <a href="#projetos" class="nav-link">Meus Projetos</a>
+          <a href="#contato" class="nav-link">Contato</a>
+          <button id="mobileMusicPlayerBtn" class="mobile-music-btn" type="button">
+            <span class="mobile-music-icon">
+              <svg class="music-icon-play" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                <polygon points="5 3 19 12 5 21 5 3"></polygon>
+              </svg>
+              <svg class="music-icon-pause" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                <rect x="6" y="4" width="4" height="16" rx="1"></rect>
+                <rect x="14" y="4" width="4" height="16" rx="1"></rect>
+              </svg>
+            </span>
+            <span id="mobileMusicText">Tocar Trilha Sonora</span>
+          </button>
+          <button id="mobileThemeToggleBtn" class="mobile-theme-btn">
+            <span class="mobile-theme-text">Alternar Tema (Claro / Escuro)</span>
+          </button>
+        </nav>
+      </div>
+    </header>
+
+    <!-- CONTEÚDO PRINCIPAL DO SITE -->
+    <main>
+
+      <!-- =========================================================================
+           1. SEÇÃO HERO / APRESENTAÇÃO INICIAL (LAYOUT MODERNO COM FOTO À DIREITA)
+           ========================================================================= -->
+      <section id="inicio" class="hero-section">
+        <div class="container">
+          
+          <div class="hero-content-grid">
+            <!-- COLUNA DA ESQUERDA: APRESENTAÇÃO / TEXTO -->
+            <div class="hero-text-col reveal reveal-left">
+              <h1 class="hero-title">
+                Olá! me chamo <span class="destaque-azul">Jonas</span>
+              </h1>
+              <p class="hero-role">
+                22 anos · Ciência da Computação · Dev Front-End e entusiasta Back-End
+              </p>
+              <p class="hero-bio">
+                Estudante de <strong>Ciência da Computação</strong>. Estou focado na criação de interfaces modernas, limpas e responsivas com <strong>HTML, CSS e JavaScript</strong>, além de estudos práticos em <strong>Python</strong> para desenvolvimento back-end, e desenvolvendo habilidades em <strong>React Native</strong>.
+              </p>
+            </div>
+
+            <!-- COLUNA DA DIREITA: FOTO DE PERFIL COM MOLDURA QUE BRILHA + OPEN TO WORK EMBAIXO -->
+            <div class="hero-avatar-col reveal reveal-right">
+              <div class="avatar-glow-frame">
+                <img class="profile-avatar" src="./src/perfil.jpg" alt="Foto de perfil de Jonas" onerror="this.onerror=null;this.src='perfil.jpg';" />
+              </div>
+              <div class="status-badge-wrapper">
+                <div class="status-badge">
+                  <span class="status-dot"></span>
+                  <span>Open to Work</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- BOTÕES DE AÇÃO CENTRALIZADOS (VER PROJETOS, GITHUB, WHATSAPP, LINKEDIN) -->
+          <div class="hero-actions-centered reveal reveal-up">
+            <a href="#projetos" class="btn-primary">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="16 18 22 12 16 6"></polyline>
+                <polyline points="8 6 2 12 8 18"></polyline>
+              </svg>
+              <span>Ver Projetos</span>
+            </a>
+
+            <!-- GitHub -->
+            <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="btn-action-link link-github" aria-label="GitHub" title="GitHub">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"></path>
+                <path d="M9 18c-4.51 2-5-2-7-2"></path>
+              </svg>
+              <span>GitHub</span>
+            </a>
+
+            <!-- WhatsApp (Cor Verde Suave no Hover) -->
+            <a href="https://wa.me/5598984667481" target="_blank" rel="noopener noreferrer" class="btn-action-link link-whatsapp" aria-label="WhatsApp" title="WhatsApp">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
+              </svg>
+              <span>WhatsApp</span>
+            </a>
+
+            <!-- LinkedIn -->
+            <a href="https://www.linkedin.com/in/jonaschaves-dev/" target="_blank" rel="noopener noreferrer" class="btn-action-link link-linkedin" aria-label="LinkedIn" title="LinkedIn">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
+                <rect x="2" y="9" width="4" height="12"></rect>
+                <circle cx="4" cy="4" r="2"></circle>
+              </svg>
+              <span>LinkedIn</span>
+            </a>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- =========================================================================
+           2. SEÇÃO LINGUAGENS E TECNOLOGIAS (ROLETA / CARROSSEL AUTOMÁTICO INTERATIVO)
+           ========================================================================= -->
+      <section id="tecnologias" class="section-wrapper tech-section-roulette">
+        <div class="container">
+          
+          <div class="section-header-centered reveal reveal-up">
+            <h2 class="section-title">Linguagens e Tecnologias</h2>
+            <p class="section-desc">Tecnologias e ferramentas que uso atualmente e estou aprendendo.</p>
+          </div>
+
+          <!-- CONTAINER DA ROLETA / CARROSSEL AUTOMÁTICO -->
+          <div class="tech-roulette-wrapper reveal reveal-up" id="techRouletteContainer">
+            
+            <!-- Botão Anterior -->
+            <button type="button" class="roulette-arrow-btn prev-btn" id="roulettePrevBtn" aria-label="Tecnologia anterior">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="15 18 9 12 15 6"></polyline>
+              </svg>
+            </button>
+
+            <!-- Trilha de Visualização da Roleta -->
+            <div class="tech-roulette-viewport" id="techRouletteViewport">
+              <div class="tech-roulette-track" id="techRouletteTrack">
+                
+                <!-- 1. HTML5 -->
+                <div class="tech-roulette-card tech-card-html">
+                  <div class="tech-card-header">
+                    <div class="tech-card-icon-wrap icon-html">
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="16 18 22 12 16 6"></polyline>
+                        <polyline points="8 6 2 12 8 18"></polyline>
+                      </svg>
+                    </div>
+                    <div class="tech-card-tags">
+                      <span class="tech-tag tag-frontend">Front-End</span>
+                    </div>
+                  </div>
+                  <h3 class="tech-card-title">HTML5</h3>
+                  <p class="tech-card-desc"><strong>Nível Pleno</strong> — Domínio na estruturação semântica, acessibilidade e boas práticas para web moderna.</p>
+                  <div class="tech-card-footer">
+                    <span class="tech-highlight-pill pill-pleno">Pleno</span>
+                  </div>
+                </div>
+
+                <!-- 2. CSS3 -->
+                <div class="tech-roulette-card tech-card-css">
+                  <div class="tech-card-header">
+                    <div class="tech-card-icon-wrap icon-css">
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
+                        <path d="M2 17l10 5 10-5"></path>
+                        <path d="M2 12l10 5 10-5"></path>
+                      </svg>
+                    </div>
+                    <div class="tech-card-tags">
+                      <span class="tech-tag tag-frontend">Front-End</span>
+                    </div>
+                  </div>
+                  <h3 class="tech-card-title">CSS3</h3>
+                  <p class="tech-card-desc"><strong>Nível Pleno</strong> — Layouts responsivos, Flexbox, CSS Grid, sistemas de temas e animações.</p>
+                  <div class="tech-card-footer">
+                    <span class="tech-highlight-pill pill-pleno">Pleno</span>
+                  </div>
+                </div>
+
+                <!-- 3. JAVASCRIPT (ES6+) -->
+                <div class="tech-roulette-card tech-card-js">
+                  <div class="tech-card-header">
+                    <div class="tech-card-icon-wrap icon-js">
+                      <span class="js-modern-txt">JS</span>
+                    </div>
+                    <div class="tech-card-tags">
+                      <span class="tech-tag tag-js">Lógica Web</span>
+                    </div>
+                  </div>
+                  <h3 class="tech-card-title">JavaScript</h3>
+                  <p class="tech-card-desc"><strong>Nível Básico</strong> — Manipulação dinâmica do DOM, funções assíncronas, escuta de eventos e consumo de APIs.</p>
+                  <div class="tech-card-footer">
+                    <span class="tech-highlight-pill pill-basico">Básico</span>
+                  </div>
+                </div>
+
+                <!-- 4. REACT NATIVE -->
+                <div class="tech-roulette-card tech-card-react">
+                  <div class="tech-card-header">
+                    <div class="tech-card-icon-wrap icon-react">
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                        <ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(30 12 12)"></ellipse>
+                        <ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(90 12 12)"></ellipse>
+                        <ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(150 12 12)"></ellipse>
+                        <circle cx="12" cy="12" r="1.5" fill="currentColor"></circle>
+                      </svg>
+                    </div>
+                    <div class="tech-card-tags">
+                      <span class="tech-tag tag-mobile">Mobile</span>
+                    </div>
+                  </div>
+                  <h3 class="tech-card-title">React Native</h3>
+                  <p class="tech-card-desc"><strong>Aprendendo</strong> — Desenvolvimento de interfaces móveis para Android.</p>
+                  <div class="tech-card-footer">
+                    <span class="tech-highlight-pill pill-aprendendo">Aprendendo</span>
+                  </div>
+                </div>
+
+                <!-- 5. PYTHON -->
+                <div class="tech-roulette-card tech-card-python">
+                  <div class="tech-card-header">
+                    <div class="tech-card-icon-wrap icon-python">
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 2c-3.5 0-5 1.5-5 3.5v2.5h5v1H5c-2 0-3.5 1.5-3.5 5s1.5 5 3.5 5h2v-2.5c0-2 1.5-3.5 3.5-3.5h5v-1h-7v-6h4c2 0 3.5-1.5 3.5-3.5S14 2 12 2z"></path>
+                        <path d="M12 22c3.5 0 5-1.5 5-3.5v-2.5h-5v-1h7c2 0 3.5-1.5 3.5-5s-1.5-5-3.5-5h-2v2.5c0 2-1.5 3.5-3.5 3.5h-5v1h7v6h-4c-2 0-3.5 1.5-3.5 3.5S10 22 12 22z"></path>
+                      </svg>
+                    </div>
+                    <div class="tech-card-tags">
+                      <span class="tech-tag tag-backend">Scripts &amp; Lógica</span>
+                    </div>
+                  </div>
+                  <h3 class="tech-card-title">Python</h3>
+                  <p class="tech-card-desc"><strong>Aprendendo</strong> — Lógica de programação, automação de tarefas, manipulação de dados e scripts.</p>
+                  <div class="tech-card-footer">
+                    <span class="tech-highlight-pill pill-aprendendo">Aprendendo</span>
+                  </div>
+                </div>
+
+                <!-- 6. GIT & GITHUB -->
+                <div class="tech-roulette-card tech-card-git">
+                  <div class="tech-card-header">
+                    <div class="tech-card-icon-wrap icon-git">
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="6" y1="3" x2="6" y2="15"></line>
+                        <circle cx="18" cy="6" r="3"></circle>
+                        <circle cx="6" cy="18" r="3"></circle>
+                        <path d="M18 9a9 9 0 0 1-9 9"></path>
+                      </svg>
+                    </div>
+                    <div class="tech-card-tags">
+                      <span class="tech-tag tag-tools">Versionamento</span>
+                    </div>
+                  </div>
+                  <h3 class="tech-card-title">Git &amp; GitHub</h3>
+                  <p class="tech-card-desc"><strong>Nível Pleno</strong> — Controle de versão distribuído, criação de branches, histórico de commits e repositórios.</p>
+                  <div class="tech-card-footer">
+                    <span class="tech-highlight-pill pill-pleno">Nível Pleno</span>
+                  </div>
+                </div>
+
+                <!-- 7. FIREBASE FIRESTORE -->
+                <div class="tech-roulette-card tech-card-firebase">
+                  <div class="tech-card-header">
+                    <div class="tech-card-icon-wrap icon-firebase">
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"></path>
+                      </svg>
+                    </div>
+                    <div class="tech-card-tags">
+                      <span class="tech-tag tag-cloud">Nuvem &amp; DB</span>
+                    </div>
+                  </div>
+                  <h3 class="tech-card-title">Firebase Firestore</h3>
+                  <p class="tech-card-desc"><strong>Aprendendo</strong> — Banco de dados NoSQL na nuvem, leitura/escrita em tempo real e regras de segurança.</p>
+                  <div class="tech-card-footer">
+                    <span class="tech-highlight-pill pill-aprendendo">Aprendendo</span>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+            <!-- Botão Próximo -->
+            <button type="button" class="roulette-arrow-btn next-btn" id="rouletteNextBtn" aria-label="Próxima tecnologia">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="9 18 15 12 9 6"></polyline>
+              </svg>
+            </button>
+
+          </div>
+
+          <!-- Barra de Rolagem / Progresso Interativa da Roleta -->
+          <div class="roulette-scrollbar-wrapper reveal reveal-up">
+            <div class="roulette-scrollbar-track" id="rouletteScrollTrack" role="scrollbar" aria-label="Progresso da roleta de tecnologias">
+              <div class="roulette-scrollbar-thumb" id="rouletteScrollThumb"></div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- =========================================================================
+           3. SEÇÃO MEUS PROJETOS (MINIMALISTA)
+           ========================================================================= -->
+      <section id="projetos" class="section-wrapper">
+        <div class="container">
+          
+          <div class="section-header-centered reveal reveal-up">
+            <h2 class="section-title">Projetos</h2>
+            <p class="section-desc">Trabalhos práticos desenvolvidos durante a minha graduação e meus estudos.</p>
+          </div>
+
+          <div class="projects-status-container reveal reveal-up">
+            <div class="projects-status-card">
+              <h3 class="projects-status-title">Atualmente em desenvolvimento</h3>
+              <p class="projects-status-text">
+                Em breve os repositórios com código fonte aberto estarão disponíveis aqui e no meu GitHub.
+              </p>
+              <div class="projects-status-actions">
+                <!-- Botão refinado de acesso ao GitHub -->
+                <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="btn-action-link link-github btn-projects-github" aria-label="Acessar meu GitHub" title="Acessar meu GitHub">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"></path>
+                    <path d="M9 18c-4.51 2-5-2-7-2"></path>
+                  </svg>
+                  <span>Meu GitHub</span>
+                </a>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- =========================================================================
+           4. SEÇÃO CONTATO (CONTAINERS DIVIDIDOS: E-MAIL À ESQUERDA, CANAIS À DIREITA)
+           ========================================================================= -->
+      <section id="contato" class="section-wrapper contact-section">
+        <div class="container">
+          
+          <div class="section-header-centered reveal reveal-up">
+            <h2 class="section-title">Entre em Contato</h2>
+            <p class="section-desc">Estou aberto a oportunidades profissionais, vagas júnior, estágio ou projetos freelance.</p>
+          </div>
+
+          <!-- GRID COM DOIS CONTAINERS SEPARADOS -->
+          <div class="contact-split-grid reveal reveal-up">
+            
+            <!-- CONTAINER DA ESQUERDA: APENAS O E-MAIL -->
+            <div class="contact-card contact-card-email">
+              <div class="contact-card-badge">E-mail para Contato</div>
+              
+              <div class="email-display-box">
+                <div class="email-display-icon">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="2" y="4" width="20" height="16" rx="2"></rect>
+                    <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
+                  </svg>
+                </div>
+                <div class="email-display-details">
+                  <span class="email-display-label">Meu E-mail</span>
+                  <span class="email-address">jonascc2018@gmail.com</span>
+                </div>
+                <!-- Botão minimalista de copiar -->
+                <button class="btn-copy-icon js-copy-email" data-email="jonascc2018@gmail.com" aria-label="Copiar e-mail" title="Copiar e-mail">
+                  <svg class="copy-svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                  </svg>
+                </button>
+              </div>
+
+              <p class="email-card-hint">
+                Clique no ícone para copiar o endereço ou clique no botão da caixa da direita para enviar um e-mail direto.
+              </p>
+            </div>
+
+            <!-- CONTAINER DA DIREITA: CANAIS E BOTÕES (ENVIAR E-MAIL, WHATSAPP, LINKEDIN) -->
+            <div class="contact-card contact-card-channels">
+              <div class="contact-card-badge">Outros meios de contato</div>
+              
+              <div class="contact-channels-list">
+                <!-- Enviar e-mail diretamente (Com efeito de reflexo luminoso) -->
+                <a href="mailto:jonascc2018@gmail.com" class="btn-primary btn-contact-email" title="Enviar e-mail diretamente">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="22" y1="2" x2="11" y2="13"></line>
+                    <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                  </svg>
+                  <span>Enviar E-mail</span>
+                </a>
+
+                <!-- WhatsApp (Botão igual aos do topo, com verde suave no hover) -->
+                <a href="https://wa.me/5598984667481" target="_blank" rel="noopener noreferrer" class="btn-action-link link-whatsapp btn-channel" aria-label="WhatsApp" title="Conversar no WhatsApp">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
+                  </svg>
+                  <span>WhatsApp</span>
+                </a>
+
+                <!-- LinkedIn (Botão igual aos do topo) -->
+                <a href="https://www.linkedin.com/in/jonaschaves-dev/" target="_blank" rel="noopener noreferrer" class="btn-action-link link-linkedin btn-channel" aria-label="LinkedIn" title="Ver perfil no LinkedIn">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
+                    <rect x="2" y="9" width="4" height="12"></rect>
+                    <circle cx="4" cy="4" r="2"></circle>
+                  </svg>
+                  <span>LinkedIn</span>
+                </a>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- FORMULÁRIO DE CONTATO / MENSAGEM DIRETA INTEGRADO AO FIREBASE FIRESTORE -->
+          <div class="contact-form-container reveal reveal-up">
+            <div class="contact-form-card">
+              <div class="contact-card-badge">Direct</div>
+              <h3 class="contact-form-title">Deixe um recado ou proposta</h3>
+              <p class="contact-form-desc">Sua mensagem será salva e enviada diretamente pra mim.</p>
+              
+              <form id="contactFirebaseForm" class="contact-firebase-form">
+                <div class="form-row-2">
+                  <div class="form-group">
+                    <label for="senderName" class="form-label">Seu Nome</label>
+                    <input type="text" id="senderName" class="form-input" placeholder="Ex: Maria Silva" required minlength="2" maxlength="100" />
+                  </div>
+                  <div class="form-group">
+                    <label for="senderEmail" class="form-label">Seu E-mail</label>
+                    <input type="email" id="senderEmail" class="form-input" placeholder="Ex: contato@empresa.com" required maxlength="150" />
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="senderMessage" class="form-label">Mensagem</label>
+                  <textarea id="senderMessage" class="form-textarea" rows="3" placeholder="Escreva sua mensagem, proposta de vaga ou feedback aqui..." required minlength="3" maxlength="1000"></textarea>
+                </div>
+                <button type="submit" id="btnSubmitMessage" class="btn-primary btn-submit-message">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="22" y1="2" x2="11" y2="13"></line>
+                    <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                  </svg>
+                  <span>Enviar Mensagem</span>
+                </button>
+              </form>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+    </main>
+
+    <!-- =========================================================================
+         RODAPÉ (FOOTER)
+         ========================================================================= -->
+    <footer class="site-footer">
+      <div class="container">
+        <p>
+          © <span id="currentYear">2026</span> Jonas Portfólio.
+        </p>
+      </div>
+
+      <!-- =======================================================================
+           ELEMENTO DE ÁUDIO OCULTO (TRILHA SONORA DO SITE - "Never Meant to Belong")
+           Procura automaticamente por musica.mp3 / tema.mp3 ou usa o link direto
+           ======================================================================= -->
+      <audio id="bgMusic" autoplay loop preload="auto" style="display: none;" aria-hidden="true">
+        <source src="./musica.mp3" type="audio/mpeg">
+        <source src="/musica.mp3" type="audio/mpeg">
+        <source src="./public/musica.mp3" type="audio/mpeg">
+        <source src="./tema.mp3" type="audio/mpeg">
+        <source src="/tema.mp3" type="audio/mpeg">
+        <!-- Trilha tema melancólica de piano (Never Meant to Belong / Ambient Piano) -->
+        <source src="/public/musica.mp3" type="audio/mpeg">
+      </audio>
+    </footer>
+
+    <!-- AVISO TOAST FLUTUANTE (EXIBIDO AO COPIAR O E-MAIL OU ENVIAR MENSAGEM) -->
+    <div id="toastNotice" class="toast-notice" role="status" aria-live="polite">
+      E-mail copiado com sucesso!
+    </div>
+
+    <!-- Script JavaScript Modular com Firebase Firestore Integrado -->
+    <script type="module" src="./src/script.js"></script>
+  </body>
+</html>
