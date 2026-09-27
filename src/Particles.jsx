@@ -189,6 +189,7 @@ const Particles = ({
 
     const update = (t) => {
       animationFrameId = requestAnimationFrame(update);
+      if (document.hidden) return;
       const delta = t - lastTime;
       lastTime = t;
       elapsed += delta * speed;

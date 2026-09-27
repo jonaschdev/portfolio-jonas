@@ -1,5 +1,6 @@
 import React from 'react';
 import TiltedCard from './TiltedCard';
+import perfilImg from './perfil.jpg';
 
 export default function HeroAvatar() {
   const badgeOverlay = (
@@ -16,7 +17,7 @@ export default function HeroAvatar() {
   return (
     <div className="hero-avatar-tilted-wrapper holographic-card-container">
       <TiltedCard
-        imageSrc="./src/perfil.jpg"
+        imageSrc={perfilImg}
         altText="Jonas"
         captionText="⚡ Jonas • Disponível para Projetos"
         containerHeight="360px"

@@ -369,7 +369,9 @@ body::after {
   overflow: hidden;
   opacity: 0;
   visibility: hidden;
-  transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1) 0.25s, visibility 0.85s ease 0.25s;
+  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.6s ease;
+  contain: strict;
+  transform: translateZ(0);
 }
 
 [data-theme="light"] .global-particles-wrapper,
@@ -378,11 +380,33 @@ body::after {
   visibility: visible;
 }
 
-.global-particles-wrapper .particles-container,
-.global-particles-wrapper canvas {
-  width: 100% !important;
-  height: 100% !important;
-  display: block;
+.ambient-css-particles {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.ambient-css-dot {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  will-change: transform;
+  transform: translate3d(0, 0, 0);
+  animation: floatAmbientParticle linear infinite;
+  box-shadow: 0 0 8px currentColor;
+}
+
+@keyframes floatAmbientParticle {
+  0% {
+    transform: translate3d(0, 0, 0) scale(0.9);
+  }
+  50% {
+    transform: translate3d(18px, -28px, 0) scale(1.15);
+  }
+  100% {
+    transform: translate3d(0, 0, 0) scale(0.9);
+  }
 }
 
 /* Estruturação de camadas para garantir que todo o conteúdo fique sempre à frente do fundo estelar */

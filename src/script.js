@@ -323,7 +323,23 @@ document.addEventListener('DOMContentLoaded', () => {
     let lastTime = 0;
     const fpsInterval = 1000 / 24; // 24 FPS para visual clássico de terminal hacker
 
+    let isMatrixVisible = true;
+    const matrixObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        isMatrixVisible = entry.isIntersecting;
+        if (isMatrixVisible && !matrixFrameId && !document.hidden) {
+          lastTime = performance.now();
+          matrixFrameId = requestAnimationFrame(renderMatrix);
+        }
+      });
+    }, { threshold: 0.05 });
+    matrixObserver.observe(matrixCanvas);
+
     function renderMatrix(currentTime) {
+      if (!isMatrixVisible || document.hidden) {
+        matrixFrameId = null;
+        return;
+      }
       matrixFrameId = requestAnimationFrame(renderMatrix);
 
       const elapsed = currentTime - lastTime;
@@ -333,7 +349,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const isLight = document.documentElement.getAttribute('data-theme') === 'light';
 
       // Rastro translúcido sobre o fundo
-      ctx.fillStyle = isLight ? 'rgba(248, 250, 252, 0.18)' : 'rgba(9, 9, 11, 0.18)';
+      ctx.fillStyle = isLight ? 'rgba(248, 250, 252, 0.22)' : 'rgba(9, 9, 11, 0.18)';
       ctx.fillRect(0, 0, width, height);
 
       ctx.font = `${fontSize}px "JetBrains Mono", "Fira Code", monospace`;
@@ -364,8 +380,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.addEventListener('visibilitychange', () => {
       if (document.hidden) {
-        cancelAnimationFrame(matrixFrameId);
-      } else {
+        if (matrixFrameId) {
+          cancelAnimationFrame(matrixFrameId);
+          matrixFrameId = null;
+        }
+      } else if (isMatrixVisible) {
         lastTime = performance.now();
         matrixFrameId = requestAnimationFrame(renderMatrix);
       }

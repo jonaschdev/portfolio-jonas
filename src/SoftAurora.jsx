@@ -255,9 +255,27 @@ export default function SoftAurora({
       gl.canvas.addEventListener('mouseleave', handleMouseLeave, { passive: true });
     }
 
-    let animationFrameId;
+    let animationFrameId = 0;
+    let isVisible = true;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          isVisible = entry.isIntersecting;
+          if (isVisible && !animationFrameId) {
+            animationFrameId = requestAnimationFrame(update);
+          }
+        });
+      },
+      { threshold: 0.05 }
+    );
+    observer.observe(container);
 
     function update(time) {
+      if (!isVisible || document.hidden) {
+        animationFrameId = 0;
+        return;
+      }
       animationFrameId = requestAnimationFrame(update);
       program.uniforms.uTime.value = time * 0.001;
 
@@ -276,7 +294,10 @@ export default function SoftAurora({
     animationFrameId = requestAnimationFrame(update);
 
     return () => {
-      cancelAnimationFrame(animationFrameId);
+      observer.disconnect();
+      if (animationFrameId) {
+        cancelAnimationFrame(animationFrameId);
+      }
       window.removeEventListener('resize', resize);
       if (enableMouseInteraction) {
         gl.canvas.removeEventListener('mousemove', handleMouseMove);

@@ -63,41 +63,70 @@ const useAnimationLoop = (trackRef, targetVelocity, seqWidth, seqHeight, isHover
   const rafRef = useRef(null);
   const lastTimestampRef = useRef(null);
   const offsetRef = useRef(0);
-  const velocityRef = useRef(0);
+  const velocityRef = useRef(targetVelocity);
+  
+  const targetVelocityRef = useRef(targetVelocity);
+  targetVelocityRef.current = targetVelocity;
+  
+  const seqSizeRef = useRef(isVertical ? seqHeight : seqWidth);
+  seqSizeRef.current = isVertical ? seqHeight : seqWidth;
+
+  const isHoveredRef = useRef(isHovered);
+  isHoveredRef.current = isHovered;
+
+  const hoverSpeedRef = useRef(hoverSpeed);
+  hoverSpeedRef.current = hoverSpeed;
+
+  const isVerticalRef = useRef(isVertical);
+  isVerticalRef.current = isVertical;
 
   useEffect(() => {
     const track = trackRef.current;
     if (!track) return;
 
-    const seqSize = isVertical ? seqHeight : seqWidth;
-
-    if (seqSize > 0) {
-      offsetRef.current = ((offsetRef.current % seqSize) + seqSize) % seqSize;
-      const transformValue = isVertical
-        ? `translate3d(0, ${-offsetRef.current}px, 0)`
-        : `translate3d(${-offsetRef.current}px, 0, 0)`;
-      track.style.transform = transformValue;
-    }
+    let isVisible = true;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          isVisible = entry.isIntersecting;
+          if (isVisible && !rafRef.current) {
+            lastTimestampRef.current = performance.now();
+            rafRef.current = requestAnimationFrame(animate);
+          }
+        });
+      },
+      { threshold: 0.05 }
+    );
+    observer.observe(track);
 
     const animate = timestamp => {
+      if (!isVisible || document.hidden) {
+        rafRef.current = null;
+        lastTimestampRef.current = null;
+        return;
+      }
+
       if (lastTimestampRef.current === null) {
         lastTimestampRef.current = timestamp;
       }
 
-      const deltaTime = Math.max(0, timestamp - lastTimestampRef.current) / 1000;
+      const deltaTime = Math.min(0.1, Math.max(0, timestamp - lastTimestampRef.current) / 1000);
       lastTimestampRef.current = timestamp;
 
-      const target = isHovered && hoverSpeed !== undefined ? hoverSpeed : targetVelocity;
+      const target = isHoveredRef.current && hoverSpeedRef.current !== undefined 
+        ? hoverSpeedRef.current 
+        : targetVelocityRef.current;
 
       const easingFactor = 1 - Math.exp(-deltaTime / ANIMATION_CONFIG.SMOOTH_TAU);
       velocityRef.current += (target - velocityRef.current) * easingFactor;
 
-      if (seqSize > 0) {
+      const currentSeqSize = seqSizeRef.current;
+      if (currentSeqSize > 0) {
         let nextOffset = offsetRef.current + velocityRef.current * deltaTime;
-        nextOffset = ((nextOffset % seqSize) + seqSize) % seqSize;
+        nextOffset = ((nextOffset % currentSeqSize) + currentSeqSize) % currentSeqSize;
         offsetRef.current = nextOffset;
 
-        const transformValue = isVertical
+        const transformValue = isVerticalRef.current
           ? `translate3d(0, ${-offsetRef.current}px, 0)`
           : `translate3d(${-offsetRef.current}px, 0, 0)`;
         track.style.transform = transformValue;
@@ -108,14 +137,30 @@ const useAnimationLoop = (trackRef, targetVelocity, seqWidth, seqHeight, isHover
 
     rafRef.current = requestAnimationFrame(animate);
 
+    const handleVisibility = () => {
+      if (document.hidden) {
+        if (rafRef.current) {
+          cancelAnimationFrame(rafRef.current);
+          rafRef.current = null;
+          lastTimestampRef.current = null;
+        }
+      } else if (isVisible && !rafRef.current) {
+        lastTimestampRef.current = performance.now();
+        rafRef.current = requestAnimationFrame(animate);
+      }
+    };
+    document.addEventListener('visibilitychange', handleVisibility);
+
     return () => {
+      observer.disconnect();
+      document.removeEventListener('visibilitychange', handleVisibility);
       if (rafRef.current !== null) {
         cancelAnimationFrame(rafRef.current);
         rafRef.current = null;
       }
       lastTimestampRef.current = null;
     };
-  }, [targetVelocity, seqWidth, seqHeight, isHovered, hoverSpeed, isVertical, trackRef]);
+  }, [trackRef]);
 };
 
 export const LogoLoop = memo(

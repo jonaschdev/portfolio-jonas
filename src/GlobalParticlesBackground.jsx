@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from 'react';
-import Particles from './Particles';
+import React, { useState, useEffect, useMemo } from 'react';
 
 export default function GlobalParticlesBackground() {
   const [theme, setTheme] = useState(() => {
@@ -12,7 +11,6 @@ export default function GlobalParticlesBackground() {
       setTheme(current);
     };
 
-    // Observa mudanças no atributo data-theme da tag <html>
     const observer = new MutationObserver((mutations) => {
       for (const mutation of mutations) {
         if (mutation.type === 'attributes' && mutation.attributeName === 'data-theme') {
@@ -21,7 +19,7 @@ export default function GlobalParticlesBackground() {
       }
     });
 
-    observer.observe(document.documentElement, { attributes: true });
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
     window.addEventListener('themechange', updateTheme);
 
     return () => {
@@ -31,27 +29,54 @@ export default function GlobalParticlesBackground() {
   }, []);
 
   const isLight = theme === 'light';
-  const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
 
-  // Partículas em tons de azul escuro e ardósia exclusivo para o modo claro
-  const lightColors = ['#0f172a', '#0369a1', '#0284c7', '#1e40af', '#2563eb'];
+  // Partículas leves com aceleração nativa por hardware GPU (zero travamentos)
+  const particles = useMemo(() => {
+    return Array.from({ length: 28 }, (_, i) => {
+      const size = Math.floor(Math.random() * 5) + 3; // 3px a 7px
+      const top = Math.random() * 100;
+      const left = Math.random() * 100;
+      const duration = 14 + Math.random() * 18; // 14s a 32s
+      const delay = -(Math.random() * 20);
+      const opacity = 0.25 + Math.random() * 0.45;
+      const colors = ['#0284c7', '#0369a1', '#38bdf8', '#2563eb', '#6366f1'];
+      const color = colors[i % colors.length];
+
+      return {
+        id: i,
+        size,
+        top: `${top}%`,
+        left: `${left}%`,
+        duration: `${duration}s`,
+        delay: `${delay}s`,
+        opacity,
+        color
+      };
+    });
+  }, []);
+
+  if (!isLight) return null;
 
   return (
-    <div className={`global-particles-wrapper ${isLight ? 'is-active' : ''}`} aria-hidden="true">
-      <Particles
-        particleColors={lightColors}
-        particleCount={isMobile ? 50 : 160}
-        particleSpread={isMobile ? 8 : 11}
-        speed={0.12}
-        particleBaseSize={isMobile ? 70 : 85}
-        moveParticlesOnHover={!isMobile}
-        particleHoverFactor={0.8}
-        alphaParticles={true}
-        disableRotation={false}
-        sizeRandomness={0.9}
-        cameraDistance={20}
-      />
+    <div className="global-particles-wrapper is-active" aria-hidden="true">
+      <div className="ambient-css-particles">
+        {particles.map((p) => (
+          <span
+            key={p.id}
+            className="ambient-css-dot"
+            style={{
+              width: `${p.size}px`,
+              height: `${p.size}px`,
+              top: p.top,
+              left: p.left,
+              backgroundColor: p.color,
+              opacity: p.opacity,
+              animationDuration: p.duration,
+              animationDelay: p.delay
+            }}
+          />
+        ))}
+      </div>
     </div>
   );
 }
-

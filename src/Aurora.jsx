@@ -157,7 +157,7 @@ export default function Aurora(props) {
       delete geometry.attributes.uv;
     }
 
-    const colorStopsArray = colorStops.map(hex => {
+    const colorStopsArray = (propsRef.current.colorStops ?? colorStops).map(hex => {
       const c = new Color(hex);
       return [c.r, c.g, c.b];
     });
@@ -194,22 +194,29 @@ export default function Aurora(props) {
     );
     observer.observe(ctn);
 
+    let cachedStops = null;
+    let cachedColorArray = colorStopsArray;
+
     const update = (t) => {
-      if (!isVisible) {
+      if (!isVisible || document.hidden) {
         animateId = 0;
         return;
       }
       animateId = requestAnimationFrame(update);
-      const { time = t * 0.01, speed = 1.0 } = propsRef.current;
+      const { time = t * 0.01, speed = 1.0, amplitude: curAmp, blend: curBlend, lightMode: curLight, colorStops: curStops } = propsRef.current;
       program.uniforms.uTime.value = time * speed * 0.1;
-      program.uniforms.uAmplitude.value = propsRef.current.amplitude ?? 1.0;
-      program.uniforms.uBlend.value = propsRef.current.blend ?? blend;
-      program.uniforms.uLightMode.value = (propsRef.current.lightMode ?? lightMode) ? 1 : 0;
-      const stops = propsRef.current.colorStops ?? colorStops;
-      program.uniforms.uColorStops.value = stops.map((hex) => {
-        const c = new Color(hex);
-        return [c.r, c.g, c.b];
-      });
+      program.uniforms.uAmplitude.value = curAmp ?? amplitude;
+      program.uniforms.uBlend.value = curBlend ?? blend;
+      program.uniforms.uLightMode.value = (curLight ?? lightMode) ? 1 : 0;
+      
+      if (curStops && curStops !== cachedStops) {
+        cachedStops = curStops;
+        cachedColorArray = curStops.map((hex) => {
+          const c = new Color(hex);
+          return [c.r, c.g, c.b];
+        });
+        program.uniforms.uColorStops.value = cachedColorArray;
+      }
       renderer.render({ scene: mesh });
     };
     animateId = requestAnimationFrame(update);

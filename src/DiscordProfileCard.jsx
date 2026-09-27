@@ -356,7 +356,6 @@ export default function DiscordProfileCard() {
                   </div>
                   <span className="discord-activity-title discord-spotify-glowing-title">
                     {discordData.spotify.song}
-                    <span className="spotify-inline-note">🎵</span>
                   </span>
                   <span className="discord-activity-text">por {discordData.spotify.artist}</span>
                 </div>
