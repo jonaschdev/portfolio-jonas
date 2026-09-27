@@ -16,15 +16,15 @@
     <link rel="shortcut icon" type="image/svg+xml" href="/favicon.svg" />
     <meta property="og:image" content="/icon.png" />
     
-    <!-- Fontes Profissionais: JetBrains Mono (Código / Dev) e Plus Jakarta Sans (Interface) -->
+    <!-- Fontes Profissionais: Inter (Discord / ReactBits), JetBrains Mono (Código) e Plus Jakarta Sans (Interface) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
     
     <!-- Folha de Estilos em CSS Puro (Caminho relativo para funcionar offline e no ZIP) -->
     <link rel="stylesheet" href="./src/style.css">
 
-    <!-- Script Inline para evitar Flash de Tema ao carregar a página -->
+    <!-- Script Inline para persistência e evitar Flash de Tema -->
     <script>
       (function() {
         try {
@@ -35,11 +35,11 @@
     </script>
   </head>
   <body>
-
     <!-- =========================================================================
-         FUNDO ANIMADO DE ESTRELAS E CONSTELAÇÕES INTERATIVAS (STARFIELD CANVAS)
+         FUNDO UNIFICADO EM PARTICULAS 3D DINAMICAS (REACT BITS PARTICLES)
          ========================================================================= -->
-    <canvas id="starfieldCanvas" class="starfield-canvas" aria-hidden="true"></canvas>
+    <div id="globalParticlesRoot"></div>
+
 
     <!-- =========================================================================
          BARRA DE NAVEGAÇÃO SUPERIOR (CABEÇALHO)
@@ -48,14 +48,8 @@
       <div class="container">
         <div class="header-inner">
           
-          <!-- LOGOTIPO / INICIAL -->
+          <!-- LOGOTIPO / NOME DA PÁGINA -->
           <a href="#inicio" class="brand-link" title="Jonas · Dev & Ciência da Computação">
-            <span class="brand-badge" aria-label="Developer Code Icon">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="16 18 22 12 16 6"></polyline>
-                <polyline points="8 6 2 12 8 18"></polyline>
-              </svg>
-            </span>
             <span>Jonas<span class="brand-dot">.port</span></span>
           </a>
 
@@ -90,9 +84,7 @@
             </button>
 
             <!-- BOTÃO DE AÇÃO DIRETA (DESKTOP) -->
-            <a href="#contato" class="btn-header">
-              <span>Falar Comigo</span>
-            </a>
+            <div id="headerTalkRoot"></div>
           </div>
 
         </div>
@@ -106,6 +98,9 @@
            1. SEÇÃO HERO / APRESENTAÇÃO INICIAL (LAYOUT MODERNO COM FOTO À DIREITA)
            ========================================================================= -->
       <section id="inicio" class="hero-section">
+        <!-- ANIMAÇÃO DE ENTRADA AURORA (REACT BITS) -->
+        <div id="auroraRoot" class="hero-aurora-bg"></div>
+
         <div class="container">
           
           <div class="hero-content-grid">
@@ -123,10 +118,7 @@
             <div class="hero-avatar-col reveal reveal-right">
               <div id="heroAvatarRoot" class="hero-avatar-root-container"></div>
               <div class="status-badge-wrapper">
-                <div class="status-badge">
-                  <span class="status-dot"></span>
-                  <span>Open to Work</span>
-                </div>
+                <div id="openToWorkRoot"></div>
               </div>
             </div>
           </div>
@@ -191,7 +183,8 @@
                 </div>
 
                 <!-- 2. HTML5 -->
-                <div class="depth-carousel__card tech-card-html" data-index="1" aria-label="2 de 7">
+                <div class="depth-carousel__card tech-card-html border-glow-card sweep-active" data-index="1" data-glow-colors="#f97316,#ea580c,#facc15" aria-label="2 de 7">
+                  <span class="edge-light"></span>
                   <div class="tech-card-header">
                     <div class="tech-card-icon-wrap icon-html">
                       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -212,7 +205,8 @@
                 </div>
 
                 <!-- 3. CSS3 -->
-                <div class="depth-carousel__card tech-card-css" data-index="2" aria-label="3 de 7">
+                <div class="depth-carousel__card tech-card-css border-glow-card sweep-active" data-index="2" data-glow-colors="#38bdf8,#0284c7,#60a5fa" aria-label="3 de 7">
+                  <span class="edge-light"></span>
                   <div class="tech-card-header">
                     <div class="tech-card-icon-wrap icon-css">
                       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -234,7 +228,8 @@
                 </div>
 
                 <!-- 4. JAVASCRIPT (ES6+) -->
-                <div class="depth-carousel__card tech-card-js" data-index="3" aria-label="4 de 7">
+                <div class="depth-carousel__card tech-card-js border-glow-card sweep-active" data-index="3" data-glow-colors="#facc15,#eab308,#f59e0b" aria-label="4 de 7">
+                  <span class="edge-light"></span>
                   <div class="tech-card-header">
                     <div class="tech-card-icon-wrap icon-js">
                       <span class="js-modern-txt">JS</span>
@@ -252,7 +247,8 @@
                 </div>
 
                 <!-- 5. REACT NATIVE -->
-                <div class="depth-carousel__card tech-card-react" data-index="4" aria-label="5 de 7">
+                <div class="depth-carousel__card tech-card-react border-glow-card sweep-active" data-index="4" data-glow-colors="#38bdf8,#06b6d4,#67e8f9" aria-label="5 de 7">
+                  <span class="edge-light"></span>
                   <div class="tech-card-header">
                     <div class="tech-card-icon-wrap icon-react">
                       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
@@ -275,7 +271,8 @@
                 </div>
 
                 <!-- 6. PYTHON -->
-                <div class="depth-carousel__card tech-card-python" data-index="5" aria-label="6 de 7">
+                <div class="depth-carousel__card tech-card-python border-glow-card sweep-active" data-index="5" data-glow-colors="#3b82f6,#eab308,#60a5fa" aria-label="6 de 7">
+                  <span class="edge-light"></span>
                   <div class="tech-card-header">
                     <div class="tech-card-icon-wrap icon-python">
                       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -296,7 +293,8 @@
                 </div>
 
                 <!-- 7. GIT & GITHUB -->
-                <div class="depth-carousel__card tech-card-git" data-index="6" aria-label="7 de 7">
+                <div class="depth-carousel__card tech-card-git border-glow-card sweep-active" data-index="6" data-glow-colors="#f43f5e,#ec4899,#fb7185" aria-label="7 de 7">
+                  <span class="edge-light"></span>
                   <div class="tech-card-header">
                     <div class="tech-card-icon-wrap icon-git">
                       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -367,27 +365,19 @@
       </section>
 
       <!-- =========================================================================
-           3. SEÇÃO MEUS PROJETOS (COM <PixelCard /> - REACT BITS)
+           3. SEÇÃO MEUS PROJETOS (COM <CardSwap /> - REACT BITS)
            ========================================================================= -->
-      <section id="projetos" class="section-wrapper">
-        <div class="container">
-          
-          <div class="section-header-centered reveal reveal-up">
-            <h2 class="section-title">Projetos</h2>
-            <p class="section-desc">Trabalhos práticos desenvolvidos durante a minha graduação e meus estudos.</p>
-          </div>
-
-          <div class="projects-status-container reveal reveal-up">
-            <div id="projectsPixelRoot"></div>
-          </div>
-
+      <section id="projetos" class="section-wrapper projects-section-bleed">
+        <div class="projects-bleed-wrapper reveal reveal-up">
+          <div id="projectsPixelRoot"></div>
         </div>
       </section>
 
       <!-- =========================================================================
            4. SEÇÃO CONTATO (CONTAINERS DIVIDIDOS: E-MAIL À ESQUERDA, CANAIS À DIREITA)
            ========================================================================= -->
-      <section id="contato" class="section-wrapper contact-section">
+      <section id="contato" class="contact-section">
+        <div id="contactWavesRoot"></div>
         <div class="container">
           
           <div class="section-header-centered reveal reveal-up">
@@ -395,105 +385,39 @@
             <p class="section-desc">Estou aberto a oportunidades profissionais, vagas júnior, estágio ou projetos freelance.</p>
           </div>
 
-          <!-- GRID COM DOIS CONTAINERS SEPARADOS -->
+          <!-- GRID COM 2 CONTAINERS SEPARADOS: E-MAIL E DISCORD -->
           <div class="contact-split-grid reveal reveal-up">
             
-            <!-- CONTAINER DA ESQUERDA: APENAS O E-MAIL -->
+            <!-- CONTAINER 1 (ESQUERDA): MEIOS DE CONTATO + INTEGRAÇÃO FIREBASE -->
             <div class="contact-card contact-card-email">
-              <div class="contact-card-badge">E-mail para Contato</div>
-              
-              <div class="email-display-box">
-                <div class="email-display-icon">
-                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <rect x="2" y="4" width="20" height="16" rx="2"></rect>
-                    <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
-                  </svg>
+              <div class="contact-card-top-content">
+                <div class="contact-card-badge">Meios de Contato</div>
+                
+                <div class="email-display-box">
+                  <div class="email-display-icon">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <rect x="2" y="4" width="20" height="16" rx="2"></rect>
+                      <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
+                    </svg>
+                  </div>
+                  <div class="email-display-details">
+                    <span class="email-display-label">Meu E-mail</span>
+                    <span class="email-address">jonascontatotrabalho@gmail.com</span>
+                  </div>
+                  <!-- Botão minimalista de copiar (EmailCopyButton) -->
+                  <div id="emailCopyRoot"></div>
                 </div>
-                <div class="email-display-details">
-                  <span class="email-display-label">Meu E-mail</span>
-                  <span class="email-address">jonascontatotrabalho@gmail.com</span>
-                </div>
-                <!-- Botão minimalista de copiar -->
-                <button class="btn-copy-icon js-copy-email" data-email="jonascontatotrabalho@gmail.com" aria-label="Copiar e-mail" title="Copiar e-mail">
-                  <svg class="copy-svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-                  </svg>
-                </button>
               </div>
 
-              <p class="email-card-hint">
-                Clique no ícone para copiar o endereço ou clique no botão da caixa da direita para enviar um e-mail direto.
-              </p>
-            </div>
-
-            <!-- CONTAINER DA DIREITA: CANAIS E BOTÕES (ENVIAR E-MAIL, WHATSAPP, LINKEDIN) -->
-            <div class="contact-card contact-card-channels">
-              <div class="contact-card-badge">Outros meios de contato</div>
-              
-              <div class="contact-channels-list">
-                <!-- Enviar e-mail diretamente (Com efeito de reflexo luminoso) -->
-                <a href="mailto:jonascontatotrabalho@gmail.com" class="btn-primary btn-contact-email" title="Enviar e-mail diretamente">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <line x1="22" y1="2" x2="11" y2="13"></line>
-                    <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
-                  </svg>
-                  <span>Enviar E-mail</span>
-                </a>
-
-                <!-- WhatsApp (Botão igual aos do topo, com verde suave no hover) -->
-                <a href="https://wa.me/5598984667481" target="_blank" rel="noopener noreferrer" class="btn-action-link link-whatsapp btn-channel" aria-label="WhatsApp" title="Conversar no WhatsApp">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
-                  </svg>
-                  <span>WhatsApp</span>
-                </a>
-
-                <!-- LinkedIn (Botão igual aos do topo) -->
-                <a href="https://www.linkedin.com/in/jonaschaves-dev/" target="_blank" rel="noopener noreferrer" class="btn-action-link link-linkedin btn-channel" aria-label="LinkedIn" title="Ver perfil no LinkedIn">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
-                    <rect x="2" y="9" width="4" height="12"></rect>
-                    <circle cx="4" cy="4" r="2"></circle>
-                  </svg>
-                  <span>LinkedIn</span>
-                </a>
+              <!-- Integração Firebase Firestore para envio de mensagens alinhada ao fundo -->
+              <div class="contact-card-bottom-content">
+                <div id="contactFormRoot"></div>
               </div>
             </div>
 
-          </div>
+            <!-- CONTAINER 2 (DIREITA): PERFIL DO DISCORD AO VIVO (LANYARD API ESTILO GUNS.LOL) -->
+            <div id="discordProfileRoot"></div>
 
-          <!-- FORMULÁRIO DE CONTATO / MENSAGEM DIRETA INTEGRADO AO FIREBASE FIRESTORE -->
-          <div class="contact-form-container reveal reveal-up">
-            <div class="contact-form-card">
-              <div class="contact-card-badge">Direct</div>
-              <h3 class="contact-form-title">Deixe um recado ou proposta</h3>
-              <p class="contact-form-desc">Sua mensagem será salva e enviada diretamente pra mim.</p>
-              
-              <form id="contactFirebaseForm" class="contact-firebase-form">
-                <div class="form-row-2">
-                  <div class="form-group">
-                    <label for="senderName" class="form-label">Seu Nome</label>
-                    <input type="text" id="senderName" class="form-input" placeholder="Ex: Maria Silva" required minlength="2" maxlength="100" />
-                  </div>
-                  <div class="form-group">
-                    <label for="senderEmail" class="form-label">Seu E-mail</label>
-                    <input type="email" id="senderEmail" class="form-input" placeholder="Ex: contato@empresa.com" required maxlength="150" />
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label for="senderMessage" class="form-label">Mensagem</label>
-                  <textarea id="senderMessage" class="form-textarea" rows="3" placeholder="Escreva sua mensagem, proposta de vaga ou feedback aqui..." required minlength="3" maxlength="1000"></textarea>
-                </div>
-                <button type="submit" id="btnSubmitMessage" class="btn-primary btn-submit-message">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <line x1="22" y1="2" x2="11" y2="13"></line>
-                    <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
-                  </svg>
-                  <span>Enviar Mensagem</span>
-                </button>
-              </form>
-            </div>
           </div>
 
         </div>
@@ -504,74 +428,20 @@
     <!-- =========================================================================
          RODAPÉ (FOOTER)
          ========================================================================= -->
-    <footer class="site-footer">
-      <div class="container">
-        <p>
-          © <span id="currentYear">2026</span> Jonas Portfólio.
-        </p>
-      </div>
-    </footer>
+    <footer class="site-footer"></footer>
 
     <!-- =========================================================================
-         DOCK DE NAVEGAÇÃO FLUTUANTE MOBILE (BOTTOM DOCK BAR)
+         DOCK DE NAVEGAÇÃO MOBILE (REACT BITS DOCK - APPLE iOS LIQUID GLASS)
+         Montado via React com animações de mola Motion e estilo vidro líquido iOS
          ========================================================================= -->
-    <nav class="mobile-dock-container" id="mobileDock" aria-label="Navegação Mobile">
-      <div class="mobile-dock-panel" id="mobileDockPanel">
-        
-        <!-- 1. Início (Home) -->
-        <a href="#inicio" class="dock-item active" data-section="inicio" aria-label="Início" title="Início">
-          <div class="dock-icon-box">
-            <svg class="dock-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-              <polyline points="9 22 9 12 15 12 15 22"></polyline>
-            </svg>
-          </div>
-          <span class="dock-tooltip">Início</span>
-        </a>
-
-        <!-- 2. Linguagens & Tecnologias (Code / Terminal) -->
-        <a href="#tecnologias" class="dock-item" data-section="tecnologias" aria-label="Linguagens e Tecnologias" title="Linguagens">
-          <div class="dock-icon-box">
-            <svg class="dock-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <polyline points="16 18 22 12 16 6"></polyline>
-              <polyline points="8 6 2 12 8 18"></polyline>
-            </svg>
-          </div>
-          <span class="dock-tooltip">Linguagens</span>
-        </a>
-
-        <!-- 3. Projetos (Archive / Box - idêntico à imagem de referência) -->
-        <a href="#projetos" class="dock-item" data-section="projetos" aria-label="Projetos" title="Projetos">
-          <div class="dock-icon-box">
-            <svg class="dock-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <polyline points="21 8 21 21 3 21 3 8"></polyline>
-              <rect x="1" y="3" width="22" height="5"></rect>
-              <line x1="10" y1="12" x2="14" y2="12"></line>
-            </svg>
-          </div>
-          <span class="dock-tooltip">Projetos</span>
-        </a>
-
-        <!-- 4. Contato (Account / Profile - idêntico à imagem de referência) -->
-        <a href="#contato" class="dock-item" data-section="contato" aria-label="Contato" title="Contato">
-          <div class="dock-icon-box">
-            <svg class="dock-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-              <circle cx="12" cy="7" r="4"></circle>
-            </svg>
-          </div>
-          <span class="dock-tooltip">Contato</span>
-        </a>
-
-      </div>
-    </nav>
+    <div id="mobileDockRoot"></div>
 
     <!-- AVISO TOAST FLUTUANTE (EXIBIDO AO COPIAR O E-MAIL OU ENVIAR MENSAGEM) -->
     <div id="toastNotice" class="toast-notice" role="status" aria-live="polite">
       E-mail copiado com sucesso!
     </div>
 
-    <!-- Script JavaScript Modular com Firebase Firestore Integrado -->
+    <!-- Script JavaScript Modular -->
     <script type="module" src="./src/script.js"></script>
   </body>
 </html>

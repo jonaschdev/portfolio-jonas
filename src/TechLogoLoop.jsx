@@ -10,9 +10,7 @@ import {
   SiGit,
   SiGithub,
   SiNodedotjs,
-  SiNextdotjs,
-  SiFirebase,
-  SiLinux
+  SiFirebase
 } from 'react-icons/si';
 import { Sparkles, Code2, Terminal } from 'lucide-react';
 
@@ -20,7 +18,7 @@ import { Sparkles, Code2, Terminal } from 'lucide-react';
 const techLogos = [
   {
     node: (
-      <span className="tech-loop-standalone-icon" title="Inteligência Artificial (IA)" style={{ color: '#c084fc' }}>
+      <span className="tech-loop-standalone-icon" title="Inteligência Artificial (IA)" style={{ color: '#38bdf8' }}>
         <Sparkles size={28} />
       </span>
     ),
@@ -108,14 +106,6 @@ const techLogos = [
   },
   {
     node: (
-      <span className="tech-loop-standalone-icon" title="Next.js" style={{ color: 'var(--texto-principal)' }}>
-        <SiNextdotjs size={28} />
-      </span>
-    ),
-    title: 'Next.js'
-  },
-  {
-    node: (
       <span className="tech-loop-standalone-icon" title="Firebase" style={{ color: '#FFCA28' }}>
         <SiFirebase size={28} />
       </span>
@@ -129,14 +119,6 @@ const techLogos = [
       </span>
     ),
     title: 'Terminal'
-  },
-  {
-    node: (
-      <span className="tech-loop-standalone-icon" title="Linux" style={{ color: '#FCC624' }}>
-        <SiLinux size={28} />
-      </span>
-    ),
-    title: 'Linux'
   }
 ];
 

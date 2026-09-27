@@ -1,9 +1,18 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import gsap from 'gsap';
+import GlobalParticlesBackground from './GlobalParticlesBackground';
 import TechLogoLoop from './TechLogoLoop';
 import HeroAvatar from './HeroAvatar';
+import OpenToWorkButton from './OpenToWorkButton';
 import ProjectsPixelCard from './ProjectsPixelCard';
+import ContactBackground from './ContactBackground';
+import DiscordProfileCard from './DiscordProfileCard';
+import ContactMessageForm from './ContactMessageForm';
+import MobileDockNav from './MobileDockNav';
+import HeaderTalkButton from './HeaderTalkButton';
+import EmailCopyButton from './EmailCopyButton';
+import Aurora from './Aurora';
 
 /**
  * =========================================================================
@@ -16,6 +25,50 @@ import ProjectsPixelCard from './ProjectsPixelCard';
 document.addEventListener('DOMContentLoaded', () => {
 
   // =======================================================================
+  // MONTAGEM DO FUNDO UNIFICADO DE PARTICULAS 3D (REACT BITS PARTICLES)
+  // =======================================================================
+  const globalParticlesRootEl = document.getElementById('globalParticlesRoot');
+  if (globalParticlesRootEl) {
+    const particlesRoot = createRoot(globalParticlesRootEl);
+    particlesRoot.render(React.createElement(GlobalParticlesBackground));
+  }
+
+  // =======================================================================
+  // MONTAGEM DA ANIMAÇÃO AURORA NA SEÇÃO DE INÍCIO HERO (REACT BITS)
+  // =======================================================================
+  const auroraRootEl = document.getElementById('auroraRoot');
+  if (auroraRootEl) {
+    const auroraRoot = createRoot(auroraRootEl);
+    auroraRoot.render(
+      React.createElement(Aurora, {
+        colorStops: ["#0284c7", "#38bdf8", "#6366f1"],
+        blend: 0.6,
+        amplitude: 1.1,
+        speed: 0.5,
+        lightMode: false
+      })
+    );
+  }
+
+  // =======================================================================
+  // MONTAGEM DO BOTÃO "FALAR COMIGO" DO CABEÇALHO (SPECULAR BUTTON)
+  // =======================================================================
+  const headerTalkRootEl = document.getElementById('headerTalkRoot');
+  if (headerTalkRootEl) {
+    const talkRoot = createRoot(headerTalkRootEl);
+    talkRoot.render(React.createElement(HeaderTalkButton));
+  }
+
+  // =======================================================================
+  // MONTAGEM DO BOTÃO DE COPIAR E-MAIL (SPECULAR BUTTON)
+  // =======================================================================
+  const emailCopyRootEl = document.getElementById('emailCopyRoot');
+  if (emailCopyRootEl) {
+    const emailRoot = createRoot(emailCopyRootEl);
+    emailRoot.render(React.createElement(EmailCopyButton));
+  }
+
+  // =======================================================================
   // MONTAGEM DA FOTO DE PERFIL COM <TiltedCard /> (REACT BITS)
   // Tilt 3D interativo, tooltip flutuante personalizado e física fluida
   // =======================================================================
@@ -23,6 +76,15 @@ document.addEventListener('DOMContentLoaded', () => {
   if (heroAvatarRootEl) {
     const avatarRoot = createRoot(heroAvatarRootEl);
     avatarRoot.render(React.createElement(HeroAvatar));
+  }
+
+  // =======================================================================
+  // MONTAGEM DO BOTÃO INTERATIVO OPEN TO WORK (APPLE iOS GLASS MENU)
+  // =======================================================================
+  const openToWorkRootEl = document.getElementById('openToWorkRoot');
+  if (openToWorkRootEl) {
+    const otwRoot = createRoot(openToWorkRootEl);
+    otwRoot.render(React.createElement(OpenToWorkButton));
   }
 
   // =======================================================================
@@ -43,6 +105,33 @@ document.addEventListener('DOMContentLoaded', () => {
   if (projectsPixelRootEl) {
     const projectsRoot = createRoot(projectsPixelRootEl);
     projectsRoot.render(React.createElement(ProjectsPixelCard));
+  }
+
+  // =======================================================================
+  // MONTAGEM DO FUNDO DE ONDAS <GradientWaves /> NA SEÇÃO DE CONTATO (REACT BITS)
+  // =======================================================================
+  const contactWavesRootEl = document.getElementById('contactWavesRoot');
+  if (contactWavesRootEl) {
+    const contactWavesRoot = createRoot(contactWavesRootEl);
+    contactWavesRoot.render(React.createElement(ContactBackground));
+  }
+
+  // =======================================================================
+  // MONTAGEM DO CARD DO DISCORD (LANYARD API ESTILO GUNS.LOL)
+  // =======================================================================
+  const discordProfileRootEl = document.getElementById('discordProfileRoot');
+  if (discordProfileRootEl) {
+    const discordRoot = createRoot(discordProfileRootEl);
+    discordRoot.render(React.createElement(DiscordProfileCard));
+  }
+
+  // =======================================================================
+  // MONTAGEM DO FORMULÁRIO DE CONTATO (FIREBASE FIRESTORE)
+  // =======================================================================
+  const contactFormRootEl = document.getElementById('contactFormRoot');
+  if (contactFormRootEl) {
+    const formRoot = createRoot(contactFormRootEl);
+    formRoot.render(React.createElement(ContactMessageForm));
   }
 
   // =======================================================================
@@ -111,44 +200,49 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // =======================================================================
-  // 2. DOCK DE NAVEGAÇÃO FLUTUANTE MOBILE (SCROLL SPY & MAGNIFICATION)
+  // 2. DOCK DE NAVEGAÇÃO FLUTUANTE MOBILE (REACT BITS DOCK - APPLE iOS LIQUID GLASS)
   // =======================================================================
-  const mobileDock = document.getElementById('mobileDock');
-  if (mobileDock) {
-    const dockItems = mobileDock.querySelectorAll('.dock-item');
-    const sections = document.querySelectorAll('section[id]');
+  const mobileDockRootEl = document.getElementById('mobileDockRoot');
+  if (mobileDockRootEl) {
+    const dockRoot = createRoot(mobileDockRootEl);
+    dockRoot.render(React.createElement(MobileDockNav));
+  }
 
-    // Scroll Spy para ativar automaticamente o ícone da seção visível
-    function updateActiveDockSection() {
-      const scrollPosition = window.scrollY + window.innerHeight * 0.35;
-
-      let currentSectionId = '';
-      sections.forEach(section => {
-        const sectionTop = section.offsetTop;
-        const sectionHeight = section.offsetHeight;
-        if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
-          currentSectionId = section.getAttribute('id') || '';
+  // Scroll Spy para atualizar links do menu superior Desktop
+  const desktopNavLinks = document.querySelectorAll('.main-nav .nav-link');
+  if (desktopNavLinks.length > 0) {
+    const desktopSectionIds = ['inicio', 'tecnologias', 'projetos', 'contato'];
+    function updateDesktopNav() {
+      const isNearBottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 90;
+      if (isNearBottom) {
+        setDesktopActive('contato');
+        return;
+      }
+      if (window.scrollY < 100) {
+        setDesktopActive('inicio');
+        return;
+      }
+      const triggerY = window.innerHeight * 0.42;
+      let matched = 'inicio';
+      for (const id of desktopSectionIds) {
+        const el = document.getElementById(id);
+        if (el && el.getBoundingClientRect().top <= triggerY) {
+          matched = id;
+        }
+      }
+      setDesktopActive(matched);
+    }
+    function setDesktopActive(id) {
+      desktopNavLinks.forEach(link => {
+        if (link.getAttribute('href') === `#${id}`) {
+          link.classList.add('active');
+        } else {
+          link.classList.remove('active');
         }
       });
-
-      if (!currentSectionId && window.scrollY < 200) {
-        currentSectionId = 'inicio';
-      }
-
-      if (currentSectionId) {
-        dockItems.forEach(item => {
-          const targetSection = item.getAttribute('data-section');
-          if (targetSection === currentSectionId) {
-            item.classList.add('active');
-          } else {
-            item.classList.remove('active');
-          }
-        });
-      }
     }
-
-    window.addEventListener('scroll', updateActiveDockSection, { passive: true });
-    updateActiveDockSection();
+    window.addEventListener('scroll', updateDesktopNav, { passive: true });
+    updateDesktopNav();
   }
 
   // =======================================================================
@@ -172,6 +266,7 @@ document.addEventListener('DOMContentLoaded', () => {
     } catch (e) {
       console.warn('LocalStorage inacessível:', e);
     }
+    window.dispatchEvent(new Event('themechange'));
   }
 
   function toggleTheme() {
@@ -194,281 +289,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // =======================================================================
-  // 5. FORMULÁRIO DE CONTATO DIRETO (FIREBASE FIRESTORE)
-  // =======================================================================
-  const contactForm = document.getElementById('contactFirebaseForm');
-  const btnSubmitMessage = document.getElementById('btnSubmitMessage');
-
-  if (contactForm) {
-    contactForm.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      
-      const nameInput = document.getElementById('senderName');
-      const emailInput = document.getElementById('senderEmail');
-      const messageInput = document.getElementById('senderMessage');
-
-      const name = nameInput ? nameInput.value.trim() : '';
-      const email = emailInput ? emailInput.value.trim() : '';
-      const message = messageInput ? messageInput.value.trim() : '';
-
-      if (!name || !email || !message) {
-        if (toast) {
-          toast.textContent = 'Por favor, preencha todos os campos.';
-          toast.classList.add('show');
-          setTimeout(() => toast.classList.remove('show'), 3000);
-        }
-        return;
-      }
-
-      // Estado de carregamento do botão
-      if (btnSubmitMessage) {
-        btnSubmitMessage.disabled = true;
-        btnSubmitMessage.innerHTML = `
-          <svg class="spin-animate" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="12" y1="2" x2="12" y2="6"></line>
-            <line x1="12" y1="18" x2="12" y2="22"></line>
-            <line x1="4.93" y1="4.93" x2="7.76" y2="7.76"></line>
-            <line x1="16.24" y1="16.24" x2="19.07" y2="19.07"></line>
-            <line x1="2" y1="12" x2="6" y2="12"></line>
-            <line x1="18" y1="12" x2="22" y2="12"></line>
-            <line x1="4.93" y1="19.07" x2="7.76" y2="16.24"></line>
-            <line x1="16.24" y1="7.76" x2="19.07" y2="4.93"></line>
-          </svg>
-          <span>Enviando...</span>
-        `;
-      }
-
-      try {
-        const { sendContactMessage } = await import('./firebase.ts');
-        await sendContactMessage({ name, email, message });
-
-        // Limpa o formulário
-        contactForm.reset();
-
-        // Notificação de sucesso
-        if (toast) {
-          toast.textContent = '✨ Mensagem enviada com sucesso! Obrigado pelo contato.';
-          toast.classList.add('show');
-          setTimeout(() => toast.classList.remove('show'), 4000);
-        }
-      } catch (err) {
-        console.error('Erro ao enviar mensagem:', err);
-        if (toast) {
-          toast.textContent = 'Ocorreu um erro ao enviar. Tente pelo e-mail direto!';
-          toast.classList.add('show');
-          setTimeout(() => toast.classList.remove('show'), 4000);
-        }
-      } finally {
-        if (btnSubmitMessage) {
-          btnSubmitMessage.disabled = false;
-          btnSubmitMessage.innerHTML = `
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <line x1="22" y1="2" x2="11" y2="13"></line>
-              <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
-            </svg>
-            <span>Enviar Mensagem</span>
-          `;
-        }
-      }
-    });
-  }
-
-  // =======================================================================
-  // 7. FUNDO ANIMADO DE ESTRELAS & CONSTELAÇÕES INTERATIVAS (CANVAS)
-  // =======================================================================
-  const canvas = document.getElementById('starfieldCanvas');
-  if (canvas) {
-    const ctx = canvas.getContext('2d');
-    let animationFrameId;
-    let width = 0;
-    let height = 0;
-    let stars = [];
-
-    // Rastreamento do cursor do mouse/toque para interatividade
-    const mouse = {
-      x: -1000,
-      y: -1000,
-      radius: 140,
-      active: false
-    };
-
-    function resizeCanvas() {
-      const dpr = Math.min(window.devicePixelRatio || 1, 2);
-      width = window.innerWidth;
-      height = window.innerHeight;
-      canvas.width = width * dpr;
-      canvas.height = height * dpr;
-      ctx.scale(dpr, dpr);
-      initStars();
-    }
-
-    // Gerador de estrelas com tamanhos, brilhos e cores cósmicas
-    function initStars() {
-      stars = [];
-      // Quantidade equilibrada de acordo com o tamanho da tela
-      const count = Math.floor((width * height) / 12000);
-      const starCount = Math.min(Math.max(count, 45), 110);
-
-      const colorPaletteDark = [
-        'rgba(56, 189, 248, ',   // Azul ciano claro
-        'rgba(14, 165, 233, ',   // Azul elétrico vibrante
-        'rgba(96, 165, 250, ',   // Azul celeste suave
-        'rgba(2, 132, 199, ',    // Azul oceano
-        'rgba(147, 197, 253, '   // Azul bebê luminoso
-      ];
-
-      for (let i = 0; i < starCount; i++) {
-        stars.push({
-          x: Math.random() * width,
-          y: Math.random() * height,
-          vx: (Math.random() - 0.5) * 0.12,
-          vy: (Math.random() - 0.5) * 0.12,
-          radius: Math.random() * 1.8 + 0.6,
-          baseAlpha: Math.random() * 0.6 + 0.25,
-          twinkleSpeed: Math.random() * 0.012 + 0.005,
-          twinklePhase: Math.random() * Math.PI * 2,
-          colorIndex: Math.floor(Math.random() * colorPaletteDark.length)
-        });
-      }
-    }
-
-    window.addEventListener('resize', resizeCanvas);
-    resizeCanvas();
-
-    // Interatividade com Mouse e Touch
-    window.addEventListener('mousemove', (e) => {
-      mouse.x = e.clientX;
-      mouse.y = e.clientY;
-      mouse.active = true;
-    });
-
-    window.addEventListener('mouseleave', () => {
-      mouse.active = false;
-      mouse.x = -1000;
-      mouse.y = -1000;
-    });
-
-    window.addEventListener('touchmove', (e) => {
-      if (e.touches.length > 0) {
-        mouse.x = e.touches[0].clientX;
-        mouse.y = e.touches[0].clientY;
-        mouse.active = true;
-      }
-    }, { passive: true });
-
-    window.addEventListener('touchend', () => {
-      mouse.active = false;
-      mouse.x = -1000;
-      mouse.y = -1000;
-    });
-
-    // Loop de animação fluida a 60fps
-    function renderStars() {
-      ctx.clearRect(0, 0, width, height);
-
-      const isLight = document.documentElement.getAttribute('data-theme') === 'light';
-      const colorPaletteDark = [
-        'rgba(255, 255, 255, ',   // Estrela branca pura
-        'rgba(241, 245, 249, ',   // Prata/branco suave
-        'rgba(56, 189, 248, ',    // Azul ciano claro
-        'rgba(147, 197, 253, ',   // Azul bebê luminoso
-        'rgba(226, 232, 240, '    // Branco cinzento estelar
-      ];
-      const colorPaletteLight = [
-        'rgba(15, 23, 42, ',     // Quase preto / Grafite obsidiana profundo
-        'rgba(30, 41, 59, ',     // Grafite escuro
-        'rgba(2, 132, 199, ',    // Azul oceano vibrante
-        'rgba(3, 105, 161, ',    // Azul profundo
-        'rgba(14, 165, 233, '    // Ciano contrastante
-      ];
-      const palette = isLight ? colorPaletteLight : colorPaletteDark;
-
-      // Desenha e atualiza as estrelas
-      for (let i = 0; i < stars.length; i++) {
-        const star = stars[i];
-
-        // Movimento suave
-        star.x += star.vx;
-        star.y += star.vy;
-
-        // Rebote nas bordas
-        if (star.x < 0) star.x = width;
-        else if (star.x > width) star.x = 0;
-        if (star.y < 0) star.y = height;
-        else if (star.y > height) star.y = 0;
-
-        // Cintilação suave (pulsar de estrela)
-        star.twinklePhase += star.twinkleSpeed;
-        const twinkle = Math.sin(star.twinklePhase);
-        const alpha = Math.max(0.1, Math.min(1, star.baseAlpha + twinkle * 0.25));
-
-        // Interação com o mouse: leve atração e linhas de constelação
-        let extraGlow = 0;
-        if (mouse.active) {
-          const dx = mouse.x - star.x;
-          const dy = mouse.y - star.y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist < mouse.radius) {
-            extraGlow = (1 - dist / mouse.radius) * 0.4;
-            // Conexão sutil entre mouse e estrela próxima
-            ctx.beginPath();
-            ctx.strokeStyle = isLight 
-              ? `rgba(15, 23, 42, ${(1 - dist / mouse.radius) * 0.25})`
-              : `rgba(56, 189, 248, ${(1 - dist / mouse.radius) * 0.32})`;
-            ctx.lineWidth = 0.8;
-            ctx.moveTo(mouse.x, mouse.y);
-            ctx.lineTo(star.x, star.y);
-            ctx.stroke();
-          }
-        }
-
-        const colorPrefix = palette[star.colorIndex % palette.length];
-        const finalAlpha = Math.min(1, (isLight ? alpha * 0.85 : alpha) + extraGlow);
-
-        // Desenho da estrela com brilho suave
-        ctx.beginPath();
-        ctx.arc(star.x, star.y, star.radius + extraGlow * 1.1, 0, Math.PI * 2);
-        ctx.fillStyle = `${colorPrefix}${finalAlpha})`;
-        ctx.shadowColor = isLight ? 'rgba(2, 132, 199, 0.4)' : 'rgba(56, 189, 248, 0.6)';
-        ctx.shadowBlur = extraGlow > 0 ? 10 : (star.radius > 1.3 ? 5 : 2);
-        ctx.fill();
-
-        // Linhas de constelação entre estrelas vizinhas
-        for (let j = i + 1; j < stars.length; j++) {
-          const other = stars[j];
-          const distDx = star.x - other.x;
-          const distDy = star.y - other.y;
-          const dist = Math.sqrt(distDx * distDx + distDy * distDy);
-
-          const maxDist = 80;
-          if (dist < maxDist) {
-            const lineAlpha = (1 - dist / maxDist) * (isLight ? 0.12 : 0.13);
-            ctx.beginPath();
-            ctx.shadowBlur = 0;
-            ctx.strokeStyle = isLight ? `rgba(30, 41, 59, ${lineAlpha})` : `rgba(56, 189, 248, ${lineAlpha})`;
-            ctx.lineWidth = 0.6;
-            ctx.moveTo(star.x, star.y);
-            ctx.lineTo(other.x, other.y);
-            ctx.stroke();
-          }
-        }
-      }
-
-      animationFrameId = requestAnimationFrame(renderStars);
-    }
-
-    // Pausa animação quando a aba não estiver visível (economia de bateria/GPU)
-    document.addEventListener('visibilitychange', () => {
-      if (document.hidden) {
-        cancelAnimationFrame(animationFrameId);
-      } else {
-        renderStars();
-      }
-    });
-
-    renderStars();
-  }
 
   // =======================================================================
   // 7.1. EFEITO HACKER / MATRIX CODE RAIN NO LETREIRO DE LINGUAGENS
@@ -578,7 +398,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // =======================================================================
-  // 9. REACT BITS: DEPTH CAROUSEL 3D ENGINE (GSAP POWERED)
+  // 9. REACT BITS: 3D CIRCULAR ORBIT RING CAROUSEL (GSAP POWERED)
   // =======================================================================
   const depthCarouselEl = document.getElementById('techDepthCarousel');
   const depthCards = document.querySelectorAll('.depth-carousel__card');
@@ -590,23 +410,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const totalCards = depthCards.length;
     const overlayRefs = document.querySelectorAll('.depth-carousel__tint');
 
-    // Configurações do componente DepthCarousel (React Bits)
+    // Configurações do Carrossel Horizontal
     const cfg = {
       count: totalCards,
-      cardWidth: 480,
+      cardWidth: 460,
       cardHeight: 285,
-      depth: 210,
-      spread: 120,
-      tilt: 18,
-      tiltDirection: 'right',
-      perspective: 1400,
-      visibleCards: 4,
-      falloff: 0.2,
-      blur: 6,
-      duration: 700,
-      ease: 'power3.out',
-      loop: true,
-      autoplay: false // Sem auto-play automático, navegação exclusiva pelo usuário
+      cardSpacing: 380,
+      duration: 550,
+      ease: 'power3.out'
     };
 
     let pos = 0;
@@ -614,7 +425,6 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentTween = null;
     let scale = 1;
     let dragData = null;
-    let wheelTimer = null;
 
     const clamp = (v, min, max) => Math.min(Math.max(v, min), max);
 
@@ -649,45 +459,57 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }
 
+    // Engine Horizontal: cards dispostos de um lado para o outro sem espirais
     function layout(currentPos) {
       const n = cfg.count;
       if (!n) return;
-      const dir = cfg.tiltDirection === 'left' ? -1 : 1;
-      const sc = scale;
+      const isLight = document.documentElement.getAttribute('data-theme') === 'light';
 
       for (let i = 0; i < n; i++) {
         const el = depthCards[i];
         if (!el) continue;
 
-        let d = i - currentPos;
-        if (cfg.loop && n > 1) {
-          d = ((d % n) + n) % n;
-          if (d > n / 2) d -= n;
+        // Distância cíclica normalizada no carrossel entre -n/2 e +n/2
+        let diff = (i - currentPos) % n;
+        if (diff < -n / 2) diff += n;
+        if (diff > n / 2) diff -= n;
+
+        const absDiff = Math.abs(diff);
+
+        // Oculta cards distantes para garantir que fiquem apenas de um lado e do outro
+        if (absDiff > 1.6) {
+          el.style.opacity = '0';
+          el.style.pointerEvents = 'none';
+          el.style.transform = `translate(-50%, -50%) scale(0.65) translateX(${diff > 0 ? 550 : -550}px)`;
+          continue;
         }
 
-        const back = Math.max(0, d);
-        const az = Math.abs(d);
-        const shown = az <= cfg.visibleCards + 0.5;
+        // Posição horizontal linear no eixo X (de um lado para o outro)
+        const sign = diff < 0 ? -1 : 1;
+        const tx = diff === 0 ? 0 : sign * (cfg.cardSpacing * absDiff);
+        const tz = -absDiff * 60;
+        const ry = clamp(-diff * 10, -16, 16);
 
-        const tz = -cfg.depth * d;
-        const tx = dir * cfg.spread * d;
-        const ry = dir * cfg.tilt * clamp(d, 0, 1);
+        // Escala e opacidade limpas
+        const cardScale = scale * (1 - absDiff * 0.12);
+        const opacity = Math.max(0, 1 - absDiff * 0.42);
 
-        let opacity = d < 0 ? Math.max(0, 1 + d) : 1;
-        if (!shown) opacity = 0;
+        // Iluminação: 1.0 total no modo claro (sem sombras pretas)
+        const brightness = isLight ? 1.0 : Math.max(0.8, 1 - absDiff * 0.12);
 
-        const brightness = Math.max(0.15, 1 - back * cfg.falloff);
-        const blurPx = cfg.blur > 0 ? Math.min(cfg.blur, (back / Math.max(1, cfg.visibleCards)) * cfg.blur) : 0;
-        const zi = Math.round(2000 - d * 20);
+        // Z-Index: card central sempre à frente
+        const zi = Math.round(100 - absDiff * 30);
 
-        el.style.transform = `translate(-50%, -50%) scale(${sc}) translateX(${tx.toFixed(2)}px) translateZ(${tz.toFixed(2)}px) rotateY(${ry.toFixed(3)}deg)`;
+        el.style.transform = `translate(-50%, -50%) scale(${cardScale.toFixed(3)}) translateX(${tx.toFixed(1)}px) translateZ(${tz.toFixed(1)}px) rotateY(${ry.toFixed(2)}deg)`;
         el.style.opacity = opacity.toFixed(3);
-        el.style.filter = `brightness(${brightness.toFixed(3)}) blur(${blurPx.toFixed(2)}px)`;
+        el.style.filter = `brightness(${brightness.toFixed(3)})`;
         el.style.zIndex = String(zi);
-        el.style.pointerEvents = shown && opacity > 0.05 ? 'auto' : 'none';
+        el.style.pointerEvents = 'auto';
 
         const ov = overlayRefs[i];
-        if (ov) ov.style.opacity = clamp(back * cfg.falloff * 1.25, 0, 0.86).toFixed(3);
+        if (ov) {
+          ov.style.opacity = '0';
+        }
       }
     }
 
@@ -714,12 +536,11 @@ document.addEventListener('DOMContentLoaded', () => {
     function setFocus(rawIndex, animate = true) {
       const n = cfg.count;
       if (!n) return;
-      const idx = cfg.loop ? ((rawIndex % n) + n) % n : clamp(rawIndex, 0, n - 1);
+      const idx = ((rawIndex % n) + n) % n;
       let delta = idx - pos;
-      if (cfg.loop && n > 1) {
-        delta = ((delta % n) + n) % n;
-        if (delta > n / 2) delta -= n;
-      }
+      delta = ((delta % n) + n) % n;
+      if (delta > n / 2) delta -= n;
+
       tweenTo(pos + delta, animate);
       if (idx !== focusIndex) {
         focusIndex = idx;
@@ -735,18 +556,17 @@ document.addEventListener('DOMContentLoaded', () => {
     function updateScale() {
       const w = depthCarouselEl.clientWidth;
       const isMobile = window.innerWidth <= 768;
-      
+
       if (isMobile) {
-        cfg.spread = 44;
-        cfg.depth = 135;
-        cfg.tilt = 14;
-        scale = clamp((w - 28) / (320 * 1.1), 0.82, 0.95);
+        cfg.cardWidth = 265;
+        cfg.cardHeight = 385;
+        cfg.cardSpacing = Math.min(w * 0.65, 230);
+        scale = clamp((w - 24) / 290, 0.88, 1);
       } else {
-        cfg.spread = 120;
-        cfg.depth = 210;
-        cfg.tilt = 18;
-        const needed = cfg.cardWidth + Math.abs(cfg.spread) * 2 + 60;
-        scale = clamp(w / needed, 0.78, 1);
+        cfg.cardWidth = 460;
+        cfg.cardHeight = 285;
+        cfg.cardSpacing = clamp(w * 0.33, 310, 390);
+        scale = clamp(w / 1150, 0.85, 0.96);
       }
       layout(pos);
     }
@@ -754,7 +574,15 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('resize', updateScale);
     updateScale();
 
-    // Gestos de Arraste (Pointer / Touch Drag com Inércia)
+    // Reajusta instantaneamente a iluminação ao alternar tema Claro/Escuro
+    const themeToggleBtn = document.getElementById('themeToggleBtn');
+    if (themeToggleBtn) {
+      themeToggleBtn.addEventListener('click', () => {
+        setTimeout(() => layout(pos), 40);
+      });
+    }
+
+    // Gestos de Arraste (Pointer / Touch Drag com Inércia Suave)
     depthCarouselEl.addEventListener('pointerdown', (e) => {
       if (cfg.count < 2) return;
       if (currentTween) currentTween.kill();
@@ -771,7 +599,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     window.addEventListener('pointermove', (e) => {
       if (!dragData) return;
-      const stepPx = Math.max(cfg.cardWidth * 0.55 * scale, 40);
+      const stepPx = Math.max(cfg.cardWidth * 0.45 * scale, 45);
       const dx = e.clientX - dragData.x;
       if (!dragData.moved && Math.abs(dx) > 4) {
         dragData.moved = true;
@@ -790,8 +618,8 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('pointerup', () => {
       if (!dragData) return;
       if (dragData.moved) {
-        const stepPx = Math.max(cfg.cardWidth * 0.55 * scale, 40);
-        const projected = pos - (dragData.v * 180) / stepPx;
+        const stepPx = Math.max(cfg.cardWidth * 0.45 * scale, 45);
+        const projected = pos - (dragData.v * 160) / stepPx;
         setFocus(Math.round(projected), true);
       }
       dragData = null;
@@ -831,7 +659,7 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }
 
-    // Clique direto no Card para centralizar
+    // Clique direto no Card para centralizá-lo na frente
     depthCards.forEach((card, idx) => {
       card.addEventListener('click', () => {
         if (dragData && dragData.moved) return;
@@ -866,8 +694,16 @@ document.addEventListener('DOMContentLoaded', () => {
       }
       card.style.setProperty('--gradient-base', `linear-gradient(${colors[0]} 0 100%)`);
 
-      // Configuração de luz HSL
-      const base = '275deg 90% 75%';
+      // Configuração de luz HSL personalizada por tecnologia
+      const hslMap = {
+        '#c084fc': '275deg 90% 75%',
+        '#f97316': '25deg 95% 60%',
+        '#38bdf8': '199deg 95% 65%',
+        '#facc15': '48deg 95% 55%',
+        '#3b82f6': '217deg 90% 60%',
+        '#f43f5e': '345deg 90% 65%'
+      };
+      const base = hslMap[colors[0]] || '275deg 90% 75%';
       const opacities = [100, 60, 50, 40, 30, 20, 10];
       const glowKeys = ['', '-60', '-50', '-40', '-30', '-20', '-10'];
       for (let i = 0; i < opacities.length; i++) {
@@ -901,16 +737,25 @@ document.addEventListener('DOMContentLoaded', () => {
         return degrees;
       }
 
+      let glowRafPending = false;
       card.addEventListener('pointermove', (e) => {
-        const rect = card.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
+        if (glowRafPending) return;
+        glowRafPending = true;
+        const clientX = e.clientX;
+        const clientY = e.clientY;
 
-        const edge = getEdgeProximity(card, x, y);
-        const angle = getCursorAngle(card, x, y);
+        requestAnimationFrame(() => {
+          glowRafPending = false;
+          const rect = card.getBoundingClientRect();
+          const x = clientX - rect.left;
+          const y = clientY - rect.top;
 
-        card.style.setProperty('--edge-proximity', `${(edge * 100).toFixed(2)}`);
-        card.style.setProperty('--cursor-angle', `${angle.toFixed(2)}deg`);
+          const edge = getEdgeProximity(card, x, y);
+          const angle = getCursorAngle(card, x, y);
+
+          card.style.setProperty('--edge-proximity', `${(edge * 100).toFixed(2)}`);
+          card.style.setProperty('--cursor-angle', `${angle.toFixed(2)}deg`);
+        });
       });
 
       card.addEventListener('pointerleave', () => {

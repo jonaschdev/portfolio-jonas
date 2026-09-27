@@ -1,24 +1,23 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import { motion, useMotionValue, useSpring } from 'motion/react';
-import GlareHover from './GlareHover';
 import './TiltedCard.css';
 
 const springValues = {
-  damping: 30,
-  stiffness: 100,
-  mass: 2
+  damping: 22,
+  stiffness: 260,
+  mass: 0.6
 };
 
 export default function TiltedCard({
   imageSrc,
   altText = 'Tilted card image',
   captionText = '',
-  containerHeight = '300px',
+  containerHeight = '270px',
   containerWidth = '100%',
-  imageHeight = '300px',
-  imageWidth = '300px',
-  scaleOnHover = 1.1,
-  rotateAmplitude = 14,
+  imageHeight = '250px',
+  imageWidth = '230px',
+  scaleOnHover = 1.05,
+  rotateAmplitude = 12,
   showMobileWarning = false,
   showTooltip = true,
   overlayContent = null,
@@ -31,14 +30,7 @@ export default function TiltedCard({
   const rotateX = useSpring(useMotionValue(0), springValues);
   const rotateY = useSpring(useMotionValue(0), springValues);
   const scale = useSpring(1, springValues);
-  const opacity = useSpring(0);
-  const rotateFigcaption = useSpring(0, {
-    stiffness: 350,
-    damping: 30,
-    mass: 1
-  });
-
-  const [lastY, setLastY] = useState(0);
+  const opacity = useSpring(0, { damping: 20, stiffness: 220 });
 
   function handleMouse(e) {
     if (!ref.current) return;
@@ -55,10 +47,6 @@ export default function TiltedCard({
 
     x.set(e.clientX - rect.left);
     y.set(e.clientY - rect.top);
-
-    const velocityY = offsetY - lastY;
-    rotateFigcaption.set(-velocityY * 0.6);
-    setLastY(offsetY);
   }
 
   function handleMouseEnter() {
@@ -71,7 +59,6 @@ export default function TiltedCard({
     scale.set(1);
     rotateX.set(0);
     rotateY.set(0);
-    rotateFigcaption.set(0);
   }
 
   return (
@@ -86,10 +73,6 @@ export default function TiltedCard({
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
-      {showMobileWarning && (
-        <div className="tilted-card-mobile-alert">This effect is not optimized for mobile. Check on desktop.</div>
-      )}
-
       <motion.div
         className="tilted-card-inner"
         style={{
@@ -100,43 +83,24 @@ export default function TiltedCard({
           scale
         }}
       >
-        <GlareHover
-          width={imageWidth}
-          height={imageHeight}
-          borderRadius="20px"
-          background="transparent"
-          borderColor="transparent"
-          glareColor="#ffffff"
-          glareOpacity={0.4}
-          glareAngle={-35}
-          glareSize={250}
-          transitionDuration={650}
-          className="tilted-card-glare"
-        >
-          <motion.img
-            src={imageSrc}
-            alt={altText}
-            className="tilted-card-img"
-            style={{
-              width: imageWidth,
-              height: imageHeight
-            }}
-          />
-        </GlareHover>
+        <img
+          src={imageSrc}
+          alt={altText}
+          className="tilted-card-img"
+        />
 
         {displayOverlayContent && overlayContent && (
-          <motion.div className="tilted-card-overlay">{overlayContent}</motion.div>
+          <div className="tilted-card-overlay">{overlayContent}</div>
         )}
       </motion.div>
 
-      {showTooltip && (
+      {showTooltip && captionText && (
         <motion.figcaption
           className="tilted-card-caption"
           style={{
             x,
             y,
-            opacity,
-            rotate: rotateFigcaption
+            opacity
           }}
         >
           {captionText}
@@ -145,3 +109,4 @@ export default function TiltedCard({
     </figure>
   );
 }
+
