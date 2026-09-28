@@ -1,4 +1,4 @@
-import React, { Children, cloneElement, forwardRef, isValidElement, useEffect, useMemo, useRef } from 'react';
+import React, { Children, cloneElement, forwardRef, isValidElement, useEffect, useMemo, useRef, useState, useCallback } from 'react';
 import gsap from 'gsap';
 import './CardSwap.css';
 
@@ -10,21 +10,37 @@ export const Card = forwardRef(({ customClass = '', children, ...rest }, ref) =>
 
 Card.displayName = 'Card';
 
-const makeSlot = (i, cardDistance, verticalDistance, total) => ({
-  x: i * cardDistance,
-  y: -i * verticalDistance,
-  z: -i * cardDistance * 1.5,
-  zIndex: total - i
-});
+const makeSlot = (i, cardDistance, verticalDistance, total, isMobile) => {
+  if (isMobile) {
+    return {
+      x: i * (cardDistance * 0.4),
+      y: -i * (verticalDistance * 0.4),
+      z: -i * 20,
+      zIndex: total - i,
+      scale: 1 - i * 0.04,
+      opacity: i === 0 ? 1 : Math.max(0.65, 1 - i * 0.18)
+    };
+  }
+  return {
+    x: i * cardDistance,
+    y: -i * verticalDistance,
+    z: -i * cardDistance * 1.2,
+    zIndex: total - i,
+    scale: 1,
+    opacity: 1
+  };
+};
 
-const placeNow = (el, slot, skew) =>
+const placeNow = (el, slot, skew, isMobile) =>
   gsap.set(el, {
     x: slot.x,
     y: slot.y,
     z: slot.z,
     xPercent: -50,
     yPercent: -50,
-    skewY: skew,
+    skewY: isMobile ? 0 : skew,
+    scale: slot.scale ?? 1,
+    opacity: slot.opacity ?? 1,
     transformOrigin: 'center center',
     zIndex: slot.zIndex,
     force3D: true
@@ -33,34 +49,27 @@ const placeNow = (el, slot, skew) =>
 const CardSwap = ({
   width = 500,
   height = 400,
-  cardDistance = 60,
-  verticalDistance = 75,
+  cardDistance = 58,
+  verticalDistance = 68,
   delay = 5000,
   autoSwap = false,
   pauseOnHover = false,
   onCardClick,
-  skewAmount = 6,
-  easing = 'elastic',
+  skewAmount = 4,
+  easing = 'smooth',
   children
 }) => {
-  const config =
-    easing === 'elastic'
-      ? {
-          ease: 'elastic.out(0.6,0.9)',
-          durDrop: 2,
-          durMove: 2,
-          durReturn: 2,
-          promoteOverlap: 0.9,
-          returnDelay: 0.05
-        }
-      : {
-          ease: 'power1.inOut',
-          durDrop: 0.8,
-          durMove: 0.8,
-          durReturn: 0.8,
-          promoteOverlap: 0.45,
-          returnDelay: 0.2
-        };
+  const [isMobile, setIsMobile] = useState(() => typeof window !== 'undefined' && window.innerWidth < 768);
+  const [activeIdx, setActiveIdx] = useState(0);
+
+  useEffect(() => {
+    const handleResize = () => {
+      const mobile = window.innerWidth < 768;
+      setIsMobile(prev => (prev !== mobile ? mobile : prev));
+    };
+    window.addEventListener('resize', handleResize, { passive: true });
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const childArr = useMemo(() => Children.toArray(children), [children]);
   const refs = useMemo(
@@ -70,13 +79,29 @@ const CardSwap = ({
   );
 
   const order = useRef(Array.from({ length: childArr.length }, (_, i) => i));
-
   const tlRef = useRef(null);
   const intervalRef = useRef();
   const container = useRef(null);
+  const touchStartRef = useRef({ x: 0, y: 0, time: 0 });
 
-  // Função para avançar o card do topo ou trazer o card clicado para frente
-  const swap = (targetIndex = null) => {
+  // Pausa/Play inteligente de vídeos para economizar 100% de CPU/GPU em cards secundários
+  const syncVideos = useCallback((frontIndex) => {
+    refs.forEach((ref, idx) => {
+      const el = ref.current;
+      if (!el) return;
+      const videos = el.querySelectorAll('video');
+      videos.forEach(video => {
+        if (idx === frontIndex) {
+          video.play().catch(() => {});
+        } else {
+          video.pause();
+        }
+      });
+    });
+  }, [refs]);
+
+  // Transição rápida, fluida e otimizada para GPU (zero travamentos)
+  const swap = useCallback((targetIndex = null) => {
     if (order.current.length < 2) return;
     if (tlRef.current && tlRef.current.isActive()) return;
 
@@ -85,17 +110,14 @@ const CardSwap = ({
 
     if (targetIndex !== null) {
       const currentPos = order.current.indexOf(targetIndex);
-      // Se clicou no card que JÁ está na frente, não faz nada!
-      if (currentPos === 0) {
-        return;
-      }
+      if (currentPos === 0) return;
 
-      // Traz o card clicado para a frente
       front = order.current[currentPos];
       rest = order.current.filter((_, idx) => idx !== currentPos);
       order.current = [front, ...rest];
-      
-      // Re-posiciona suavemente os cards nos seus novos slots
+      setActiveIdx(front);
+      syncVideos(front);
+
       const total = refs.length;
       const tl = gsap.timeline();
       tlRef.current = tl;
@@ -103,16 +125,19 @@ const CardSwap = ({
       order.current.forEach((idx, slotIdx) => {
         const el = refs[idx].current;
         if (!el) return;
-        const slot = makeSlot(slotIdx, cardDistance, verticalDistance, total);
+        const slot = makeSlot(slotIdx, cardDistance, verticalDistance, total, isMobile);
         tl.to(
           el,
           {
             x: slot.x,
             y: slot.y,
             z: slot.z,
+            scale: slot.scale,
+            opacity: slot.opacity,
             zIndex: slot.zIndex,
-            duration: config.durMove * 0.7,
-            ease: config.ease
+            duration: 0.42,
+            ease: 'power2.out',
+            force3D: true
           },
           0
         );
@@ -125,20 +150,31 @@ const CardSwap = ({
     const elFront = refs[front].current;
     if (!elFront) return;
 
+    const newFront = rest[0];
+    setActiveIdx(newFront);
+    syncVideos(newFront);
+
     const tl = gsap.timeline();
     tlRef.current = tl;
 
+    const dropDistance = isMobile ? 220 : 360;
+
+    // Desce o card da frente
     tl.to(elFront, {
-      y: '+=480',
-      duration: config.durDrop,
-      ease: config.ease
+      y: `+=${dropDistance}`,
+      opacity: 0.2,
+      duration: 0.38,
+      ease: 'power2.inOut',
+      force3D: true
     });
 
-    tl.addLabel('promote', `-=${config.durDrop * config.promoteOverlap}`);
+    tl.addLabel('promote', '-=0.28');
+
+    // Promove os cards de trás para a frente com aceleração nativa
     rest.forEach((idx, i) => {
       const el = refs[idx].current;
       if (!el) return;
-      const slot = makeSlot(i, cardDistance, verticalDistance, refs.length);
+      const slot = makeSlot(i, cardDistance, verticalDistance, refs.length, isMobile);
       tl.set(el, { zIndex: slot.zIndex }, 'promote');
       tl.to(
         el,
@@ -146,15 +182,19 @@ const CardSwap = ({
           x: slot.x,
           y: slot.y,
           z: slot.z,
-          duration: config.durMove,
-          ease: config.ease
+          scale: slot.scale,
+          opacity: slot.opacity,
+          duration: 0.42,
+          ease: 'power2.out',
+          force3D: true
         },
-        `promote+=${i * 0.15}`
+        `promote+=${i * 0.04}`
       );
     });
 
-    const backSlot = makeSlot(refs.length - 1, cardDistance, verticalDistance, refs.length);
-    tl.addLabel('return', `promote+=${config.durMove * config.returnDelay}`);
+    const backSlot = makeSlot(refs.length - 1, cardDistance, verticalDistance, refs.length, isMobile);
+    tl.addLabel('return', 'promote+=0.15');
+
     tl.call(
       () => {
         if (elFront) {
@@ -164,14 +204,18 @@ const CardSwap = ({
       undefined,
       'return'
     );
+
     tl.to(
       elFront,
       {
         x: backSlot.x,
         y: backSlot.y,
         z: backSlot.z,
-        duration: config.durReturn,
-        ease: config.ease
+        scale: backSlot.scale,
+        opacity: backSlot.opacity,
+        duration: 0.38,
+        ease: 'power2.out',
+        force3D: true
       },
       'return'
     );
@@ -179,15 +223,19 @@ const CardSwap = ({
     tl.call(() => {
       order.current = [...rest, front];
     });
-  };
+  }, [cardDistance, verticalDistance, isMobile, refs, syncVideos]);
 
+  // Inicialização e posicionamento
   useEffect(() => {
     const total = refs.length;
     refs.forEach((r, i) => {
       if (r.current) {
-        placeNow(r.current, makeSlot(i, cardDistance, verticalDistance, total), skewAmount);
+        const slot = makeSlot(i, cardDistance, verticalDistance, total, isMobile);
+        placeNow(r.current, slot, skewAmount, isMobile);
       }
     });
+
+    syncVideos(order.current[0]);
 
     if (autoSwap && delay > 0) {
       intervalRef.current = window.setInterval(swap, delay);
@@ -215,12 +263,33 @@ const CardSwap = ({
       return () => clearInterval(intervalRef.current);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [cardDistance, verticalDistance, delay, autoSwap, pauseOnHover, skewAmount, easing]);
+  }, [cardDistance, verticalDistance, delay, autoSwap, pauseOnHover, skewAmount, isMobile]);
 
   const handleCardClick = (i, e) => {
     onCardClick?.(i);
-    // Permite avançar ou trazer o card para a frente manualmente ao clicar
     swap(i);
+  };
+
+  // Suporte a gestos Swipe Touch rápidos e nativos no Mobile
+  const handleTouchStart = (e) => {
+    const touch = e.touches[0];
+    touchStartRef.current = {
+      x: touch.clientX,
+      y: touch.clientY,
+      time: Date.now()
+    };
+  };
+
+  const handleTouchEnd = (e) => {
+    const touch = e.changedTouches[0];
+    const diffX = touch.clientX - touchStartRef.current.x;
+    const diffY = touch.clientY - touchStartRef.current.y;
+    const timeElapsed = Date.now() - touchStartRef.current.time;
+
+    // Se foi um gesto horizontal de swipe rápido
+    if (Math.abs(diffX) > 40 && Math.abs(diffX) > Math.abs(diffY) * 1.4 && timeElapsed < 400) {
+      swap();
+    }
   };
 
   const rendered = childArr.map((child, i) =>
@@ -238,10 +307,35 @@ const CardSwap = ({
   );
 
   return (
-    <div ref={container} className="card-swap-container" style={{ width, height }}>
-      {rendered}
+    <div className="card-swap-outer-wrapper">
+      <div className="card-swap-deck-box">
+        <div
+          ref={container}
+          className="card-swap-container"
+          style={{ width, height }}
+          onTouchStart={handleTouchStart}
+          onTouchEnd={handleTouchEnd}
+        >
+          {rendered}
+        </div>
+      </div>
+
+      {/* Indicadores Minimalistas Interativos no Mobile para troca instantânea */}
+      <div className="card-swap-indicators" role="tablist" aria-label="Navegação dos projetos">
+        {childArr.map((_, idx) => (
+          <button
+            key={idx}
+            type="button"
+            className={`card-indicator-dot ${activeIdx === idx ? 'is-active' : ''}`}
+            onClick={() => swap(idx)}
+            aria-label={`Ver projeto ${idx + 1}`}
+            aria-selected={activeIdx === idx}
+          />
+        ))}
+      </div>
     </div>
   );
 };
 
 export default CardSwap;
+

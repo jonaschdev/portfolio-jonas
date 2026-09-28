@@ -4,11 +4,17 @@ import GhostFibers from './GhostFibers';
 
 export default function ProjectsPixelCard() {
   const [isLight, setIsLight] = useState(false);
+  const [isMobile, setIsMobile] = useState(() => typeof window !== 'undefined' && window.innerWidth < 768);
 
   useEffect(() => {
     const checkTheme = () => {
       const theme = document.documentElement.getAttribute('data-theme');
       setIsLight(theme === 'light');
+    };
+
+    const handleResize = () => {
+      const mobile = window.innerWidth < 768;
+      setIsMobile(prev => (prev !== mobile ? mobile : prev));
     };
 
     checkTheme();
@@ -19,21 +25,26 @@ export default function ProjectsPixelCard() {
       attributeFilter: ['data-theme']
     });
 
-    return () => observer.disconnect();
+    window.addEventListener('resize', handleResize, { passive: true });
+
+    return () => {
+      observer.disconnect();
+      window.removeEventListener('resize', handleResize);
+    };
   }, []);
 
   return (
     <div className="projects-section-container">
-      {/* GhostFibers Fundo Interativo WebGL com suavização de opacidade na entrada e saída */}
+      {/* GhostFibers Fundo Interativo WebGL com suavização e otimização por dispositivo */}
       <div className="projects-ghost-fibers-wrapper" aria-hidden="true">
         <GhostFibers
           lineColor={isLight ? '#0284c7' : '#0ea5e9'}
           glowColor={isLight ? '#0369a1' : '#0284c7'}
-          speed={0.15}
-          scale={2.2}
+          speed={isMobile ? 0.1 : 0.15}
+          scale={isMobile ? 1.8 : 2.2}
           rotation={0}
           rotationSpeed={0.2}
-          layers={4}
+          layers={isMobile ? 2 : 4}
           waveAmplitude={0.015}
           waveFrequency={3}
           waveSpeed={0.15}
@@ -49,9 +60,10 @@ export default function ProjectsPixelCard() {
           brightness={isLight ? 1.4 : 2}
           blueBoost={1.2}
           vignette={0.7}
-          grain={0.04}
+          grain={isMobile ? 0.02 : 0.04}
           lightMode={isLight}
-          dpr={1}
+          dpr={isMobile ? 0.75 : 1}
+          fps={isMobile ? 30 : 60}
         />
         <div className="ghost-fibers-top-fade" />
         <div className="ghost-fibers-bottom-fade" />
@@ -88,12 +100,12 @@ export default function ProjectsPixelCard() {
         <CardSwap
           width={780}
           height={530}
-          cardDistance={58}
-          verticalDistance={68}
+          cardDistance={isMobile ? 24 : 58}
+          verticalDistance={isMobile ? 28 : 68}
           autoSwap={false}
           pauseOnHover={false}
-          skewAmount={4}
-          easing="elastic"
+          skewAmount={isMobile ? 0 : 4}
+          easing="smooth"
         >
           {/* CARD 1 (FRENTE): PORTFÓLIO PESSOAL COM VÍDEO DO PROJETO */}
           <Card customClass="showcase-card showcase-card-1">

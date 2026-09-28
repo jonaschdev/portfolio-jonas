@@ -1083,9 +1083,9 @@ section,
   height: calc(100% + 20px);
   z-index: 0;
   pointer-events: none;
-  opacity: 0.85;
-  mask-image: linear-gradient(to bottom, black 0%, black 55%, rgba(0, 0, 0, 0.4) 78%, transparent 100%);
-  -webkit-mask-image: linear-gradient(to bottom, black 0%, black 55%, rgba(0, 0, 0, 0.4) 78%, transparent 100%);
+  opacity: 1;
+  mask-image: linear-gradient(to bottom, black 0%, black 65%, rgba(0, 0, 0, 0.4) 85%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, black 0%, black 65%, rgba(0, 0, 0, 0.4) 85%, transparent 100%);
 }
 
 .hero-section::after {
@@ -2896,8 +2896,8 @@ section,
 #projetos {
   min-height: 0 !important;
   height: auto !important;
-  padding: 60px 0 30px 0;
-  margin-bottom: 90px !important;
+  padding: 40px 0 20px 0;
+  margin-bottom: 0 !important;
   position: relative;
   overflow-x: clip;
   overflow-y: visible;
@@ -3025,9 +3025,9 @@ section,
   overflow: visible;
   min-height: 0 !important;
   height: auto !important;
-  margin-top: 30px !important;
+  margin-top: 0 !important;
   margin-bottom: 0 !important;
-  padding-top: 60px !important;
+  padding-top: 40px !important;
   padding-bottom: 28px !important;
 }
 
@@ -4653,7 +4653,9 @@ section,
   /* 2. SEÇÃO DE PROJETOS COMPACTA NO MOBILE */
   #projetos.section-wrapper,
   #projetos {
-    padding: 36px 0 30px 0;
+    padding: 24px 0 16px 0;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
     min-height: auto;
     display: block;
   }
@@ -4694,7 +4696,9 @@ section,
   #contato.section-wrapper,
   #contato,
   .contact-section {
-    padding: 36px 0 54px 0 !important;
+    padding: 24px 0 54px 0 !important;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
     min-height: auto;
     overflow-x: clip;
     width: 100%;

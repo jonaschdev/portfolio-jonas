@@ -189,7 +189,12 @@ export default function SoftAurora({
   useEffect(() => {
     if (!containerRef.current) return;
     const container = containerRef.current;
-    const renderer = new Renderer({ alpha: true, premultipliedAlpha: false });
+    const isMobile = window.innerWidth < 768;
+    const renderer = new Renderer({
+      alpha: true,
+      premultipliedAlpha: false,
+      dpr: isMobile ? 0.75 : Math.min(window.devicePixelRatio || 1, 1.25)
+    });
     const gl = renderer.gl;
     gl.clearColor(0, 0, 0, 0);
 
@@ -242,7 +247,7 @@ export default function SoftAurora({
         uColorSpeed: { value: colorSpeed },
         uMouse: { value: new Float32Array([0.5, 0.5]) },
         uMouseInfluence: { value: mouseInfluence },
-        uEnableMouse: { value: enableMouseInteraction },
+        uEnableMouse: { value: enableMouseInteraction && !isMobile },
         uLightMode: { value: lightMode ? 1 : 0 }
       }
     });
@@ -250,36 +255,56 @@ export default function SoftAurora({
     const mesh = new Mesh(gl, { geometry, program });
     container.appendChild(gl.canvas);
 
-    if (enableMouseInteraction) {
+    if (enableMouseInteraction && !isMobile) {
       gl.canvas.addEventListener('mousemove', handleMouseMove, { passive: true });
       gl.canvas.addEventListener('mouseleave', handleMouseLeave, { passive: true });
     }
 
     let animationFrameId = 0;
-    let isVisible = true;
+    let isVisible = false;
+    let isPageVisible = !document.hidden;
+
+    const start = () => {
+      if (!animationFrameId && isVisible && isPageVisible) {
+        animationFrameId = requestAnimationFrame(update);
+      }
+    };
+
+    const stop = () => {
+      if (animationFrameId) {
+        cancelAnimationFrame(animationFrameId);
+        animationFrameId = 0;
+      }
+    };
 
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           isVisible = entry.isIntersecting;
-          if (isVisible && !animationFrameId) {
-            animationFrameId = requestAnimationFrame(update);
-          }
+          if (isVisible) start();
+          else stop();
         });
       },
-      { threshold: 0.05 }
+      { threshold: 0.02 }
     );
     observer.observe(container);
 
+    const handleVisibility = () => {
+      isPageVisible = !document.hidden;
+      if (isPageVisible) start();
+      else stop();
+    };
+    document.addEventListener('visibilitychange', handleVisibility);
+
     function update(time) {
-      if (!isVisible || document.hidden) {
+      if (!isVisible || !isPageVisible) {
         animationFrameId = 0;
         return;
       }
       animationFrameId = requestAnimationFrame(update);
       program.uniforms.uTime.value = time * 0.001;
 
-      if (enableMouseInteraction) {
+      if (enableMouseInteraction && !isMobile) {
         currentMouse[0] += 0.05 * (targetMouse[0] - currentMouse[0]);
         currentMouse[1] += 0.05 * (targetMouse[1] - currentMouse[1]);
         program.uniforms.uMouse.value[0] = currentMouse[0];
@@ -291,15 +316,13 @@ export default function SoftAurora({
 
       renderer.render({ scene: mesh });
     }
-    animationFrameId = requestAnimationFrame(update);
 
     return () => {
+      stop();
       observer.disconnect();
-      if (animationFrameId) {
-        cancelAnimationFrame(animationFrameId);
-      }
+      document.removeEventListener('visibilitychange', handleVisibility);
       window.removeEventListener('resize', resize);
-      if (enableMouseInteraction) {
+      if (enableMouseInteraction && !isMobile) {
         gl.canvas.removeEventListener('mousemove', handleMouseMove);
         gl.canvas.removeEventListener('mouseleave', handleMouseLeave);
       }

@@ -66,35 +66,12 @@ float snoise(vec2 v){
   return 130.0 * dot(m, g);
 }
 
-struct ColorStop {
-  vec3 color;
-  float position;
-};
-
-#define COLOR_RAMP(colors, factor, finalColor) {              \
-  int index = 0;                                            \
-  for (int i = 0; i < 2; i++) {                               \
-     ColorStop currentColor = colors[i];                    \
-     bool isInBetween = currentColor.position <= factor;    \
-     index = int(mix(float(index), float(i), float(isInBetween))); \
-  }                                                         \
-  ColorStop currentColor = colors[index];                   \
-  ColorStop nextColor = colors[index + 1];                  \
-  float range = nextColor.position - currentColor.position; \
-  float lerpFactor = (factor - currentColor.position) / range; \
-  finalColor = mix(currentColor.color, nextColor.color, lerpFactor); \
-}
-
 void main() {
-  vec2 uv = gl_FragCoord.xy / uResolution;
+  vec2 uv = gl_FragCoord.xy / max(uResolution, vec2(1.0));
   
-  ColorStop colors[3];
-  colors[0] = ColorStop(uColorStops[0], 0.0);
-  colors[1] = ColorStop(uColorStops[1], 0.5);
-  colors[2] = ColorStop(uColorStops[2], 1.0);
-  
-  vec3 rampColor;
-  COLOR_RAMP(colors, uv.x, rampColor);
+  vec3 rampColor = (uv.x <= 0.5)
+    ? mix(uColorStops[0], uColorStops[1], uv.x * 2.0)
+    : mix(uColorStops[1], uColorStops[2], (uv.x - 0.5) * 2.0);
   
   float height = snoise(vec2(uv.x * 2.0 + uTime * 0.1, uTime * 0.25)) * 0.5 * uAmplitude;
   height = exp(height);
@@ -107,7 +84,6 @@ void main() {
   vec3 auroraColor = intensity * rampColor;
   
   if (uLightMode > 0.5) {
-    // No modo claro, mantém transparência perfeita e cores vivas de azul/ciano sobre o fundo branco
     vec3 lightAurora = mix(vec3(0.01, 0.52, 0.78), rampColor, 0.75);
     float lightAlpha = clamp(auroraAlpha * 0.45 * intensity, 0.0, 0.55);
     fragColor = vec4(lightAurora * lightAlpha, lightAlpha);
@@ -118,7 +94,7 @@ void main() {
 `;
 
 export default function Aurora(props) {
-  const { colorStops = ['#5227FF', '#7cff67', '#5227FF'], amplitude = 1.0, blend = 0.5, lightMode = false } = props;
+  const { colorStops = ['#0284c7', '#38bdf8', '#6366f1'], amplitude = 1.0, blend = 0.6, speed = 0.5, lightMode = false } = props;
   const propsRef = useRef(props);
   propsRef.current = props;
 
@@ -128,29 +104,40 @@ export default function Aurora(props) {
     const ctn = ctnDom.current;
     if (!ctn) return;
 
-    const renderer = new Renderer({
-      alpha: true,
-      premultipliedAlpha: true,
-      antialias: true
-    });
+    const isMobile = window.innerWidth < 768;
+    let renderer;
+    try {
+      renderer = new Renderer({
+        webgl: 2,
+        alpha: true,
+        premultipliedAlpha: true,
+        antialias: false,
+        dpr: isMobile ? 0.75 : Math.min(window.devicePixelRatio || 1, 1.25)
+      });
+    } catch {
+      renderer = new Renderer({
+        alpha: true,
+        premultipliedAlpha: true,
+        antialias: false,
+        dpr: 1
+      });
+    }
+
     const gl = renderer.gl;
+    const canvas = gl.canvas;
     gl.clearColor(0, 0, 0, 0);
     gl.enable(gl.BLEND);
     gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
-    gl.canvas.style.backgroundColor = 'transparent';
 
-    let program;
-
-    function resize() {
-      if (!ctn) return;
-      const width = ctn.offsetWidth;
-      const height = ctn.offsetHeight;
-      renderer.setSize(width, height);
-      if (program) {
-        program.uniforms.uResolution.value = [width, height];
-      }
-    }
-    window.addEventListener('resize', resize);
+    canvas.style.width = '100%';
+    canvas.style.height = '100%';
+    canvas.style.position = 'absolute';
+    canvas.style.top = '0';
+    canvas.style.left = '0';
+    canvas.style.display = 'block';
+    canvas.style.pointerEvents = 'none';
+    canvas.style.backgroundColor = 'transparent';
+    ctn.appendChild(canvas);
 
     const geometry = new Triangle(gl);
     if (geometry.attributes.uv) {
@@ -162,49 +149,59 @@ export default function Aurora(props) {
       return [c.r, c.g, c.b];
     });
 
-    program = new Program(gl, {
+    const initialW = Math.max(1, ctn.offsetWidth || window.innerWidth || 1000);
+    const initialH = Math.max(1, ctn.offsetHeight || window.innerHeight || 600);
+    renderer.setSize(initialW, initialH);
+
+    const program = new Program(gl, {
       vertex: VERT,
       fragment: FRAG,
       uniforms: {
         uTime: { value: 0 },
         uAmplitude: { value: amplitude },
         uColorStops: { value: colorStopsArray },
-        uResolution: { value: [ctn.offsetWidth, ctn.offsetHeight] },
+        uResolution: { value: [gl.drawingBufferWidth || initialW, gl.drawingBufferHeight || initialH] },
         uBlend: { value: blend },
         uLightMode: { value: lightMode ? 1 : 0 }
       }
     });
 
     const mesh = new Mesh(gl, { geometry, program });
-    ctn.appendChild(gl.canvas);
 
     let animateId = 0;
     let isVisible = true;
+    let isPageVisible = !document.hidden;
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          isVisible = entry.isIntersecting;
-          if (isVisible && !animateId) {
-            animateId = requestAnimationFrame(update);
-          }
-        });
-      },
-      { threshold: 0.05 }
-    );
-    observer.observe(ctn);
+    const renderNow = () => {
+      renderer.render({ scene: mesh });
+    };
+
+    const resize = () => {
+      if (!ctn) return;
+      const w = Math.max(1, ctn.offsetWidth || window.innerWidth);
+      const h = Math.max(1, ctn.offsetHeight || window.innerHeight);
+      renderer.setSize(w, h);
+      if (program) {
+        program.uniforms.uResolution.value = [gl.drawingBufferWidth || w, gl.drawingBufferHeight || h];
+      }
+      renderNow();
+    };
+
+    const resizeObserver = new ResizeObserver(resize);
+    resizeObserver.observe(ctn);
+    window.addEventListener('resize', resize);
 
     let cachedStops = null;
     let cachedColorArray = colorStopsArray;
 
     const update = (t) => {
-      if (!isVisible || document.hidden) {
+      if (!isVisible || !isPageVisible) {
         animateId = 0;
         return;
       }
       animateId = requestAnimationFrame(update);
-      const { time = t * 0.01, speed = 1.0, amplitude: curAmp, blend: curBlend, lightMode: curLight, colorStops: curStops } = propsRef.current;
-      program.uniforms.uTime.value = time * speed * 0.1;
+      const { time = t * 0.01, speed: curSpeed = 0.5, amplitude: curAmp, blend: curBlend, lightMode: curLight, colorStops: curStops } = propsRef.current;
+      program.uniforms.uTime.value = time * curSpeed * 0.1;
       program.uniforms.uAmplitude.value = curAmp ?? amplitude;
       program.uniforms.uBlend.value = curBlend ?? blend;
       program.uniforms.uLightMode.value = (curLight ?? lightMode) ? 1 : 0;
@@ -217,20 +214,59 @@ export default function Aurora(props) {
         });
         program.uniforms.uColorStops.value = cachedColorArray;
       }
-      renderer.render({ scene: mesh });
+      renderNow();
     };
-    animateId = requestAnimationFrame(update);
 
-    resize();
+    const startAnimation = () => {
+      if (!animateId && isVisible && isPageVisible) {
+        animateId = requestAnimationFrame(update);
+      }
+    };
 
-    return () => {
-      observer.disconnect();
+    const stopAnimation = () => {
       if (animateId) {
         cancelAnimationFrame(animateId);
+        animateId = 0;
       }
+    };
+
+    const handleVisibilityChange = () => {
+      isPageVisible = !document.hidden;
+      if (isPageVisible) {
+        startAnimation();
+      } else {
+        stopAnimation();
+      }
+    };
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+
+    const intersectionObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          isVisible = entry.isIntersecting;
+          if (isVisible) {
+            startAnimation();
+          } else {
+            stopAnimation();
+          }
+        });
+      },
+      { threshold: 0 }
+    );
+    intersectionObserver.observe(ctn);
+
+    // Render inicial e início do loop
+    resize();
+    startAnimation();
+
+    return () => {
+      stopAnimation();
+      resizeObserver.disconnect();
+      intersectionObserver.disconnect();
       window.removeEventListener('resize', resize);
-      if (ctn && gl.canvas.parentNode === ctn) {
-        ctn.removeChild(gl.canvas);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      if (ctn && canvas.parentNode === ctn) {
+        ctn.removeChild(canvas);
       }
       gl.getExtension('WEBGL_lose_context')?.loseContext();
     };

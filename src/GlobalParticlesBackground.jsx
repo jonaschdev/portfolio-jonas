@@ -32,13 +32,15 @@ export default function GlobalParticlesBackground() {
 
   // Partículas leves com aceleração nativa por hardware GPU (zero travamentos)
   const particles = useMemo(() => {
-    return Array.from({ length: 28 }, (_, i) => {
-      const size = Math.floor(Math.random() * 5) + 3; // 3px a 7px
+    const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+    const count = isMobile ? 12 : 24;
+    return Array.from({ length: count }, (_, i) => {
+      const size = Math.floor(Math.random() * 4) + 3; // 3px a 6px
       const top = Math.random() * 100;
       const left = Math.random() * 100;
-      const duration = 14 + Math.random() * 18; // 14s a 32s
+      const duration = 16 + Math.random() * 18; // 16s a 34s
       const delay = -(Math.random() * 20);
-      const opacity = 0.25 + Math.random() * 0.45;
+      const opacity = 0.2 + Math.random() * 0.4;
       const colors = ['#0284c7', '#0369a1', '#38bdf8', '#2563eb', '#6366f1'];
       const color = colors[i % colors.length];
 

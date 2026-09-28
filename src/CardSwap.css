@@ -226,6 +226,74 @@
   justify-content: center;
 }
 
+.card-swap-outer-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.card-swap-deck-box {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 720px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Indicadores de Cards no Mobile (Pontos interativos posicionados abaixo do deck) */
+.card-swap-indicators {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  position: relative;
+  margin-top: 16px;
+  z-index: 25;
+}
+
+.card-indicator-dot {
+  width: 28px;
+  height: 6px;
+  border-radius: 9999px;
+  border: none;
+  background: rgba(255, 255, 255, 0.24);
+  cursor: pointer;
+  padding: 0;
+  position: relative;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Área de toque expandida para acessibilidade e facilidade no toque mobile */
+.card-indicator-dot::after {
+  content: '';
+  position: absolute;
+  top: -12px;
+  bottom: -12px;
+  left: -6px;
+  right: -6px;
+}
+
+.card-indicator-dot.is-active {
+  width: 44px;
+  background: var(--azul-claro, #38bdf8);
+  box-shadow: 0 0 12px rgba(56, 189, 248, 0.5);
+}
+
+[data-theme="light"] .card-indicator-dot {
+  background: rgba(15, 23, 42, 0.2);
+}
+
+[data-theme="light"] .card-indicator-dot.is-active {
+  background: #0284c7;
+  box-shadow: 0 0 12px rgba(2, 132, 199, 0.4);
+}
+
 /* COMPONENTE OFICIAL CARDSWAP REACT BITS - POSICIONADO BEM À DIREITA E EXPANDIDO */
 .card-swap-container {
   position: absolute;
@@ -236,6 +304,7 @@
 
   perspective: 1400px;
   overflow: visible;
+  touch-action: pan-y;
 }
 
 .card {
@@ -247,7 +316,7 @@
   background: #09090b; /* Quase preto / Grafite escuro do tema do site */
 
   transform-style: preserve-3d;
-  will-change: transform;
+  will-change: transform, opacity;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
 
@@ -256,7 +325,7 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  cursor: default;
+  cursor: pointer;
   user-select: none;
   box-shadow: 
     0 32px 64px -10px rgba(0, 0, 0, 0.95),
@@ -806,17 +875,17 @@
   .card-swap-showcase {
     flex-direction: column;
     min-height: auto;
-    padding: 30px 20px 20px 20px;
+    padding: 24px 20px 20px 20px;
     align-items: center;
-    gap: 28px;
+    gap: 24px;
     overflow: visible;
   }
 
   .showcase-left-col {
-    max-width: 640px;
+    max-width: 620px;
     width: 100%;
     flex: auto;
-    padding: 28px 28px;
+    padding: 24px 24px;
     text-align: center;
     align-items: center;
   }
@@ -839,120 +908,196 @@
 
   .showcase-right-area {
     width: 100%;
-    min-height: 520px;
-    height: 520px;
-    justify-content: center;
-    align-items: center;
+    height: auto;
+    min-height: auto;
     display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     position: relative;
     overflow: visible;
+  }
+
+  .card-swap-outer-wrapper {
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .card-swap-deck-box {
+    position: relative;
+    width: 100%;
+    height: 420px;
+    min-height: 420px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: visible;
+  }
+
+  .card-swap-indicators {
+    display: flex;
+    position: relative;
+    margin-top: 18px;
+    margin-bottom: 6px;
+    z-index: 25;
   }
 
   .card-swap-container {
     top: 50%;
     left: 50%;
     right: auto;
-    transform: translate(-50%, -50%) scale(0.76);
+    transform: translate(-50%, -50%) scale(0.70);
     transform-origin: center center;
   }
 }
 
 @media (max-width: 992px) {
-  .card-swap-container {
-    transform: translate(-50%, -50%) scale(0.66);
+  .card-swap-deck-box {
+    height: 380px;
+    min-height: 380px;
   }
 
-  .showcase-right-area {
-    min-height: 480px;
-    height: 480px;
+  .card-swap-container {
+    transform: translate(-50%, -50%) scale(0.62);
   }
 }
 
 @media (max-width: 768px) {
   .card-swap-showcase {
-    padding: 20px 14px 16px 14px;
+    padding: 16px 12px 14px 12px;
+    gap: 18px;
   }
 
   .showcase-left-col {
-    padding: 24px 20px;
-    border-radius: 20px;
+    padding: 20px 16px;
+    border-radius: 18px;
+    background: rgba(12, 12, 18, 0.85);
   }
 
   .showcase-title {
-    font-size: 1.85rem;
-    margin-bottom: 10px;
+    font-size: 1.75rem;
+    margin-bottom: 8px;
   }
 
   .showcase-subtitle {
-    font-size: 0.98rem;
-    margin-bottom: 10px;
+    font-size: 0.95rem;
+    margin-bottom: 8px;
   }
 
   .showcase-bio-text {
     font-size: 0.88rem;
     line-height: 1.6;
-    margin-bottom: 18px;
+    margin-bottom: 16px;
   }
 
   .showcase-github-btn {
-    padding: 10px 22px;
-    font-size: 0.88rem;
+    padding: 9px 20px;
+    font-size: 0.86rem;
+    min-height: 40px;
   }
 
   .showcase-right-area {
-    min-height: 420px;
-    height: 420px;
+    width: 100%;
+    height: auto;
+    min-height: auto;
+    margin-top: 0;
+  }
+
+  .card-swap-deck-box {
+    height: 310px;
+    min-height: 310px;
+  }
+
+  .card-swap-indicators {
+    margin-top: 16px;
+    gap: 8px;
+  }
+
+  .card-swap-container {
+    top: 50%;
+    left: 50%;
+    right: auto;
+    transform: translate(-50%, -50%) scale(0.52);
+    transform-origin: center center;
+    perspective: 800px;
+  }
+
+  .card {
+    padding: 24px 18px 18px 18px;
+    box-shadow: 0 16px 36px -6px rgba(0, 0, 0, 0.85), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  }
+}
+
+@media (max-width: 480px) {
+  .card-swap-showcase {
+    padding: 12px 6px 10px 6px;
+    gap: 16px;
+  }
+
+  .showcase-left-col {
+    padding: 18px 14px;
+    border-radius: 16px;
+  }
+
+  .showcase-title {
+    font-size: 1.55rem;
+  }
+
+  .showcase-bio-text {
+    font-size: 0.84rem;
+    margin-bottom: 14px;
+  }
+
+  .card-swap-deck-box {
+    height: 270px;
+    min-height: 270px;
+  }
+
+  .card-swap-indicators {
+    margin-top: 14px;
+  }
+
+  .card-swap-container {
+    top: 50%;
+    transform: translate(-50%, -50%) scale(0.44);
+  }
+}
+
+@media (max-width: 380px) {
+  .showcase-title {
+    font-size: 1.4rem;
+  }
+
+  .card-swap-deck-box {
+    height: 235px;
+    min-height: 235px;
+  }
+
+  .card-swap-indicators {
+    margin-top: 12px;
+  }
+
+  .card-swap-container {
+    top: 50%;
+    transform: translate(-50%, -50%) scale(0.38);
+  }
+}
+
+@media (max-width: 340px) {
+  .card-swap-deck-box {
+    height: 210px;
+    min-height: 210px;
+  }
+
+  .card-swap-indicators {
     margin-top: 10px;
   }
 
   .card-swap-container {
     top: 50%;
-    left: 50%;
-    right: auto;
-    transform: translate(-50%, -50%) scale(0.56);
-    transform-origin: center center;
-  }
-}
-
-@media (max-width: 540px) {
-  .card-swap-showcase {
-    padding: 14px 10px;
-  }
-
-  .showcase-title {
-    font-size: 1.65rem;
-  }
-
-  .showcase-right-area {
-    min-height: 370px;
-    height: 370px;
-    margin-top: 6px;
-  }
-
-  .card-swap-container {
-    top: 50%;
-    left: 50%;
-    right: auto;
-    transform: translate(-50%, -50%) scale(0.48);
-    transform-origin: center center;
-  }
-}
-
-@media (max-width: 400px) {
-  .showcase-title {
-    font-size: 1.48rem;
-  }
-
-  .showcase-right-area {
-    min-height: 330px;
-    height: 330px;
-  }
-
-  .card-swap-container {
-    top: 50%;
-    left: 50%;
-    right: auto;
-    transform: translate(-50%, -50%) scale(0.42);
-    transform-origin: center center;
+    transform: translate(-50%, -50%) scale(0.34);
   }
 }

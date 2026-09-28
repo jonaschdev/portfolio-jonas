@@ -6,3 +6,12 @@
   pointer-events: none;
   overflow: hidden;
 }
+
+.aurora-container canvas {
+  width: 100% !important;
+  height: 100% !important;
+  position: absolute !important;
+  inset: 0 !important;
+  display: block !important;
+  pointer-events: none !important;
+}

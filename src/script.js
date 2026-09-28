@@ -208,11 +208,14 @@ document.addEventListener('DOMContentLoaded', () => {
     dockRoot.render(React.createElement(MobileDockNav));
   }
 
-  // Scroll Spy para atualizar links do menu superior Desktop
+  // Scroll Spy para atualizar links do menu superior Desktop (Otimizado com RAF)
   const desktopNavLinks = document.querySelectorAll('.main-nav .nav-link');
   if (desktopNavLinks.length > 0) {
     const desktopSectionIds = ['inicio', 'tecnologias', 'projetos', 'contato'];
+    let scrollTicking = false;
+
     function updateDesktopNav() {
+      scrollTicking = false;
       const isNearBottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 90;
       if (isNearBottom) {
         setDesktopActive('contato');
@@ -232,6 +235,14 @@ document.addEventListener('DOMContentLoaded', () => {
       }
       setDesktopActive(matched);
     }
+
+    function onScroll() {
+      if (!scrollTicking) {
+        requestAnimationFrame(updateDesktopNav);
+        scrollTicking = true;
+      }
+    }
+
     function setDesktopActive(id) {
       desktopNavLinks.forEach(link => {
         if (link.getAttribute('href') === `#${id}`) {
@@ -241,7 +252,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       });
     }
-    window.addEventListener('scroll', updateDesktopNav, { passive: true });
+    window.addEventListener('scroll', onScroll, { passive: true });
     updateDesktopNav();
   }
 
@@ -321,18 +332,22 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('resize', resizeMatrixCanvas);
 
     let lastTime = 0;
-    const fpsInterval = 1000 / 24; // 24 FPS para visual clássico de terminal hacker
+    const isMobile = window.innerWidth < 768;
+    const fpsInterval = 1000 / (isMobile ? 18 : 24); // 18 FPS no mobile e 24 FPS no PC para economia de energia
 
-    let isMatrixVisible = true;
+    let isMatrixVisible = false;
     const matrixObserver = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         isMatrixVisible = entry.isIntersecting;
         if (isMatrixVisible && !matrixFrameId && !document.hidden) {
           lastTime = performance.now();
           matrixFrameId = requestAnimationFrame(renderMatrix);
+        } else if (!isMatrixVisible && matrixFrameId) {
+          cancelAnimationFrame(matrixFrameId);
+          matrixFrameId = null;
         }
       });
-    }, { threshold: 0.05 });
+    }, { threshold: 0.02 });
     matrixObserver.observe(matrixCanvas);
 
     function renderMatrix(currentTime) {
@@ -375,8 +390,6 @@ document.addEventListener('DOMContentLoaded', () => {
         drops[i]++;
       }
     }
-
-    matrixFrameId = requestAnimationFrame(renderMatrix);
 
     document.addEventListener('visibilitychange', () => {
       if (document.hidden) {
