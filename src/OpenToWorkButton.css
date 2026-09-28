@@ -1,0 +1,175 @@
+/* =========================================================================
+   🚀 OPEN TO WORK MORPHING BUTTON (NAVBAR STYLE & LIQUID GLASS)
+   ========================================================================= */
+
+.otw-container {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 30;
+  user-select: none;
+  margin-top: 2px;
+}
+
+.otw-pill-morph {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 196px;
+  height: 38px;
+  box-sizing: border-box;
+  padding: 3px 4px;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.76);
+  transition: background 0.22s ease,
+              border-color 0.22s ease,
+              color 0.22s ease,
+              box-shadow 0.22s ease;
+  overflow: hidden;
+}
+
+[data-theme="light"] .otw-pill-morph {
+  color: #334155;
+  background: rgba(255, 255, 255, 0.65);
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  box-shadow: inset 0 1px 0.5px rgba(255, 255, 255, 0.95), 0 2px 6px rgba(15, 23, 42, 0.04);
+  font-weight: 600;
+}
+
+.otw-container:hover .otw-pill-morph {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.25);
+  transform: none;
+}
+
+[data-theme="light"] .otw-container:hover .otw-pill-morph {
+  color: #0284c7;
+  background: rgba(255, 255, 255, 0.94);
+  border-color: rgba(2, 132, 199, 0.28);
+  box-shadow: inset 0 1px 0.5px #ffffff, 0 6px 18px rgba(2, 132, 199, 0.14);
+  transform: none;
+}
+
+.otw-pill-morph:active {
+  transform: scale(0.97);
+}
+
+/* STATE 1: OPEN TO WORK LABEL */
+.otw-label-wrapper {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.otw-pulse-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #22c55e;
+  animation: otwPulse 2s infinite ease-in-out;
+  flex-shrink: 0;
+}
+
+@keyframes otwPulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 0.65;
+  }
+}
+
+[data-theme="light"] .otw-pulse-dot {
+  background: #16a34a;
+}
+
+.otw-text {
+  font-family: var(--fonte-padrao, sans-serif);
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #ffffff;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+}
+
+[data-theme="light"] .otw-text {
+  color: #0f172a;
+}
+
+/* STATE 2: SOCIAL ICON BUTTONS */
+.otw-socials-wrapper {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.otw-icon-btn {
+  flex: 1;
+  height: 30px;
+  border-radius: 9999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-family: var(--fonte-padrao, sans-serif);
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #ffffff !important;
+  text-decoration: none;
+  position: relative;
+  box-sizing: border-box;
+  padding: 0 10px;
+  transition: filter 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.otw-icon-btn:hover {
+  transform: none;
+  filter: brightness(1.12);
+}
+
+.otw-icon-btn:active {
+  transform: scale(0.97);
+}
+
+/* EMAIL BUTTON */
+.otw-email {
+  background: linear-gradient(135deg, #0284c7 0%, #38bdf8 100%);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 2px 8px rgba(2, 132, 199, 0.35);
+}
+
+.otw-email:hover {
+  border-color: rgba(255, 255, 255, 0.5);
+  box-shadow: 0 3px 12px rgba(2, 132, 199, 0.55), 0 0 10px rgba(56, 189, 248, 0.4);
+}
+
+/* GITHUB BUTTON */
+.otw-github {
+  background: linear-gradient(135deg, #24292e 0%, #0f1419 100%);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+.otw-github:hover {
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.65), 0 0 10px rgba(255, 255, 255, 0.25);
+  border-color: rgba(255, 255, 255, 0.45);
+}

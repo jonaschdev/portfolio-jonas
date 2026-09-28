@@ -1,12 +1,162 @@
+import React from 'react';
+import { createRoot } from 'react-dom/client';
+import gsap from 'gsap';
+import GlobalParticlesBackground from './GlobalParticlesBackground';
+import TechLogoLoop from './TechLogoLoop';
+import HeroAvatar from './HeroAvatar';
+import OpenToWorkButton from './OpenToWorkButton';
+import ProjectsPixelCard from './ProjectsPixelCard';
+import ContactBackground from './ContactBackground';
+import DiscordProfileCard from './DiscordProfileCard';
+import ContactMessageForm from './ContactMessageForm';
+import MobileDockNav from './MobileDockNav';
+import HeaderTalkButton from './HeaderTalkButton';
+import EmailCopyButton from './EmailCopyButton';
+import Aurora from './Aurora';
+
 /**
  * =========================================================================
- * 🚀 JAVASCRIPT PURO DO SEU PORTFÓLIO
+ * 🚀 JAVASCRIPT & REACT BITS DO SEU PORTFÓLIO
  * =========================================================================
- * Funções nativas e leves para interações do portfólio de Jonas.
+ * Funções nativas, animações e componentes React Bits integrados.
  * =========================================================================
  */
 
 document.addEventListener('DOMContentLoaded', () => {
+
+  // =======================================================================
+  // MONTAGEM DO FUNDO UNIFICADO DE PARTICULAS 3D (REACT BITS PARTICLES)
+  // =======================================================================
+  const globalParticlesRootEl = document.getElementById('globalParticlesRoot');
+  if (globalParticlesRootEl) {
+    const particlesRoot = createRoot(globalParticlesRootEl);
+    particlesRoot.render(React.createElement(GlobalParticlesBackground));
+  }
+
+  // =======================================================================
+  // MONTAGEM DA ANIMAÇÃO AURORA NA SEÇÃO DE INÍCIO HERO (REACT BITS)
+  // =======================================================================
+  const auroraRootEl = document.getElementById('auroraRoot');
+  if (auroraRootEl) {
+    const auroraRoot = createRoot(auroraRootEl);
+    auroraRoot.render(
+      React.createElement(Aurora, {
+        colorStops: ["#0284c7", "#38bdf8", "#6366f1"],
+        blend: 0.6,
+        amplitude: 1.1,
+        speed: 0.5,
+        lightMode: false
+      })
+    );
+  }
+
+  // =======================================================================
+  // MONTAGEM DO BOTÃO "FALAR COMIGO" DO CABEÇALHO (SPECULAR BUTTON)
+  // =======================================================================
+  const headerTalkRootEl = document.getElementById('headerTalkRoot');
+  if (headerTalkRootEl) {
+    const talkRoot = createRoot(headerTalkRootEl);
+    talkRoot.render(React.createElement(HeaderTalkButton));
+  }
+
+  // =======================================================================
+  // MONTAGEM DO BOTÃO DE COPIAR E-MAIL (SPECULAR BUTTON)
+  // =======================================================================
+  const emailCopyRootEl = document.getElementById('emailCopyRoot');
+  if (emailCopyRootEl) {
+    const emailRoot = createRoot(emailCopyRootEl);
+    emailRoot.render(React.createElement(EmailCopyButton));
+  }
+
+  // =======================================================================
+  // MONTAGEM DA FOTO DE PERFIL COM <TiltedCard /> (REACT BITS)
+  // Tilt 3D interativo, tooltip flutuante personalizado e física fluida
+  // =======================================================================
+  const heroAvatarRootEl = document.getElementById('heroAvatarRoot');
+  if (heroAvatarRootEl) {
+    const avatarRoot = createRoot(heroAvatarRootEl);
+    avatarRoot.render(React.createElement(HeroAvatar));
+  }
+
+  // =======================================================================
+  // MONTAGEM DO BOTÃO INTERATIVO OPEN TO WORK (APPLE iOS GLASS MENU)
+  // =======================================================================
+  const openToWorkRootEl = document.getElementById('openToWorkRoot');
+  if (openToWorkRootEl) {
+    const otwRoot = createRoot(openToWorkRootEl);
+    otwRoot.render(React.createElement(OpenToWorkButton));
+  }
+
+  // =======================================================================
+  // MONTAGEM DO COMPONENTE <LogoLoop /> (REACT BITS)
+  // Loop infinito de logos e linguagens com transição suave e física precisa
+  // =======================================================================
+  const logoLoopRootEl = document.getElementById('logoLoopRoot');
+  if (logoLoopRootEl) {
+    const root = createRoot(logoLoopRootEl);
+    root.render(React.createElement(TechLogoLoop));
+  }
+
+  // =======================================================================
+  // MONTAGEM DO COMPONENTE <PixelCard /> NA SEÇÃO DE PROJETOS (REACT BITS)
+  // Efeito interativo de pixels luminosos com dissipação física no hover
+  // =======================================================================
+  const projectsPixelRootEl = document.getElementById('projectsPixelRoot');
+  if (projectsPixelRootEl) {
+    const projectsRoot = createRoot(projectsPixelRootEl);
+    projectsRoot.render(React.createElement(ProjectsPixelCard));
+  }
+
+  // =======================================================================
+  // MONTAGEM DO FUNDO DE ONDAS <GradientWaves /> NA SEÇÃO DE CONTATO (REACT BITS)
+  // =======================================================================
+  const contactWavesRootEl = document.getElementById('contactWavesRoot');
+  if (contactWavesRootEl) {
+    const contactWavesRoot = createRoot(contactWavesRootEl);
+    contactWavesRoot.render(React.createElement(ContactBackground));
+  }
+
+  // =======================================================================
+  // MONTAGEM DO CARD DO DISCORD (LANYARD API ESTILO GUNS.LOL)
+  // =======================================================================
+  const discordProfileRootEl = document.getElementById('discordProfileRoot');
+  if (discordProfileRootEl) {
+    const discordRoot = createRoot(discordProfileRootEl);
+    discordRoot.render(React.createElement(DiscordProfileCard));
+  }
+
+  // =======================================================================
+  // MONTAGEM DO FORMULÁRIO DE CONTATO (FIREBASE FIRESTORE)
+  // =======================================================================
+  const contactFormRootEl = document.getElementById('contactFormRoot');
+  if (contactFormRootEl) {
+    const formRoot = createRoot(contactFormRootEl);
+    formRoot.render(React.createElement(ContactMessageForm));
+  }
+
+  // =======================================================================
+  // ANIMAÇÃO DE TERMINAL / MÁQUINA DE ESCREVER (TYPEWRITER EFFECT)
+  // Digita o título inicial: "Olá, eu sou o Jonas."
+  // =======================================================================
+  const typewriterEl = document.getElementById('typewriterText');
+  if (typewriterEl) {
+    const fullText = "Olá, eu sou o Jonas.";
+    let charIndex = 0;
+    typewriterEl.textContent = "";
+
+    function typeWriter() {
+      if (charIndex < fullText.length) {
+        typewriterEl.textContent += fullText.charAt(charIndex);
+        charIndex++;
+        const typingSpeed = 65 + Math.random() * 25;
+        setTimeout(typeWriter, typingSpeed);
+      } else {
+        typewriterEl.innerHTML = 'Olá, eu sou o <span class="destaque-azul">Jonas</span>.';
+      }
+    }
+
+    setTimeout(typeWriter, 350);
+  }
 
   // =======================================================================
   // 1. COPIAR E-MAIL AO CLICAR NO ÍCONE DE COPIAR
@@ -50,26 +200,60 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // =======================================================================
-  // 2. MENU MOBILE (ABRIR E FECHAR)
+  // 2. DOCK DE NAVEGAÇÃO FLUTUANTE MOBILE (REACT BITS DOCK - APPLE iOS LIQUID GLASS)
   // =======================================================================
-  const mobileToggleBtn = document.getElementById('mobileMenuBtn');
-  const mobileNav = document.getElementById('mobileNav');
+  const mobileDockRootEl = document.getElementById('mobileDockRoot');
+  if (mobileDockRootEl) {
+    const dockRoot = createRoot(mobileDockRootEl);
+    dockRoot.render(React.createElement(MobileDockNav));
+  }
 
-  if (mobileToggleBtn && mobileNav) {
-    mobileToggleBtn.addEventListener('click', () => {
-      mobileNav.classList.toggle('active');
-      const isExpanded = mobileNav.classList.contains('active');
-      mobileToggleBtn.setAttribute('aria-expanded', isExpanded ? 'true' : 'false');
-      mobileToggleBtn.textContent = isExpanded ? '✕' : '☰';
-    });
+  // Scroll Spy para atualizar links do menu superior Desktop (Otimizado com RAF)
+  const desktopNavLinks = document.querySelectorAll('.main-nav .nav-link');
+  if (desktopNavLinks.length > 0) {
+    const desktopSectionIds = ['inicio', 'tecnologias', 'projetos', 'contato'];
+    let scrollTicking = false;
 
-    const mobileLinks = mobileNav.querySelectorAll('a');
-    mobileLinks.forEach(link => {
-      link.addEventListener('click', () => {
-        mobileNav.classList.remove('active');
-        mobileToggleBtn.textContent = '☰';
+    function updateDesktopNav() {
+      scrollTicking = false;
+      const isNearBottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 90;
+      if (isNearBottom) {
+        setDesktopActive('contato');
+        return;
+      }
+      if (window.scrollY < 100) {
+        setDesktopActive('inicio');
+        return;
+      }
+      const triggerY = window.innerHeight * 0.42;
+      let matched = 'inicio';
+      for (const id of desktopSectionIds) {
+        const el = document.getElementById(id);
+        if (el && el.getBoundingClientRect().top <= triggerY) {
+          matched = id;
+        }
+      }
+      setDesktopActive(matched);
+    }
+
+    function onScroll() {
+      if (!scrollTicking) {
+        requestAnimationFrame(updateDesktopNav);
+        scrollTicking = true;
+      }
+    }
+
+    function setDesktopActive(id) {
+      desktopNavLinks.forEach(link => {
+        if (link.getAttribute('href') === `#${id}`) {
+          link.classList.add('active');
+        } else {
+          link.classList.remove('active');
+        }
       });
-    });
+    }
+    window.addEventListener('scroll', onScroll, { passive: true });
+    updateDesktopNav();
   }
 
   // =======================================================================
@@ -93,6 +277,7 @@ document.addEventListener('DOMContentLoaded', () => {
     } catch (e) {
       console.warn('LocalStorage inacessível:', e);
     }
+    window.dispatchEvent(new Event('themechange'));
   }
 
   function toggleTheme() {
@@ -115,425 +300,108 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // =======================================================================
-  // 5. CONTROLE DO PLAYER DE MÚSICA TEMA (FADE-OUT & FADE-IN GRADUAL)
-  // =======================================================================
-  const bgMusic = document.getElementById('bgMusic');
-  const musicPlayerBtn = document.getElementById('musicPlayerBtn');
-  const mobileMusicPlayerBtn = document.getElementById('mobileMusicPlayerBtn');
-  const musicLabelText = document.getElementById('musicLabelText');
-  const mobileMusicText = document.getElementById('mobileMusicText');
-
-  if (bgMusic) {
-    const TARGET_VOLUME = 0.3; // Volume desejado de 30%
-    let fadeInterval = null;
-    let isFadingOut = false;
-
-    // Inicia zerado para entrada suave (fade-in)
-    bgMusic.volume = 0;
-
-    function updateMusicUI(isPlaying) {
-      if (isPlaying) {
-        if (musicPlayerBtn) {
-          musicPlayerBtn.classList.add('playing');
-          musicPlayerBtn.setAttribute('aria-label', 'Pausar música tema');
-          musicPlayerBtn.setAttribute('title', 'Pausar música tema');
-        }
-        if (musicLabelText) musicLabelText.textContent = 'Tocando';
-        if (mobileMusicPlayerBtn) {
-          mobileMusicPlayerBtn.classList.add('playing');
-        }
-        if (mobileMusicText) mobileMusicText.textContent = 'Pausar Trilha Sonora';
-      } else {
-        if (musicPlayerBtn) {
-          musicPlayerBtn.classList.remove('playing');
-          musicPlayerBtn.setAttribute('aria-label', 'Tocar música tema');
-          musicPlayerBtn.setAttribute('title', 'Tocar música tema');
-        }
-        if (musicLabelText) musicLabelText.textContent = 'Van Gogh';
-        if (mobileMusicPlayerBtn) {
-          mobileMusicPlayerBtn.classList.remove('playing');
-        }
-        if (mobileMusicText) mobileMusicText.textContent = 'Tocar Trilha Sonora';
-      }
-    }
-
-    // Aumenta o volume gradualmente (Fade In)
-    function fadeInMusic(durationMs = 800) {
-      if (fadeInterval) clearInterval(fadeInterval);
-      isFadingOut = false;
-      updateMusicUI(true);
-
-      const stepTime = 30; // Passo a cada 30ms
-      const totalSteps = durationMs / stepTime;
-      const volumeStep = TARGET_VOLUME / totalSteps;
-
-      fadeInterval = setInterval(() => {
-        if (bgMusic.volume + volumeStep < TARGET_VOLUME) {
-          bgMusic.volume += volumeStep;
-        } else {
-          bgMusic.volume = TARGET_VOLUME;
-          clearInterval(fadeInterval);
-          fadeInterval = null;
-        }
-      }, stepTime);
-    }
-
-    // Diminui o volume gradualmente até o silêncio e depois pausa (Fade Out)
-    function fadeOutMusic(durationMs = 900) {
-      if (fadeInterval) clearInterval(fadeInterval);
-      isFadingOut = true;
-      updateMusicUI(false); // Atualiza o botão imediatamente para resposta visual rápida
-
-      const stepTime = 30;
-      const currentVol = bgMusic.volume;
-      const totalSteps = durationMs / stepTime;
-      const volumeStep = currentVol / totalSteps;
-
-      fadeInterval = setInterval(() => {
-        if (bgMusic.volume - volumeStep > 0.01) {
-          bgMusic.volume -= volumeStep;
-        } else {
-          bgMusic.volume = 0;
-          bgMusic.pause();
-          isFadingOut = false;
-          clearInterval(fadeInterval);
-          fadeInterval = null;
-        }
-      }, stepTime);
-    }
-
-    function playMusic() {
-      if (fadeInterval) clearInterval(fadeInterval);
-      bgMusic.volume = 0;
-      const playPromise = bgMusic.play();
-      if (playPromise !== undefined) {
-        playPromise
-          .then(() => {
-            fadeInMusic(800);
-          })
-          .catch((_err) => {
-            // Aguarda a primeira interação do usuário caso o navegador bloqueie autoplay
-            function enableAudioOnFirstInteraction() {
-              bgMusic.play().then(() => {
-                fadeInMusic(800);
-              }).catch(() => {});
-              window.removeEventListener('click', enableAudioOnFirstInteraction);
-              window.removeEventListener('touchstart', enableAudioOnFirstInteraction);
-              window.removeEventListener('keydown', enableAudioOnFirstInteraction);
-            }
-            window.addEventListener('click', enableAudioOnFirstInteraction, { once: true });
-            window.addEventListener('touchstart', enableAudioOnFirstInteraction, { once: true });
-            window.addEventListener('keydown', enableAudioOnFirstInteraction, { once: true });
-          });
-      }
-    }
-
-    function toggleMusic() {
-      if (bgMusic.paused || isFadingOut) {
-        // Retoma com aumento gradual
-        const playPromise = bgMusic.play();
-        if (playPromise !== undefined) {
-          playPromise.then(() => {
-            fadeInMusic(700);
-          }).catch((err) => {
-            console.warn('Reprodução bloqueada:', err);
-          });
-        }
-      } else {
-        // Pausa com diminuição gradual (Fade Out)
-        fadeOutMusic(900);
-      }
-    }
-
-    if (musicPlayerBtn) {
-      musicPlayerBtn.addEventListener('click', toggleMusic);
-    }
-
-    if (mobileMusicPlayerBtn) {
-      mobileMusicPlayerBtn.addEventListener('click', toggleMusic);
-    }
-
-    bgMusic.addEventListener('ended', () => updateMusicUI(false));
-
-    // Inicia a música com fade-in suave
-    playMusic();
-  }
 
   // =======================================================================
-  // 6. FORMULÁRIO DE CONTATO DIRETO (FIREBASE FIRESTORE)
+  // 7.1. EFEITO HACKER / MATRIX CODE RAIN NO LETREIRO DE LINGUAGENS
   // =======================================================================
-  const contactForm = document.getElementById('contactFirebaseForm');
-  const btnSubmitMessage = document.getElementById('btnSubmitMessage');
-
-  if (contactForm) {
-    contactForm.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      
-      const nameInput = document.getElementById('senderName');
-      const emailInput = document.getElementById('senderEmail');
-      const messageInput = document.getElementById('senderMessage');
-
-      const name = nameInput ? nameInput.value.trim() : '';
-      const email = emailInput ? emailInput.value.trim() : '';
-      const message = messageInput ? messageInput.value.trim() : '';
-
-      if (!name || !email || !message) {
-        if (toast) {
-          toast.textContent = 'Por favor, preencha todos os campos.';
-          toast.classList.add('show');
-          setTimeout(() => toast.classList.remove('show'), 3000);
-        }
-        return;
-      }
-
-      // Estado de carregamento do botão
-      if (btnSubmitMessage) {
-        btnSubmitMessage.disabled = true;
-        btnSubmitMessage.innerHTML = `
-          <svg class="spin-animate" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="12" y1="2" x2="12" y2="6"></line>
-            <line x1="12" y1="18" x2="12" y2="22"></line>
-            <line x1="4.93" y1="4.93" x2="7.76" y2="7.76"></line>
-            <line x1="16.24" y1="16.24" x2="19.07" y2="19.07"></line>
-            <line x1="2" y1="12" x2="6" y2="12"></line>
-            <line x1="18" y1="12" x2="22" y2="12"></line>
-            <line x1="4.93" y1="19.07" x2="7.76" y2="16.24"></line>
-            <line x1="16.24" y1="7.76" x2="19.07" y2="4.93"></line>
-          </svg>
-          <span>Enviando...</span>
-        `;
-      }
-
-      try {
-        const { sendContactMessage } = await import('./firebase.ts');
-        await sendContactMessage({ name, email, message });
-
-        // Limpa o formulário
-        contactForm.reset();
-
-        // Notificação de sucesso
-        if (toast) {
-          toast.textContent = '✨ Mensagem enviada com sucesso! Obrigado pelo contato.';
-          toast.classList.add('show');
-          setTimeout(() => toast.classList.remove('show'), 4000);
-        }
-      } catch (err) {
-        console.error('Erro ao enviar mensagem:', err);
-        if (toast) {
-          toast.textContent = 'Ocorreu um erro ao enviar. Tente pelo e-mail direto!';
-          toast.classList.add('show');
-          setTimeout(() => toast.classList.remove('show'), 4000);
-        }
-      } finally {
-        if (btnSubmitMessage) {
-          btnSubmitMessage.disabled = false;
-          btnSubmitMessage.innerHTML = `
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <line x1="22" y1="2" x2="11" y2="13"></line>
-              <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
-            </svg>
-            <span>Enviar Mensagem</span>
-          `;
-        }
-      }
-    });
-  }
-
-  // =======================================================================
-  // 7. FUNDO ANIMADO DE ESTRELAS & CONSTELAÇÕES INTERATIVAS (CANVAS)
-  // =======================================================================
-  const canvas = document.getElementById('starfieldCanvas');
-  if (canvas) {
-    const ctx = canvas.getContext('2d');
-    let animationFrameId;
+  const matrixCanvas = document.getElementById('matrixCodeCanvas');
+  if (matrixCanvas) {
+    const ctx = matrixCanvas.getContext('2d');
     let width = 0;
     let height = 0;
-    let stars = [];
+    let matrixFrameId = null;
 
-    // Rastreamento do cursor do mouse/toque para interatividade
-    const mouse = {
-      x: -1000,
-      y: -1000,
-      radius: 140,
-      active: false
-    };
+    // Caracteres hacker, tokens de programação e símbolos de código
+    const characters = '01{}[]<>/=;:~*&^%$#@!+-|abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789constletfndefreturnimportexport';
+    const fontSize = 11;
+    let columns = 0;
+    let drops = [];
 
-    function resizeCanvas() {
-      const dpr = Math.min(window.devicePixelRatio || 1, 2);
-      width = window.innerWidth;
-      height = window.innerHeight;
-      canvas.width = width * dpr;
-      canvas.height = height * dpr;
-      ctx.scale(dpr, dpr);
-      initStars();
-    }
-
-    // Gerador de estrelas com tamanhos, brilhos e cores cósmicas
-    function initStars() {
-      stars = [];
-      // Quantidade equilibrada de acordo com o tamanho da tela
-      const count = Math.floor((width * height) / 12000);
-      const starCount = Math.min(Math.max(count, 45), 110);
-
-      const colorPaletteDark = [
-        'rgba(56, 189, 248, ',   // Azul ciano claro
-        'rgba(14, 165, 233, ',   // Azul elétrico vibrante
-        'rgba(96, 165, 250, ',   // Azul celeste suave
-        'rgba(2, 132, 199, ',    // Azul oceano
-        'rgba(147, 197, 253, '   // Azul bebê luminoso
-      ];
-
-      for (let i = 0; i < starCount; i++) {
-        stars.push({
-          x: Math.random() * width,
-          y: Math.random() * height,
-          vx: (Math.random() - 0.5) * 0.12,
-          vy: (Math.random() - 0.5) * 0.12,
-          radius: Math.random() * 1.8 + 0.6,
-          baseAlpha: Math.random() * 0.6 + 0.25,
-          twinkleSpeed: Math.random() * 0.012 + 0.005,
-          twinklePhase: Math.random() * Math.PI * 2,
-          colorIndex: Math.floor(Math.random() * colorPaletteDark.length)
-        });
+    function resizeMatrixCanvas() {
+      const rect = matrixCanvas.parentElement ? matrixCanvas.parentElement.getBoundingClientRect() : null;
+      width = matrixCanvas.width = rect ? rect.width : window.innerWidth;
+      height = matrixCanvas.height = rect ? rect.height : 60;
+      columns = Math.max(1, Math.floor(width / fontSize));
+      drops = [];
+      for (let i = 0; i < columns; i++) {
+        drops[i] = Math.floor(Math.random() * (height / fontSize));
       }
     }
 
-    window.addEventListener('resize', resizeCanvas);
-    resizeCanvas();
+    resizeMatrixCanvas();
+    window.addEventListener('resize', resizeMatrixCanvas);
 
-    // Interatividade com Mouse e Touch
-    window.addEventListener('mousemove', (e) => {
-      mouse.x = e.clientX;
-      mouse.y = e.clientY;
-      mouse.active = true;
-    });
+    let lastTime = 0;
+    const isMobile = window.innerWidth < 768;
+    const fpsInterval = 1000 / (isMobile ? 18 : 24); // 18 FPS no mobile e 24 FPS no PC para economia de energia
 
-    window.addEventListener('mouseleave', () => {
-      mouse.active = false;
-      mouse.x = -1000;
-      mouse.y = -1000;
-    });
+    let isMatrixVisible = false;
+    const matrixObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        isMatrixVisible = entry.isIntersecting;
+        if (isMatrixVisible && !matrixFrameId && !document.hidden) {
+          lastTime = performance.now();
+          matrixFrameId = requestAnimationFrame(renderMatrix);
+        } else if (!isMatrixVisible && matrixFrameId) {
+          cancelAnimationFrame(matrixFrameId);
+          matrixFrameId = null;
+        }
+      });
+    }, { threshold: 0.02 });
+    matrixObserver.observe(matrixCanvas);
 
-    window.addEventListener('touchmove', (e) => {
-      if (e.touches.length > 0) {
-        mouse.x = e.touches[0].clientX;
-        mouse.y = e.touches[0].clientY;
-        mouse.active = true;
+    function renderMatrix(currentTime) {
+      if (!isMatrixVisible || document.hidden) {
+        matrixFrameId = null;
+        return;
       }
-    }, { passive: true });
+      matrixFrameId = requestAnimationFrame(renderMatrix);
 
-    window.addEventListener('touchend', () => {
-      mouse.active = false;
-      mouse.x = -1000;
-      mouse.y = -1000;
-    });
-
-    // Loop de animação fluida a 60fps
-    function renderStars() {
-      ctx.clearRect(0, 0, width, height);
+      const elapsed = currentTime - lastTime;
+      if (elapsed < fpsInterval) return;
+      lastTime = currentTime - (elapsed % fpsInterval);
 
       const isLight = document.documentElement.getAttribute('data-theme') === 'light';
-      const colorPaletteDark = [
-        'rgba(255, 255, 255, ',   // Estrela branca pura
-        'rgba(241, 245, 249, ',   // Prata/branco suave
-        'rgba(56, 189, 248, ',    // Azul ciano claro
-        'rgba(147, 197, 253, ',   // Azul bebê luminoso
-        'rgba(226, 232, 240, '    // Branco cinzento estelar
-      ];
-      const colorPaletteLight = [
-        'rgba(15, 23, 42, ',     // Quase preto / Grafite obsidiana profundo
-        'rgba(30, 41, 59, ',     // Grafite escuro
-        'rgba(2, 132, 199, ',    // Azul oceano vibrante
-        'rgba(3, 105, 161, ',    // Azul profundo
-        'rgba(14, 165, 233, '    // Ciano contrastante
-      ];
-      const palette = isLight ? colorPaletteLight : colorPaletteDark;
 
-      // Desenha e atualiza as estrelas
-      for (let i = 0; i < stars.length; i++) {
-        const star = stars[i];
+      // Rastro translúcido sobre o fundo
+      ctx.fillStyle = isLight ? 'rgba(248, 250, 252, 0.22)' : 'rgba(9, 9, 11, 0.18)';
+      ctx.fillRect(0, 0, width, height);
 
-        // Movimento suave
-        star.x += star.vx;
-        star.y += star.vy;
+      ctx.font = `${fontSize}px "JetBrains Mono", "Fira Code", monospace`;
 
-        // Rebote nas bordas
-        if (star.x < 0) star.x = width;
-        else if (star.x > width) star.x = 0;
-        if (star.y < 0) star.y = height;
-        else if (star.y > height) star.y = 0;
+      for (let i = 0; i < drops.length; i++) {
+        const char = characters.charAt(Math.floor(Math.random() * characters.length));
+        const x = i * fontSize;
+        const y = drops[i] * fontSize;
 
-        // Cintilação suave (pulsar de estrela)
-        star.twinklePhase += star.twinkleSpeed;
-        const twinkle = Math.sin(star.twinklePhase);
-        const alpha = Math.max(0.1, Math.min(1, star.baseAlpha + twinkle * 0.25));
-
-        // Interação com o mouse: leve atração e linhas de constelação
-        let extraGlow = 0;
-        if (mouse.active) {
-          const dx = mouse.x - star.x;
-          const dy = mouse.y - star.y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist < mouse.radius) {
-            extraGlow = (1 - dist / mouse.radius) * 0.4;
-            // Conexão sutil entre mouse e estrela próxima
-            ctx.beginPath();
-            ctx.strokeStyle = isLight 
-              ? `rgba(15, 23, 42, ${(1 - dist / mouse.radius) * 0.25})`
-              : `rgba(56, 189, 248, ${(1 - dist / mouse.radius) * 0.32})`;
-            ctx.lineWidth = 0.8;
-            ctx.moveTo(mouse.x, mouse.y);
-            ctx.lineTo(star.x, star.y);
-            ctx.stroke();
-          }
+        const isHead = Math.random() > 0.88;
+        if (isLight) {
+          ctx.fillStyle = isHead ? 'rgba(2, 132, 199, 0.8)' : 'rgba(71, 85, 105, 0.35)';
+        } else {
+          ctx.fillStyle = isHead ? 'rgba(56, 189, 248, 0.9)' : (Math.random() > 0.5 ? 'rgba(52, 211, 153, 0.5)' : 'rgba(56, 189, 248, 0.4)');
         }
 
-        const colorPrefix = palette[star.colorIndex % palette.length];
-        const finalAlpha = Math.min(1, (isLight ? alpha * 0.85 : alpha) + extraGlow);
+        ctx.fillText(char, x, y);
 
-        // Desenho da estrela com brilho suave
-        ctx.beginPath();
-        ctx.arc(star.x, star.y, star.radius + extraGlow * 1.1, 0, Math.PI * 2);
-        ctx.fillStyle = `${colorPrefix}${finalAlpha})`;
-        ctx.shadowColor = isLight ? 'rgba(2, 132, 199, 0.4)' : 'rgba(56, 189, 248, 0.6)';
-        ctx.shadowBlur = extraGlow > 0 ? 10 : (star.radius > 1.3 ? 5 : 2);
-        ctx.fill();
-
-        // Linhas de constelação entre estrelas vizinhas
-        for (let j = i + 1; j < stars.length; j++) {
-          const other = stars[j];
-          const distDx = star.x - other.x;
-          const distDy = star.y - other.y;
-          const dist = Math.sqrt(distDx * distDx + distDy * distDy);
-
-          const maxDist = 80;
-          if (dist < maxDist) {
-            const lineAlpha = (1 - dist / maxDist) * (isLight ? 0.12 : 0.13);
-            ctx.beginPath();
-            ctx.shadowBlur = 0;
-            ctx.strokeStyle = isLight ? `rgba(30, 41, 59, ${lineAlpha})` : `rgba(56, 189, 248, ${lineAlpha})`;
-            ctx.lineWidth = 0.6;
-            ctx.moveTo(star.x, star.y);
-            ctx.lineTo(other.x, other.y);
-            ctx.stroke();
-          }
+        if (y > height && Math.random() > 0.975) {
+          drops[i] = 0;
         }
+
+        drops[i]++;
       }
-
-      animationFrameId = requestAnimationFrame(renderStars);
     }
 
-    // Pausa animação quando a aba não estiver visível (economia de bateria/GPU)
     document.addEventListener('visibilitychange', () => {
       if (document.hidden) {
-        cancelAnimationFrame(animationFrameId);
-      } else {
-        renderStars();
+        if (matrixFrameId) {
+          cancelAnimationFrame(matrixFrameId);
+          matrixFrameId = null;
+        }
+      } else if (isMatrixVisible) {
+        lastTime = performance.now();
+        matrixFrameId = requestAnimationFrame(renderMatrix);
       }
     });
-
-    renderStars();
   }
 
   // =======================================================================
@@ -562,291 +430,408 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // =======================================================================
-  // 9. ROLETA / CARROSSEL AUTOMÁTICO DE TECNOLOGIAS (TECH ROULETTE ENGINE)
+  // 9. REACT BITS: 3D CIRCULAR ORBIT RING CAROUSEL (GSAP POWERED)
   // =======================================================================
-  const rouletteContainer = document.getElementById('techRouletteContainer');
-  const rouletteViewport = document.getElementById('techRouletteViewport');
-  const rouletteTrack = document.getElementById('techRouletteTrack');
-  const rouletteCards = document.querySelectorAll('.tech-roulette-card');
-  const roulettePrevBtn = document.getElementById('roulettePrevBtn');
-  const rouletteNextBtn = document.getElementById('rouletteNextBtn');
-  const rouletteScrollTrack = document.getElementById('rouletteScrollTrack');
-  const rouletteScrollThumb = document.getElementById('rouletteScrollThumb');
+  const depthCarouselEl = document.getElementById('techDepthCarousel');
+  const depthCards = document.querySelectorAll('.depth-carousel__card');
+  const depthPrevBtn = document.getElementById('depthPrevBtn');
+  const depthNextBtn = document.getElementById('depthNextBtn');
+  const depthDotsContainer = document.getElementById('depthDots');
 
-  if (rouletteTrack && rouletteCards.length > 0) {
-    let currentIndex = 0;
-    let autoPlayTimer = null;
-    let isPaused = false;
-    const totalCards = rouletteCards.length;
+  if (depthCarouselEl && depthCards.length > 0) {
+    const totalCards = depthCards.length;
+    const overlayRefs = document.querySelectorAll('.depth-carousel__tint');
 
-    function getVisibleCardsCount() {
-      const width = window.innerWidth;
-      if (width <= 640) return 1;
-      if (width <= 980) return 2;
-      return 3;
-    }
+    // Configurações do Carrossel Horizontal
+    const cfg = {
+      count: totalCards,
+      cardWidth: 460,
+      cardHeight: 285,
+      cardSpacing: 380,
+      duration: 550,
+      ease: 'power3.out'
+    };
 
-    function getMaxIndex() {
-      const visible = getVisibleCardsCount();
-      return Math.max(0, totalCards - visible);
-    }
+    let pos = 0;
+    let focusIndex = 0;
+    let currentTween = null;
+    let scale = 1;
+    let dragData = null;
 
-    function updateTrackPosition() {
-      if (!rouletteCards[0]) return;
-      const cardRect = rouletteCards[0].getBoundingClientRect();
-      const cardWidth = cardRect.width;
-      const gap = 20; // 20px gap entre os cards
-      const offset = currentIndex * (cardWidth + gap);
+    const clamp = (v, min, max) => Math.min(Math.max(v, min), max);
 
-      rouletteTrack.style.transform = `translateX(-${offset}px)`;
-
-      // Atualiza a Barra de Progresso / Rolagem
-      if (rouletteScrollThumb) {
-        const visible = getVisibleCardsCount();
-        const max = getMaxIndex();
-        const thumbWidthPct = Math.min(100, Math.max(25, (visible / totalCards) * 100));
-        rouletteScrollThumb.style.width = `${thumbWidthPct}%`;
-        
-        const progressRatio = max > 0 ? (currentIndex / max) : 0;
-        const leftOffsetPct = progressRatio * (100 - thumbWidthPct);
-        rouletteScrollThumb.style.left = `${leftOffsetPct}%`;
+    // Criação dinâmica dos pontos indicadores (Dots)
+    if (depthDotsContainer) {
+      depthDotsContainer.innerHTML = '';
+      for (let i = 0; i < totalCards; i++) {
+        const dot = document.createElement('button');
+        dot.type = 'button';
+        dot.className = `depth-carousel__dot${i === 0 ? ' is-active' : ''}`;
+        dot.setAttribute('role', 'tab');
+        dot.setAttribute('aria-label', `Ir para tecnologia ${i + 1}`);
+        dot.addEventListener('click', (e) => {
+          e.stopPropagation();
+          setFocus(i, true);
+        });
+        depthDotsContainer.appendChild(dot);
       }
     }
 
-    // =======================================================================
-    // MOTOR DE ARRASTAR (DRAGGING) DA BARRA DE ROLAGEM EM TEMPO REAL
-    // =======================================================================
-    let isScrollbarDragging = false;
-    let dragStartX = 0;
-    let initialRatio = 0;
-
-    function handleScrollbarMove(clientX) {
-      if (!rouletteScrollTrack || !rouletteScrollThumb) return;
-      const trackRect = rouletteScrollTrack.getBoundingClientRect();
-      const thumbWidth = rouletteScrollThumb.offsetWidth;
-      const availableWidth = trackRect.width - thumbWidth;
-      
-      if (availableWidth <= 0) return;
-
-      const deltaX = clientX - dragStartX;
-      const newPixelLeft = (initialRatio * availableWidth) + deltaX;
-      const clampedPixelLeft = Math.max(0, Math.min(availableWidth, newPixelLeft));
-      const currentRatio = clampedPixelLeft / availableWidth;
-
-      // Move o thumb instantaneamente
-      const thumbWidthPct = Math.min(100, Math.max(25, (getVisibleCardsCount() / totalCards) * 100));
-      rouletteScrollThumb.style.left = `${currentRatio * (100 - thumbWidthPct)}%`;
-
-      // Rola os cards da roleta em tempo real 1:1
-      const max = getMaxIndex();
-      const cardRect = rouletteCards[0].getBoundingClientRect();
-      const totalScrollWidth = max * (cardRect.width + 20);
-      const trackOffset = currentRatio * totalScrollWidth;
-      rouletteTrack.style.transform = `translateX(-${trackOffset}px)`;
-    }
-
-    function startScrollbarDrag(clientX) {
-      isScrollbarDragging = true;
-      isPaused = true;
-      stopAutoPlay();
-
-      rouletteScrollThumb.classList.add('is-dragging');
-      rouletteTrack.classList.add('is-dragging');
-
-      const trackRect = rouletteScrollTrack.getBoundingClientRect();
-      const thumbWidth = rouletteScrollThumb.offsetWidth;
-      const availableWidth = trackRect.width - thumbWidth;
-
-      const currentPixelLeft = (rouletteScrollThumb.offsetLeft);
-      initialRatio = availableWidth > 0 ? (currentPixelLeft / availableWidth) : 0;
-      dragStartX = clientX;
-    }
-
-    function stopScrollbarDrag(clientX) {
-      if (!isScrollbarDragging) return;
-      isScrollbarDragging = false;
-      isPaused = false;
-
-      rouletteScrollThumb.classList.remove('is-dragging');
-      rouletteTrack.classList.remove('is-dragging');
-
-      // Encaixa (snap) suavemente no card mais próximo
-      if (rouletteScrollTrack && rouletteScrollThumb) {
-        const trackRect = rouletteScrollTrack.getBoundingClientRect();
-        const thumbWidth = rouletteScrollThumb.offsetWidth;
-        const availableWidth = trackRect.width - thumbWidth;
-        const currentPixelLeft = rouletteScrollThumb.offsetLeft;
-        const currentRatio = availableWidth > 0 ? (currentPixelLeft / availableWidth) : 0;
-        const max = getMaxIndex();
-        currentIndex = Math.round(currentRatio * max);
-      }
-
-      updateTrackPosition();
-      resetAutoPlay();
-    }
-
-    if (rouletteScrollTrack) {
-      // Clique ou Início de Arraste na Barra
-      rouletteScrollTrack.addEventListener('mousedown', (e) => {
-        const trackRect = rouletteScrollTrack.getBoundingClientRect();
-        const thumbRect = rouletteScrollThumb.getBoundingClientRect();
-        
-        // Se clicou fora do thumb, centraliza o thumb no clique primeiro
-        if (e.clientX < thumbRect.left || e.clientX > thumbRect.right) {
-          const clickPos = e.clientX - trackRect.left - (thumbRect.width / 2);
-          const available = trackRect.width - thumbRect.width;
-          const ratio = Math.max(0, Math.min(1, clickPos / available));
-          const max = getMaxIndex();
-          currentIndex = Math.round(ratio * max);
-          updateTrackPosition();
-        }
-
-        startScrollbarDrag(e.clientX);
-      });
-
-      rouletteScrollTrack.addEventListener('touchstart', (e) => {
-        if (e.touches && e.touches[0]) {
-          startScrollbarDrag(e.touches[0].clientX);
-        }
-      }, { passive: true });
-    }
-
-    // Escuta de Movimento Global para arraste suave mesmo se o mouse sair da barra
-    window.addEventListener('mousemove', (e) => {
-      if (isScrollbarDragging) {
-        e.preventDefault();
-        handleScrollbarMove(e.clientX);
-      }
-    });
-
-    window.addEventListener('touchmove', (e) => {
-      if (isScrollbarDragging && e.touches && e.touches[0]) {
-        handleScrollbarMove(e.touches[0].clientX);
-      }
-    }, { passive: false });
-
-    window.addEventListener('mouseup', (e) => {
-      if (isScrollbarDragging) {
-        stopScrollbarDrag(e.clientX);
-      }
-    });
-
-    window.addEventListener('touchend', (e) => {
-      if (isScrollbarDragging) {
-        stopScrollbarDrag(e.changedTouches ? e.changedTouches[0].clientX : 0);
-      }
-    });
-
-    function goToSlide(index) {
-      const max = getMaxIndex();
-      if (index > max) {
-        currentIndex = 0; // Loop infinito para o início
-      } else if (index < 0) {
-        currentIndex = max; // Loop para o final
-      } else {
-        currentIndex = index;
-      }
-      updateTrackPosition();
-    }
-
-    function nextSlide() {
-      const max = getMaxIndex();
-      if (currentIndex >= max) {
-        goToSlide(0);
-      } else {
-        goToSlide(currentIndex + 1);
-      }
-    }
-
-    function prevSlide() {
-      const max = getMaxIndex();
-      if (currentIndex <= 0) {
-        goToSlide(max);
-      } else {
-        goToSlide(currentIndex - 1);
-      }
-    }
-
-    // Botões de navegação
-    if (roulettePrevBtn) {
-      roulettePrevBtn.addEventListener('click', () => {
-        prevSlide();
-        resetAutoPlay();
-      });
-    }
-
-    if (rouletteNextBtn) {
-      rouletteNextBtn.addEventListener('click', () => {
-        nextSlide();
-        resetAutoPlay();
-      });
-    }
-
-    // Auto-Play: Rotação contínua a cada 3.5 segundos
-    function startAutoPlay() {
-      stopAutoPlay();
-      autoPlayTimer = setInterval(() => {
-        if (!isPaused) {
-          nextSlide();
-        }
-      }, 3500);
-    }
-
-    function stopAutoPlay() {
-      if (autoPlayTimer) {
-        clearInterval(autoPlayTimer);
-        autoPlayTimer = null;
-      }
-    }
-
-    function resetAutoPlay() {
-      stopAutoPlay();
-      startAutoPlay();
-    }
-
-    // Pausa a roleta quando o usuário passa o mouse por cima para ler com calma
-    if (rouletteContainer) {
-      rouletteContainer.addEventListener('mouseenter', () => { isPaused = true; });
-      rouletteContainer.addEventListener('mouseleave', () => { isPaused = false; });
-      rouletteContainer.addEventListener('touchstart', () => { isPaused = true; }, { passive: true });
-      rouletteContainer.addEventListener('touchend', () => { isPaused = false; });
-    }
-
-    // Suporte a gesto de arrastar/swipe no mobile e desktop
-    let touchStartX = 0;
-    let touchEndX = 0;
-
-    if (rouletteViewport) {
-      rouletteViewport.addEventListener('touchstart', (e) => {
-        touchStartX = e.changedTouches[0].screenX;
-      }, { passive: true });
-
-      rouletteViewport.addEventListener('touchend', (e) => {
-        touchEndX = e.changedTouches[0].screenX;
-        handleSwipe();
-      }, { passive: true });
-    }
-
-    function handleSwipe() {
-      const swipeDistance = touchEndX - touchStartX;
-      if (Math.abs(swipeDistance) > 40) {
-        if (swipeDistance < 0) {
-          nextSlide();
+    function updateDots(activeIdx) {
+      if (!depthDotsContainer) return;
+      const dots = depthDotsContainer.querySelectorAll('.depth-carousel__dot');
+      dots.forEach((dot, i) => {
+        if (i === activeIdx) {
+          dot.classList.add('is-active');
+          dot.setAttribute('aria-selected', 'true');
         } else {
-          prevSlide();
+          dot.classList.remove('is-active');
+          dot.setAttribute('aria-selected', 'false');
         }
-        resetAutoPlay();
+      });
+    }
+
+    // Engine Horizontal: cards dispostos de um lado para o outro sem espirais
+    function layout(currentPos) {
+      const n = cfg.count;
+      if (!n) return;
+      const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+
+      for (let i = 0; i < n; i++) {
+        const el = depthCards[i];
+        if (!el) continue;
+
+        // Distância cíclica normalizada no carrossel entre -n/2 e +n/2
+        let diff = (i - currentPos) % n;
+        if (diff < -n / 2) diff += n;
+        if (diff > n / 2) diff -= n;
+
+        const absDiff = Math.abs(diff);
+
+        // Oculta cards distantes para garantir que fiquem apenas de um lado e do outro
+        if (absDiff > 1.6) {
+          el.style.opacity = '0';
+          el.style.pointerEvents = 'none';
+          el.style.transform = `translate(-50%, -50%) scale(0.65) translateX(${diff > 0 ? 550 : -550}px)`;
+          continue;
+        }
+
+        // Posição horizontal linear no eixo X (de um lado para o outro)
+        const sign = diff < 0 ? -1 : 1;
+        const tx = diff === 0 ? 0 : sign * (cfg.cardSpacing * absDiff);
+        const tz = -absDiff * 60;
+        const ry = clamp(-diff * 10, -16, 16);
+
+        // Escala e opacidade limpas
+        const cardScale = scale * (1 - absDiff * 0.12);
+        const opacity = Math.max(0, 1 - absDiff * 0.42);
+
+        // Iluminação: 1.0 total no modo claro (sem sombras pretas)
+        const brightness = isLight ? 1.0 : Math.max(0.8, 1 - absDiff * 0.12);
+
+        // Z-Index: card central sempre à frente
+        const zi = Math.round(100 - absDiff * 30);
+
+        el.style.transform = `translate(-50%, -50%) scale(${cardScale.toFixed(3)}) translateX(${tx.toFixed(1)}px) translateZ(${tz.toFixed(1)}px) rotateY(${ry.toFixed(2)}deg)`;
+        el.style.opacity = opacity.toFixed(3);
+        el.style.filter = `brightness(${brightness.toFixed(3)})`;
+        el.style.zIndex = String(zi);
+        el.style.pointerEvents = 'auto';
+
+        const ov = overlayRefs[i];
+        if (ov) {
+          ov.style.opacity = '0';
+        }
       }
     }
 
-    // Recalcula dimensões ao redimensionar a tela
-    window.addEventListener('resize', () => {
-      goToSlide(Math.min(currentIndex, getMaxIndex()));
+    function tweenTo(target, animate = true) {
+      if (currentTween) currentTween.kill();
+      const proxy = { p: pos };
+      const dur = animate ? cfg.duration / 1000 : 0;
+      currentTween = gsap.to(proxy, {
+        p: target,
+        duration: dur,
+        ease: cfg.ease,
+        onUpdate: () => {
+          pos = proxy.p;
+          layout(proxy.p);
+        },
+        onComplete: () => {
+          const n = cfg.count;
+          if (n > 0) pos = ((pos % n) + n) % n;
+          layout(pos);
+        }
+      });
+    }
+
+    function setFocus(rawIndex, animate = true) {
+      const n = cfg.count;
+      if (!n) return;
+      const idx = ((rawIndex % n) + n) % n;
+      let delta = idx - pos;
+      delta = ((delta % n) + n) % n;
+      if (delta > n / 2) delta -= n;
+
+      tweenTo(pos + delta, animate);
+      if (idx !== focusIndex) {
+        focusIndex = idx;
+        updateDots(idx);
+      }
+    }
+
+    function navigateBy(step) {
+      setFocus(focusIndex + step, true);
+    }
+
+    // Dimensionamento Responsivo
+    function updateScale() {
+      const w = depthCarouselEl.clientWidth;
+      const isMobile = window.innerWidth <= 768;
+
+      if (isMobile) {
+        cfg.cardWidth = 265;
+        cfg.cardHeight = 385;
+        cfg.cardSpacing = Math.min(w * 0.65, 230);
+        scale = clamp((w - 24) / 290, 0.88, 1);
+      } else {
+        cfg.cardWidth = 460;
+        cfg.cardHeight = 285;
+        cfg.cardSpacing = clamp(w * 0.33, 310, 390);
+        scale = clamp(w / 1150, 0.85, 0.96);
+      }
+      layout(pos);
+    }
+
+    window.addEventListener('resize', updateScale);
+    updateScale();
+
+    // Reajusta instantaneamente a iluminação ao alternar tema Claro/Escuro
+    const themeToggleBtn = document.getElementById('themeToggleBtn');
+    if (themeToggleBtn) {
+      themeToggleBtn.addEventListener('click', () => {
+        setTimeout(() => layout(pos), 40);
+      });
+    }
+
+    // Gestos de Arraste (Pointer / Touch Drag com Inércia Suave)
+    depthCarouselEl.addEventListener('pointerdown', (e) => {
+      if (cfg.count < 2) return;
+      if (currentTween) currentTween.kill();
+      dragData = {
+        x: e.clientX,
+        startPos: pos,
+        lastX: e.clientX,
+        lastT: performance.now(),
+        v: 0,
+        moved: false,
+        id: e.pointerId
+      };
     });
 
-    // Inicialização
-    updateTrackPosition();
-    startAutoPlay();
+    window.addEventListener('pointermove', (e) => {
+      if (!dragData) return;
+      const stepPx = Math.max(cfg.cardWidth * 0.45 * scale, 45);
+      const dx = e.clientX - dragData.x;
+      if (!dragData.moved && Math.abs(dx) > 4) {
+        dragData.moved = true;
+        try { depthCarouselEl.setPointerCapture(dragData.id); } catch (_) {}
+      }
+      if (!dragData.moved) return;
+      const now = performance.now();
+      const dt = Math.max(now - dragData.lastT, 1);
+      dragData.v = (e.clientX - dragData.lastX) / dt;
+      dragData.lastX = e.clientX;
+      dragData.lastT = now;
+      pos = dragData.startPos - dx / stepPx;
+      layout(pos);
+    });
+
+    window.addEventListener('pointerup', () => {
+      if (!dragData) return;
+      if (dragData.moved) {
+        const stepPx = Math.max(cfg.cardWidth * 0.45 * scale, 45);
+        const projected = pos - (dragData.v * 160) / stepPx;
+        setFocus(Math.round(projected), true);
+      }
+      dragData = null;
+    });
+
+    window.addEventListener('pointercancel', () => {
+      if (!dragData) return;
+      if (dragData.moved) {
+        setFocus(Math.round(pos), true);
+      }
+      dragData = null;
+    });
+
+    // Teclado (Setas Esquerda / Direita)
+    depthCarouselEl.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft') {
+        e.preventDefault();
+        navigateBy(-1);
+      } else if (e.key === 'ArrowRight') {
+        e.preventDefault();
+        navigateBy(1);
+      }
+    });
+
+    // Botões de Seta
+    if (depthPrevBtn) {
+      depthPrevBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        navigateBy(-1);
+      });
+    }
+
+    if (depthNextBtn) {
+      depthNextBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        navigateBy(1);
+      });
+    }
+
+    // Clique direto no Card para centralizá-lo na frente
+    depthCards.forEach((card, idx) => {
+      card.addEventListener('click', () => {
+        if (dragData && dragData.moved) return;
+        setFocus(idx, true);
+      });
+    });
+
+    // Inicialização na primeira tecnologia (Inteligência Artificial)
+    setFocus(0, false);
+  }
+
+  // =======================================================================
+  // 10. REACT BITS: BORDER GLOW SENSOR & MESH GRADIENT ENGINE
+  // =======================================================================
+  const borderGlowCards = document.querySelectorAll('.border-glow-card');
+
+  function initBorderGlowCards() {
+    if (!borderGlowCards.length) return;
+
+    borderGlowCards.forEach((card) => {
+      // Configuração de cores e variáveis do componente BorderGlow
+      const rawColors = card.getAttribute('data-glow-colors');
+      const colors = rawColors ? rawColors.split(',').map(c => c.trim()) : ['#c084fc', '#f472b6', '#38bdf8'];
+      
+      const positions = ['80% 55%', '69% 34%', '8% 6%', '41% 38%', '86% 85%', '82% 18%', '51% 4%'];
+      const keys = ['--gradient-one', '--gradient-two', '--gradient-three', '--gradient-four', '--gradient-five', '--gradient-six', '--gradient-seven'];
+      const colorMap = [0, 1, 2, 0, 1, 2, 1];
+
+      for (let i = 0; i < 7; i++) {
+        const c = colors[Math.min(colorMap[i], colors.length - 1)];
+        card.style.setProperty(keys[i], `radial-gradient(at ${positions[i]}, ${c} 0px, transparent 50%)`);
+      }
+      card.style.setProperty('--gradient-base', `linear-gradient(${colors[0]} 0 100%)`);
+
+      // Configuração de luz HSL personalizada por tecnologia
+      const hslMap = {
+        '#c084fc': '275deg 90% 75%',
+        '#f97316': '25deg 95% 60%',
+        '#38bdf8': '199deg 95% 65%',
+        '#facc15': '48deg 95% 55%',
+        '#3b82f6': '217deg 90% 60%',
+        '#f43f5e': '345deg 90% 65%'
+      };
+      const base = hslMap[colors[0]] || '275deg 90% 75%';
+      const opacities = [100, 60, 50, 40, 30, 20, 10];
+      const glowKeys = ['', '-60', '-50', '-40', '-30', '-20', '-10'];
+      for (let i = 0; i < opacities.length; i++) {
+        card.style.setProperty(`--glow-color${glowKeys[i]}`, `hsl(${base} / ${opacities[i]}%)`);
+      }
+
+      function getCenterOfElement(el) {
+        const rect = el.getBoundingClientRect();
+        return [rect.width / 2, rect.height / 2];
+      }
+
+      function getEdgeProximity(el, x, y) {
+        const [cx, cy] = getCenterOfElement(el);
+        const dx = x - cx;
+        const dy = y - cy;
+        let kx = Infinity;
+        let ky = Infinity;
+        if (dx !== 0) kx = cx / Math.abs(dx);
+        if (dy !== 0) ky = cy / Math.abs(dy);
+        return Math.min(Math.max(1 / Math.min(kx, ky), 0), 1);
+      }
+
+      function getCursorAngle(el, x, y) {
+        const [cx, cy] = getCenterOfElement(el);
+        const dx = x - cx;
+        const dy = y - cy;
+        if (dx === 0 && dy === 0) return 0;
+        const radians = Math.atan2(dy, dx);
+        let degrees = radians * (180 / Math.PI) + 90;
+        if (degrees < 0) degrees += 360;
+        return degrees;
+      }
+
+      let glowRafPending = false;
+      card.addEventListener('pointermove', (e) => {
+        if (glowRafPending) return;
+        glowRafPending = true;
+        const clientX = e.clientX;
+        const clientY = e.clientY;
+
+        requestAnimationFrame(() => {
+          glowRafPending = false;
+          const rect = card.getBoundingClientRect();
+          const x = clientX - rect.left;
+          const y = clientY - rect.top;
+
+          const edge = getEdgeProximity(card, x, y);
+          const angle = getCursorAngle(card, x, y);
+
+          card.style.setProperty('--edge-proximity', `${(edge * 100).toFixed(2)}`);
+          card.style.setProperty('--cursor-angle', `${angle.toFixed(2)}deg`);
+        });
+      });
+
+      card.addEventListener('pointerleave', () => {
+        card.style.setProperty('--edge-proximity', '0');
+      });
+    });
+  }
+
+  initBorderGlowCards();
+
+  // =======================================================================
+  // 11. FOTO DE PERFIL: FÍSICA DE PESO 3D SUAVE & REACT BITS GLAREHOVER
+  // =======================================================================
+  const avatarInteractiveWrapper = document.getElementById('avatarInteractiveWrapper');
+  const avatarGlareFrame = document.getElementById('avatarGlareFrame');
+
+  if (avatarInteractiveWrapper && avatarGlareFrame) {
+    const maxTilt = 7; // Inclinação bem mais suave e equilibrada (sem afundar em excesso)
+    let targetRotateX = 0;
+    let targetRotateY = 0;
+
+    avatarInteractiveWrapper.addEventListener('mouseenter', () => {
+      avatarGlareFrame.style.transition = 'transform 0.18s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease';
+    });
+
+    avatarInteractiveWrapper.addEventListener('mousemove', (e) => {
+      const rect = avatarGlareFrame.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+
+      const normX = Math.max(-1, Math.min(1, (x / rect.width) * 2 - 1));
+      const normY = Math.max(-1, Math.min(1, (y / rect.height) * 2 - 1));
+
+      // Efeito de peso sutil e natural
+      targetRotateX = -normY * maxTilt;
+      targetRotateY = normX * maxTilt;
+
+      avatarGlareFrame.style.transform = `perspective(1000px) rotateX(${targetRotateX.toFixed(2)}deg) rotateY(${targetRotateY.toFixed(2)}deg) translateZ(0px) scale(1.008)`;
+    });
+
+    avatarInteractiveWrapper.addEventListener('mouseleave', () => {
+      avatarGlareFrame.style.transition = 'transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.5s ease';
+      avatarGlareFrame.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateZ(0px) scale(1)';
+    });
   }
 
   console.log('✨ Portfólio de Jonas carregado com sucesso!');

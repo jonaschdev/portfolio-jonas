@@ -1,0 +1,88 @@
+<svg id="ulquiorra-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <defs>
+    <!-- Gradiente de Azul (#38bdf8) para Verde (#10b981 / #00FFA3) -->
+    <linearGradient id="ceroGlow" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38bdf8" />
+      <stop offset="50%" stop-color="#06b6d4" />
+      <stop offset="100%" stop-color="#00FFA3" />
+    </linearGradient>
+
+    <!-- Gradiente para as tags de código (< >) -->
+    <linearGradient id="codeTagGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38bdf8" />
+      <stop offset="100%" stop-color="#10b981" />
+    </linearGradient>
+
+    <!-- Gradiente de Borda do Círculo -->
+    <linearGradient id="circleBorderGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.6" />
+      <stop offset="100%" stop-color="#10b981" stop-opacity="0.4" />
+    </linearGradient>
+
+    <!-- Sombra e Brilho Suave com Matiz Ciano / Verde -->
+    <filter id="softGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="0" stdDeviation="6" flood-color="#06b6d4" flood-opacity="0.5"/>
+    </filter>
+  </defs>
+
+  <!-- Fundo circular com borda sutil no gradiente azul/verde -->
+  <circle cx="256" cy="256" r="236" fill="#0d1217" stroke="url(#circleBorderGrad)" stroke-width="8"/>
+
+  <!-- 1. Capacete / Chifre Hollow do Ulquiorra (Lado Esquerdo Superior) -->
+  <path d="M 170 190 
+           C 160 140, 185 85, 230 65 
+           C 215 95, 220 120, 205 145 
+           C 195 160, 180 175, 170 190 Z" 
+        fill="#f1f5f9" />
+
+  <!-- Parte complementar da máscara/elmo hollow em arco angular (código / chave) -->
+  <path d="M 230 65 
+           C 275 80, 310 115, 325 155" 
+        fill="none" 
+        stroke="#f1f5f9" 
+        stroke-width="12" 
+        stroke-linecap="round"/>
+
+  <!-- 2. Símbolo de Código: Tag de Fechamento Esquerda (<) estilizada com gradiente azul e verde -->
+  <path d="M 160 215 L 105 260 L 160 305" 
+        fill="none" 
+        stroke="url(#codeTagGrad)" 
+        stroke-width="14" 
+        stroke-linecap="round" 
+        stroke-linejoin="round"/>
+
+  <!-- Símbolo de Código: Tag Direita (>) estilizada com gradiente azul e verde -->
+  <path d="M 352 215 L 407 260 L 352 305" 
+        fill="none" 
+        stroke="url(#codeTagGrad)" 
+        stroke-width="14" 
+        stroke-linecap="round" 
+        stroke-linejoin="round"/>
+
+  <!-- 3. Barra Central de Código / Fenda da Máscara (/) -->
+  <line x1="285" y1="185" x2="227" y2="335" 
+        stroke="#64748b" 
+        stroke-width="12" 
+        stroke-linecap="round" />
+
+  <!-- 4. As Lágrimas Características (Lacrima Lines) com brilho no gradiente azul e verde -->
+  <!-- Lágrima Esquerda -->
+  <path d="M 205 240 L 205 375 L 212 375 L 212 240 Z" 
+        fill="url(#ceroGlow)" 
+        filter="url(#softGlow)"/>
+
+  <!-- Lágrima Direita -->
+  <path d="M 300 240 L 300 375 L 307 375 L 307 240 Z" 
+        fill="url(#ceroGlow)" 
+        filter="url(#softGlow)"/>
+
+  <!-- 5. O Olho Minimalista (Pupila / Ponto de Terminal) com gradiente azul e verde -->
+  <circle cx="208" cy="225" r="7" fill="url(#ceroGlow)" filter="url(#softGlow)" />
+  <circle cx="304" cy="225" r="7" fill="url(#ceroGlow)" filter="url(#softGlow)" />
+
+  <!-- Detalhe sutil inferior: base de terminal/fechamento -->
+  <path d="M 230 420 L 282 420" 
+        stroke="#334155" 
+        stroke-width="8" 
+        stroke-linecap="round"/>
+</svg>

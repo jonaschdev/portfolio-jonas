@@ -1,17 +1,49 @@
 import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react';
+import { fileURLToPath } from 'url';
 import path from 'path';
-import {defineConfig} from 'vite';
+import { defineConfig } from 'vite';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 export default defineConfig(() => {
   return {
+    base: './',
     plugins: [react(), tailwindcss()],
     resolve: {
       alias: {
         '@': path.resolve(__dirname, '.'),
       },
     },
+    // Força a compatibilidade de esbuild e unifica o target de compilação
+    esbuild: {
+      target: 'es2022',
+      legalComments: 'none' as const,
+    },
+    optimizeDeps: {
+      esbuildOptions: {
+        target: 'es2022',
+      },
+      include: [
+        'react',
+        'react-dom',
+        'motion',
+        'motion/react',
+        'react-icons/vsc',
+        'lucide-react',
+        'gsap',
+      ],
+    },
+    build: {
+      target: 'es2022',
+      commonjsOptions: {
+        transformMixedEsModules: true,
+      },
+    },
     server: {
+      port: 3000,
+      host: '0.0.0.0',
       // HMR is disabled in AI Studio via DISABLE_HMR env var.
       // Do not modify—file watching is disabled to prevent flickering during agent edits.
       hmr: process.env.DISABLE_HMR !== 'true',
