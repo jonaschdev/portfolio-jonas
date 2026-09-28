@@ -100,11 +100,7 @@ const CardSwap = ({
     });
   }, [refs]);
 
-<<<<<<< HEAD
   // Transição rápida e otimizada para GPU
-=======
-  // Transição rápida, fluida e otimizada para GPU (zero travamentos)
->>>>>>> deaff1ab9c68493c4dcd365d55fe01b5b64aa059
   const swap = useCallback((targetIndex = null) => {
     if (order.current.length < 2) return;
     if (tlRef.current && tlRef.current.isActive()) return;
@@ -174,11 +170,7 @@ const CardSwap = ({
 
     tl.addLabel('promote', '-=0.28');
 
-<<<<<<< HEAD
     // Promove os cards de trás para a frente com aceleração
-=======
-    // Promove os cards de trás para a frente com aceleração nativa
->>>>>>> deaff1ab9c68493c4dcd365d55fe01b5b64aa059
     rest.forEach((idx, i) => {
       const el = refs[idx].current;
       if (!el) return;

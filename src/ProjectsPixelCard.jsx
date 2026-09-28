@@ -75,22 +75,12 @@ export default function ProjectsPixelCard() {
       <div className="card-swap-showcase">
       {/* COLUNA ESQUERDA: APRESENTAÇÃO DOS PROJETOS (ESTILO EXATO DA FOTO DE REFERÊNCIA) */}
       <div className="showcase-left-col">
-<<<<<<< HEAD
         <h2 className="showcase-title">
           Projetos
         </h2>
 
         <p className="showcase-bio-text">
           Acompanhe o desenvolvimento dos meus projetos em tempo real pelo meu GitHub.
-=======
-        <span className="section-label">Projetos</span>
-        <h2 className="showcase-title">
-          Projetos práticos em constante evolução
-        </h2>
-
-        <p className="showcase-bio-text">
-          Acompanhe o desenvolvimento das minhas aplicações, do design de interfaces responsivas à lógica de código real.
->>>>>>> deaff1ab9c68493c4dcd365d55fe01b5b64aa059
         </p>
 
         <a

@@ -84,4 +84,3 @@ npm run preview
 | **`'vite' não é reconhecido como um comando`** | Não executou `npm install` antes | Execute `npm install` no terminal da pasta para instalar as dependências. |
 | **`ReferenceError: __dirname is not defined`** | Incompatibilidade de versão do Node | Já corrigido na configuração do Vite (`vite.config.ts`). |
 | **`node: command not found`** | Node.js não está instalado no computador | Instale o Node.js LTS através do site [nodejs.org](https://nodejs.org/). |
-"# portfolio-jonas" 
