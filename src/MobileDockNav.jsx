@@ -123,8 +123,6 @@ export default function MobileDockNav() {
         items={items}
         panelHeight={58}
         baseItemSize={44}
-        magnification={58}
-        distance={120}
         activeSection={activeSection}
       />
     </div>

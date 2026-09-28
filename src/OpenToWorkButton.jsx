@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Github, Linkedin } from 'lucide-react';
+import { Github, Mail } from 'lucide-react';
 import './OpenToWorkButton.css';
 
 export default function OpenToWorkButton() {
@@ -53,16 +53,14 @@ export default function OpenToWorkButton() {
               transition={{ duration: 0.18, ease: 'easeOut' }}
             >
               <a
-                href="https://www.linkedin.com/in/jonaschaves-dev/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="otw-icon-btn otw-linkedin"
+                href="mailto:jonascontatotrabalho@gmail.com"
+                className="otw-icon-btn otw-email"
                 onClick={(e) => e.stopPropagation()}
-                title="LinkedIn de Jonas"
-                aria-label="LinkedIn"
+                title="Enviar e-mail para Jonas"
+                aria-label="Enviar E-mail"
               >
-                <Linkedin size={14} strokeWidth={2.2} />
-                <span>LinkedIn</span>
+                <Mail size={14} strokeWidth={2.2} />
+                <span>E-mail</span>
               </a>
 
               <a
