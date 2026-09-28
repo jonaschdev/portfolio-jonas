@@ -319,7 +319,6 @@ body {
   overflow-x: hidden;
   position: relative;
   min-height: 100vh;
-  isolation: isolate; /* Garante que o fundo e os brilhos fiquem estritamente atrás */
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
@@ -471,7 +470,6 @@ section,
   justify-content: center;
   padding: 0 16px;
   pointer-events: none; /* Permite cliques fora da pílula */
-  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .site-header .container {
@@ -488,30 +486,30 @@ section,
   height: 56px;
   padding: 0 8px 0 16px;
   gap: 16px;
-  background: rgba(13, 17, 26, 0.62);
-  backdrop-filter: blur(24px) saturate(210%);
-  -webkit-backdrop-filter: blur(24px) saturate(210%);
-  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(13, 17, 26, 0.52);
+  -webkit-backdrop-filter: blur(24px) saturate(200%);
+  backdrop-filter: blur(24px) saturate(200%);
+  border: 1px solid rgba(255, 255, 255, 0.16);
   border-radius: 9999px;
   box-shadow: 
     0 20px 40px -10px rgba(0, 0, 0, 0.65),
     0 6px 16px rgba(0, 0, 0, 0.35),
-    inset 0 1px 0 rgba(255, 255, 255, 0.22),
-    inset 0 -1px 0 rgba(0, 0, 0, 0.3);
+    inset 0 1px 0.5px rgba(255, 255, 255, 0.3),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.35);
   transition: background 0.3s cubic-bezier(0.16, 1, 0.3, 1),
               border-color 0.3s cubic-bezier(0.16, 1, 0.3, 1),
               box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 [data-theme="light"] .header-inner {
-  background: rgba(255, 255, 255, 0.62);
-  backdrop-filter: blur(24px) saturate(200%) brightness(104%);
+  background: rgba(255, 255, 255, 0.55);
   -webkit-backdrop-filter: blur(24px) saturate(200%) brightness(104%);
+  backdrop-filter: blur(24px) saturate(200%) brightness(104%);
   border: 1px solid rgba(255, 255, 255, 0.85);
   box-shadow: 
     0 20px 40px -10px rgba(15, 23, 42, 0.12),
     0 6px 18px rgba(15, 23, 42, 0.06),
-    inset 0 1.5px 0 #ffffff,
+    inset 0 1.5px 0.5px #ffffff,
     inset 0 -1px 0 rgba(15, 23, 42, 0.05);
 }
 
@@ -4994,8 +4992,6 @@ section,
   }
 
   /* Otimização de GPU para rolagem móvel fluida */
-  .glass-dock-container,
-  .mobile-dock-wrapper,
   .header-container,
   .hero-aurora-bg,
   .global-particles-wrapper {
