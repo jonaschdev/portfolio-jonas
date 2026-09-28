@@ -5,6 +5,7 @@ import GhostFibers from './GhostFibers';
 export default function ProjectsPixelCard() {
   const [isLight, setIsLight] = useState(false);
   const [isMobile, setIsMobile] = useState(() => typeof window !== 'undefined' && window.innerWidth < 768);
+  const [isStacked, setIsStacked] = useState(() => typeof window !== 'undefined' && window.innerWidth <= 1180);
 
   useEffect(() => {
     const checkTheme = () => {
@@ -14,7 +15,9 @@ export default function ProjectsPixelCard() {
 
     const handleResize = () => {
       const mobile = window.innerWidth < 768;
+      const stacked = window.innerWidth <= 1180;
       setIsMobile(prev => (prev !== mobile ? mobile : prev));
+      setIsStacked(prev => (prev !== stacked ? stacked : prev));
     };
 
     checkTheme();
@@ -100,11 +103,11 @@ export default function ProjectsPixelCard() {
         <CardSwap
           width={780}
           height={530}
-          cardDistance={isMobile ? 24 : 58}
-          verticalDistance={isMobile ? 28 : 68}
+          cardDistance={isStacked ? 22 : 58}
+          verticalDistance={isStacked ? 24 : 68}
           autoSwap={false}
           pauseOnHover={false}
-          skewAmount={isMobile ? 0 : 4}
+          skewAmount={isStacked ? 0 : 4}
           easing="smooth"
         >
           {/* CARD 1 (FRENTE): PORTFÓLIO PESSOAL COM VÍDEO DO PROJETO */}

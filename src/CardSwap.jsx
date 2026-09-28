@@ -13,8 +13,8 @@ Card.displayName = 'Card';
 const makeSlot = (i, cardDistance, verticalDistance, total, isMobile) => {
   if (isMobile) {
     return {
-      x: i * (cardDistance * 0.4),
-      y: -i * (verticalDistance * 0.4),
+      x: i * (cardDistance * 0.42),
+      y: -i * (verticalDistance * 0.35),
       z: -i * 20,
       zIndex: total - i,
       scale: 1 - i * 0.04,
@@ -59,12 +59,12 @@ const CardSwap = ({
   easing = 'smooth',
   children
 }) => {
-  const [isMobile, setIsMobile] = useState(() => typeof window !== 'undefined' && window.innerWidth < 768);
+  const [isMobile, setIsMobile] = useState(() => typeof window !== 'undefined' && window.innerWidth <= 1180);
   const [activeIdx, setActiveIdx] = useState(0);
 
   useEffect(() => {
     const handleResize = () => {
-      const mobile = window.innerWidth < 768;
+      const mobile = window.innerWidth <= 1180;
       setIsMobile(prev => (prev !== mobile ? mobile : prev));
     };
     window.addEventListener('resize', handleResize, { passive: true });
