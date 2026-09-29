@@ -100,10 +100,10 @@ export default function ProjectsPixelCard() {
       {/* COLUNA DIREITA: CARDSWAP COM OS CARDS CASCATEANDO NO CANTO INFERIOR DIREITO */}
       <div className="showcase-right-area">
         <CardSwap
-          width={780}
-          height={530}
-          cardDistance={isStacked ? 22 : 58}
-          verticalDistance={isStacked ? 24 : 68}
+          width={860}
+          height={520}
+          cardDistance={isStacked ? 22 : 76}
+          verticalDistance={isStacked ? 24 : 90}
           autoSwap={false}
           pauseOnHover={false}
           skewAmount={isStacked ? 0 : 4}
@@ -177,7 +177,7 @@ export default function ProjectsPixelCard() {
                     </div>
                     <span className="video-placeholder-title">Preview do Projeto #01</span>
                     <p className="video-placeholder-desc">
-                      Portfólio Interativo • <code>portfolio-demo.mp4</code>
+                      Portfólio Interativo <code>portfolio-demo.mp4</code>
                     </p>
                   </div>
                 </div>
