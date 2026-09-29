@@ -90,13 +90,13 @@
 }
 
 .badge-name-secondary {
-  color: #38bdf8;
+  color: #00ac2b;
   font-size: 0.75rem;
   font-weight: 600;
 }
 
 [data-theme="light"] .badge-name-secondary {
-  color: #0284c7;
+  color: #00ac2b;
 }
 
 .tilted-card-caption {

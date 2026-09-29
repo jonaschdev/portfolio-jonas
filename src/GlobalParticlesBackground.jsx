@@ -30,18 +30,21 @@ export default function GlobalParticlesBackground() {
 
   const isLight = theme === 'light';
 
-  // Partículas leves com aceleração nativa por hardware GPU (zero travamentos)
+  // Partículas leves com aceleração nativa por hardware GPU (zero travamentos e super leve)
   const particles = useMemo(() => {
     const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
     const count = isMobile ? 12 : 24;
+    const lightColors = ['#0284c7', '#0369a1', '#38bdf8', '#2563eb', '#6366f1'];
+    const darkColors = ['#38bdf8', '#0ea5e9', '#0284c7', '#60a5fa', '#818cf8'];
+    const colors = isLight ? lightColors : darkColors;
+
     return Array.from({ length: count }, (_, i) => {
       const size = Math.floor(Math.random() * 4) + 3; // 3px a 6px
       const top = Math.random() * 100;
       const left = Math.random() * 100;
       const duration = 16 + Math.random() * 18; // 16s a 34s
       const delay = -(Math.random() * 20);
-      const opacity = 0.2 + Math.random() * 0.4;
-      const colors = ['#0284c7', '#0369a1', '#38bdf8', '#2563eb', '#6366f1'];
+      const opacity = isLight ? (0.2 + Math.random() * 0.4) : (0.25 + Math.random() * 0.45);
       const color = colors[i % colors.length];
 
       return {
@@ -55,9 +58,7 @@ export default function GlobalParticlesBackground() {
         color
       };
     });
-  }, []);
-
-  if (!isLight) return null;
+  }, [isLight]);
 
   return (
     <div className="global-particles-wrapper is-active" aria-hidden="true">

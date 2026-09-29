@@ -6,13 +6,11 @@ import TechLogoLoop from './TechLogoLoop';
 import HeroAvatar from './HeroAvatar';
 import OpenToWorkButton from './OpenToWorkButton';
 import ProjectsPixelCard from './ProjectsPixelCard';
-import ContactBackground from './ContactBackground';
 import DiscordProfileCard from './DiscordProfileCard';
 import ContactMessageForm from './ContactMessageForm';
 import MobileDockNav from './MobileDockNav';
 import HeaderTalkButton from './HeaderTalkButton';
 import EmailCopyButton from './EmailCopyButton';
-import Aurora from './Aurora';
 
 /**
  * =========================================================================
@@ -31,23 +29,6 @@ document.addEventListener('DOMContentLoaded', () => {
   if (globalParticlesRootEl) {
     const particlesRoot = createRoot(globalParticlesRootEl);
     particlesRoot.render(React.createElement(GlobalParticlesBackground));
-  }
-
-  // =======================================================================
-  // MONTAGEM DA ANIMAÇÃO AURORA NA SEÇÃO DE INÍCIO HERO (REACT BITS)
-  // =======================================================================
-  const auroraRootEl = document.getElementById('auroraRoot');
-  if (auroraRootEl) {
-    const auroraRoot = createRoot(auroraRootEl);
-    auroraRoot.render(
-      React.createElement(Aurora, {
-        colorStops: ["#0284c7", "#38bdf8", "#6366f1"],
-        blend: 0.6,
-        amplitude: 1.1,
-        speed: 0.5,
-        lightMode: false
-      })
-    );
   }
 
   // =======================================================================
@@ -105,15 +86,6 @@ document.addEventListener('DOMContentLoaded', () => {
   if (projectsPixelRootEl) {
     const projectsRoot = createRoot(projectsPixelRootEl);
     projectsRoot.render(React.createElement(ProjectsPixelCard));
-  }
-
-  // =======================================================================
-  // MONTAGEM DO FUNDO DE ONDAS <GradientWaves /> NA SEÇÃO DE CONTATO (REACT BITS)
-  // =======================================================================
-  const contactWavesRootEl = document.getElementById('contactWavesRoot');
-  if (contactWavesRootEl) {
-    const contactWavesRoot = createRoot(contactWavesRootEl);
-    contactWavesRoot.render(React.createElement(ContactBackground));
   }
 
   // =======================================================================
@@ -448,13 +420,15 @@ document.addEventListener('DOMContentLoaded', () => {
       cardWidth: 460,
       cardHeight: 285,
       cardSpacing: 380,
-      duration: 550,
-      ease: 'power3.out'
+      duration: 620,
+      ease: 'power2.out'
     };
 
     let pos = 0;
     let focusIndex = 0;
     let currentTween = null;
+    let entranceTween = null;
+    let hasEntered = false;
     let scale = 1;
     let dragData = null;
 
@@ -491,11 +465,16 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }
 
-    // Engine Horizontal: cards dispostos de um lado para o outro sem espirais
-    function layout(currentPos) {
+    // Engine Horizontal 3D Fluido: cards dispostos suavemente sem cortes bruscos
+    function layout(currentPos, entranceObj = null) {
       const n = cfg.count;
       if (!n) return;
       const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+
+      const yOffset = entranceObj ? entranceObj.yOffset : 0;
+      const spreadFactor = entranceObj ? entranceObj.spreadFactor : 1;
+      const scaleFactor = entranceObj ? entranceObj.scaleFactor : 1;
+      const opacityMult = entranceObj ? entranceObj.opacityMult : 1;
 
       for (let i = 0; i < n; i++) {
         const el = depthCards[i];
@@ -508,35 +487,45 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const absDiff = Math.abs(diff);
 
-        // Oculta cards distantes para garantir que fiquem apenas de um lado e do outro
-        if (absDiff > 1.6) {
+        // Desativa cards muito distantes além do campo de visão (com folga contínua)
+        if (absDiff > 2.25) {
           el.style.opacity = '0';
           el.style.pointerEvents = 'none';
-          el.style.transform = `translate(-50%, -50%) scale(0.65) translateX(${diff > 0 ? 550 : -550}px)`;
+          el.style.visibility = 'hidden';
+          el.style.transform = `translate(-50%, -50%) scale(0.6) translateX(${diff > 0 ? 600 : -600}px)`;
           continue;
         }
 
-        // Posição horizontal linear no eixo X (de um lado para o outro)
-        const sign = diff < 0 ? -1 : 1;
-        const tx = diff === 0 ? 0 : sign * (cfg.cardSpacing * absDiff);
-        const tz = -absDiff * 60;
-        const ry = clamp(-diff * 10, -16, 16);
+        el.style.visibility = 'visible';
 
-        // Escala e opacidade limpas
-        const cardScale = scale * (1 - absDiff * 0.12);
-        const opacity = Math.max(0, 1 - absDiff * 0.42);
+        // Posição horizontal contínua no eixo X (sem quebra ou descontinuidade)
+        const tx = diff * cfg.cardSpacing * spreadFactor;
+        const tz = -Math.pow(absDiff, 1.15) * 80;
+        const ry = clamp(-diff * 12, -18, 18);
 
-        // Iluminação: 1.0 total no modo claro (sem sombras pretas)
-        const brightness = isLight ? 1.0 : Math.max(0.8, 1 - absDiff * 0.12);
+        // Escala com transição contínua
+        const cardScale = scale * Math.max(0.68, 1 - absDiff * 0.13) * scaleFactor;
 
-        // Z-Index: card central sempre à frente
+        // Curva suave de opacidade: 1.0 no centro, 0.72 nos adjacentes, decaindo suavemente até 0 em 2.2
+        let opacity = 0;
+        if (absDiff <= 1) {
+          opacity = 1 - absDiff * 0.28;
+        } else if (absDiff < 2.2) {
+          opacity = Math.max(0, 0.72 * (1 - (absDiff - 1) / 1.2));
+        }
+        opacity *= opacityMult;
+
+        // Iluminação: 1.0 total no modo claro
+        const brightness = isLight ? 1.0 : Math.max(0.78, 1 - absDiff * 0.14);
+
+        // Z-Index: card central sempre à frente, diminuindo suavemente
         const zi = Math.round(100 - absDiff * 30);
 
-        el.style.transform = `translate(-50%, -50%) scale(${cardScale.toFixed(3)}) translateX(${tx.toFixed(1)}px) translateZ(${tz.toFixed(1)}px) rotateY(${ry.toFixed(2)}deg)`;
-        el.style.opacity = opacity.toFixed(3);
+        el.style.transform = `translate(-50%, calc(-50% + ${yOffset.toFixed(1)}px)) scale(${cardScale.toFixed(3)}) translateX(${tx.toFixed(1)}px) translateZ(${tz.toFixed(1)}px) rotateY(${ry.toFixed(2)}deg)`;
         el.style.filter = `brightness(${brightness.toFixed(3)})`;
+        el.style.opacity = opacity.toFixed(3);
         el.style.zIndex = String(zi);
-        el.style.pointerEvents = 'auto';
+        el.style.pointerEvents = absDiff < 1.1 ? 'auto' : 'none';
 
         const ov = overlayRefs[i];
         if (ov) {
@@ -547,6 +536,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function tweenTo(target, animate = true) {
       if (currentTween) currentTween.kill();
+      if (entranceTween) {
+        entranceTween.kill();
+        entranceTween = null;
+        hasEntered = true;
+      }
       const proxy = { p: pos };
       const dur = animate ? cfg.duration / 1000 : 0;
       currentTween = gsap.to(proxy, {
@@ -581,6 +575,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function navigateBy(step) {
+      if (entranceTween) {
+        entranceTween.kill();
+        entranceTween = null;
+        hasEntered = true;
+      }
       setFocus(focusIndex + step, true);
     }
 
@@ -614,10 +613,19 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }
 
-    // Gestos de Arraste (Pointer / Touch Drag com Inércia Suave)
+    // Gestos de Arraste (Touch Drag) - EXCLUSIVO PARA MOBILE / TABLET TOUCH
     depthCarouselEl.addEventListener('pointerdown', (e) => {
+      // Bloqueia qualquer arraste no Desktop com o mouse! O usuário quer setas no desktop e touch só no mobile/tablet
+      const isTouch = e.pointerType === 'touch' || (window.innerWidth <= 1024 && e.pointerType !== 'mouse');
+      if (!isTouch) return;
+      if (e.target.closest('.depth-carousel__arrow, .depth-carousel__dot')) return;
       if (cfg.count < 2) return;
       if (currentTween) currentTween.kill();
+      if (entranceTween) {
+        entranceTween.kill();
+        entranceTween = null;
+        hasEntered = true;
+      }
       dragData = {
         x: e.clientX,
         startPos: pos,
@@ -676,9 +684,10 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
-    // Botões de Seta
+    // Botões de Seta (Navegação Desktop & Mobile)
     if (depthPrevBtn) {
       depthPrevBtn.addEventListener('click', (e) => {
+        e.preventDefault();
         e.stopPropagation();
         navigateBy(-1);
       });
@@ -686,6 +695,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (depthNextBtn) {
       depthNextBtn.addEventListener('click', (e) => {
+        e.preventDefault();
         e.stopPropagation();
         navigateBy(1);
       });
@@ -695,12 +705,82 @@ document.addEventListener('DOMContentLoaded', () => {
     depthCards.forEach((card, idx) => {
       card.addEventListener('click', () => {
         if (dragData && dragData.moved) return;
+        if (entranceTween) {
+          entranceTween.kill();
+          entranceTween = null;
+          hasEntered = true;
+        }
         setFocus(idx, true);
       });
     });
 
     // Inicialização na primeira tecnologia (Inteligência Artificial)
     setFocus(0, false);
+
+    // =======================================================================
+    // ANIMAÇÃO DE CHEGADA DOS CARDS DE TECNOLOGIAS (GSAP ENTRANCE ANIMATION)
+    // Os cards surgem subindo suavemente e abrindo em leque no carrossel
+    // =======================================================================
+    function triggerEntrance() {
+      if (hasEntered) return;
+      hasEntered = true;
+
+      const entranceObj = {
+        yOffset: 60,
+        scaleFactor: 0.82,
+        spreadFactor: 0.35,
+        opacityMult: 0,
+        posOffset: 0.35
+      };
+
+      if (entranceTween) entranceTween.kill();
+      entranceTween = gsap.to(entranceObj, {
+        yOffset: 0,
+        scaleFactor: 1,
+        spreadFactor: 1,
+        opacityMult: 1,
+        posOffset: 0,
+        duration: 1.15,
+        ease: 'power3.out',
+        onUpdate: () => {
+          layout(pos + entranceObj.posOffset, entranceObj);
+        },
+        onComplete: () => {
+          entranceTween = null;
+          layout(pos);
+        }
+      });
+    }
+
+    // Inicializa os cards preparados no estado de entrada suave
+    layout(pos, {
+      yOffset: 60,
+      scaleFactor: 0.82,
+      spreadFactor: 0.35,
+      opacityMult: 0,
+      posOffset: 0.35
+    });
+
+    // Observador para disparar a chegada fluida dos cards ao rolar até a seção
+    if ('IntersectionObserver' in window) {
+      const techObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            triggerEntrance();
+            observer.unobserve(entry.target);
+          }
+        });
+      }, {
+        root: null,
+        rootMargin: '0px 0px -40px 0px',
+        threshold: 0.15
+      });
+
+      const techSectionEl = document.getElementById('tecnologias') || depthCarouselEl;
+      techObserver.observe(techSectionEl);
+    } else {
+      triggerEntrance();
+    }
   }
 
   // =======================================================================

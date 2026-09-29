@@ -19,7 +19,7 @@ export default function HeroAvatar() {
       <TiltedCard
         imageSrc={perfilImg}
         altText="Jonas"
-        captionText="⚡ Jonas • Disponível para Projetos"
+        captionText="Jonas • Disponível"
         containerHeight="360px"
         containerWidth="100%"
         imageHeight="340px"
