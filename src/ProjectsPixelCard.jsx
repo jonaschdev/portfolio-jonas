@@ -125,7 +125,7 @@ export default function ProjectsPixelCard() {
           {/* INFORMAÇÕES DO PROJETO */}
           <h3 className="single-card-title">Portfólio Pessoal</h3>
           <p className="single-card-desc">
-            Esse projeto é literalmente o que você está acessando agora. É o meu portfólio profissional feito por mim com o auxilio do Gemini. Fiz e tentei otimizar ao máximo para garantir a melhor exeriência de visualização em desktop e mobile.
+            Esse projeto é literalmente o que você está acessando agora. É o meu portfólio profissional feito por mim com o auxilio do Gemini. Fiz e tentei otimizar ao máximo para garantir a melhor experiência de visualização em desktop e mobile.
           </p>
 
           <div className="single-card-tech-tags">
