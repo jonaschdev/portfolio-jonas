@@ -102,8 +102,8 @@ export default function ProjectsPixelCard() {
         <CardSwap
           width={860}
           height={520}
-          cardDistance={isStacked ? 22 : 76}
-          verticalDistance={isStacked ? 24 : 90}
+          cardDistance={isStacked ? 22 : 60}
+          verticalDistance={isStacked ? 24 : 65}
           autoSwap={false}
           pauseOnHover={false}
           skewAmount={isStacked ? 0 : 4}
