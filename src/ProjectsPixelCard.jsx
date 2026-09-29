@@ -164,8 +164,7 @@ export default function ProjectsPixelCard() {
                     playsInline
                     preload="metadata"
                   >
-                    <source src="/portfolio-demo.mp4" type="video/mp4" />
-                    <source src="/portfolio.mp4" type="video/mp4" />
+                    <source src="/public/portfolio-demo.mp4" type="video/mp4" />
                   </video>
 
                   {/* PLACEHOLDER ELEGANTE EXIBIDO ENQUANTO O ARQUIVO DE VÍDEO É ADICIONADO */}
