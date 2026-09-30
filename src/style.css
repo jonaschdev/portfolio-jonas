@@ -2926,7 +2926,7 @@ section,
 #projetos {
   min-height: 0 !important;
   height: auto !important;
-  padding: 40px 0 20px 0;
+  padding: 60px 0 60px 0;
   margin-bottom: 0 !important;
   position: relative;
   overflow-x: clip;
@@ -3055,7 +3055,7 @@ section,
   overflow: visible;
   min-height: 0 !important;
   height: auto !important;
-  margin-top: 0 !important;
+  margin-top: 60px !important;
   margin-bottom: 0 !important;
   padding-top: 40px !important;
   padding-bottom: 28px !important;
