@@ -453,9 +453,9 @@ section,
 
 /* Container Responsivo Central (Com margens laterais seguras e balanceadas em qualquer tela) */
 .container {
-  max-width: 1180px;
+  max-width: 1260px;
   margin: 0 auto;
-  padding: 0 36px;
+  padding: 0 24px;
   width: 100%;
 }
 
@@ -481,7 +481,7 @@ section,
 }
 
 .site-header .container {
-  max-width: 1060px;
+  max-width: 1120px;
   width: 100%;
   padding: 0;
   pointer-events: auto; /* Reativa cliques dentro da barra */
@@ -1122,15 +1122,17 @@ section,
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 56px;
+  gap: 40px; /* Gap lateral reduzido e bem proporcional */
   text-align: left;
   width: 100%;
+  max-width: 1180px;
+  margin: 0 auto;
 }
 
 /* Coluna de Texto */
 .hero-text-col {
   flex: 1;
-  max-width: 680px;
+  max-width: 720px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -1699,7 +1701,7 @@ section,
    ========================================================================= */
 .section-divider {
   width: 100%;
-  max-width: 1200px;
+  max-width: 1260px;
   height: 1px;
   margin: 0 auto;
   background: linear-gradient(
@@ -3126,9 +3128,9 @@ section,
 .contact-split-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 28px;
+  gap: 24px;
   align-items: stretch;
-  max-width: 960px;
+  max-width: 1080px;
   margin: 0 auto;
 }
 

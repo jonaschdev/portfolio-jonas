@@ -66,11 +66,7 @@
 /* =========================================================================
    CABEÇALHO & ÁREA DO PROJETO DESTAQUE (LAYOUT CENTRALIZADO & FLUIDO)
    ========================================================================= */
-.projects-header-centered {
-  margin: 0 auto 122px auto !important; /* Exatamente a mesma distância física da seção de Linguagens e Tecnologias */
-}
-
-.projects-showcase-layout {
+.projects-clean-layout {
   position: relative;
   width: 100%;
   max-width: 680px;
@@ -78,7 +74,47 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 24px;
+  box-sizing: border-box;
+  padding: 0 16px 48px 16px;
+  text-align: center;
+}
+
+.projects-clean-header {
+  margin: 0 auto 28px auto !important;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.projects-clean-desc {
+  max-width: 580px;
+  margin: 14px auto 0 auto !important;
+  font-size: 0.96rem;
+  line-height: 1.6;
+  color: var(--texto-secundario);
+}
+
+.projects-clean-cta-wrapper {
+  width: 100%;
+  max-width: 580px;
+  display: flex;
+  justify-content: center;
+}
+
+.projects-header-centered {
+  margin: 0 auto 122px auto !important; /* Exatamente a mesma distância física da seção de Linguagens e Tecnologias */
+}
+
+.projects-showcase-layout {
+  position: relative;
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
   box-sizing: border-box;
   padding: 0 16px 85px 16px;
 }
@@ -88,7 +124,7 @@
    ========================================================================= */
 .portfolio-single-card {
   width: 100%;
-  max-width: 680px;
+  max-width: 800px;
   background: #111115;
   border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 18px;
@@ -351,7 +387,7 @@
    ========================================================================= */
 .projects-github-cta-wrapper {
   width: 100%;
-  max-width: 680px;
+  max-width: 800px;
   margin-top: 6px;
   display: flex;
   justify-content: center;

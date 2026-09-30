@@ -5,7 +5,6 @@ import GlobalParticlesBackground from './GlobalParticlesBackground';
 import TechLogoLoop from './TechLogoLoop';
 import HeroAvatar from './HeroAvatar';
 import OpenToWorkButton from './OpenToWorkButton';
-import ProjectsPixelCard from './ProjectsPixelCard';
 import DiscordProfileCard from './DiscordProfileCard';
 import ContactMessageForm from './ContactMessageForm';
 import MobileDockNav from './MobileDockNav';
@@ -78,15 +77,6 @@ document.addEventListener('DOMContentLoaded', () => {
     root.render(React.createElement(TechLogoLoop));
   }
 
-  // =======================================================================
-  // MONTAGEM DO COMPONENTE <PixelCard /> NA SEÇÃO DE PROJETOS (REACT BITS)
-  // Efeito interativo de pixels luminosos com dissipação física no hover
-  // =======================================================================
-  const projectsPixelRootEl = document.getElementById('projectsPixelRoot');
-  if (projectsPixelRootEl) {
-    const projectsRoot = createRoot(projectsPixelRootEl);
-    projectsRoot.render(React.createElement(ProjectsPixelCard));
-  }
 
   // =======================================================================
   // MONTAGEM DO CARD DO DISCORD (LANYARD API ESTILO GUNS.LOL)
