@@ -221,7 +221,7 @@ body::after,
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1), 0 0 22px rgba(2, 132, 199, 0.3);
 }
 
-/* Reset Básico & Estilo Monospace Terminal (Sem negrito) */
+/* Reset Básico & Tipografia Nítida */
 *,
 *::before,
 *::after {
@@ -229,19 +229,18 @@ body::after,
   padding: 0;
   box-sizing: border-box;
   cursor: default;
-  font-weight: 400 !important;
   font-family: inherit;
 }
 
 b,
 strong {
-  font-weight: 400 !important;
+  font-weight: 600;
   color: var(--texto-principal);
 }
 
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--fonte-titulo);
-  font-weight: 400 !important;
+  font-weight: 700;
 }
 
 /* =========================================================================
@@ -300,6 +299,10 @@ label[for],
 
 html {
   scroll-behavior: smooth;
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
 code,
@@ -322,6 +325,9 @@ body {
   overflow-x: hidden;
   position: relative;
   min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
@@ -475,7 +481,7 @@ section,
 }
 
 .site-header .container {
-  max-width: 960px;
+  max-width: 1060px;
   width: 100%;
   padding: 0;
   pointer-events: auto; /* Reativa cliques dentro da barra */
@@ -485,8 +491,8 @@ section,
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 56px;
-  padding: 0 8px 0 16px;
+  height: 60px;
+  padding: 0 10px 0 20px;
   gap: 16px;
   background: rgba(13, 17, 26, 0.52);
   -webkit-backdrop-filter: blur(24px) saturate(200%);
@@ -521,8 +527,8 @@ section,
   gap: 10px;
   text-decoration: none;
   font-family: var(--fonte-padrao);
-  font-size: 0.96rem;
-  font-weight: 600;
+  font-size: 1.05rem;
+  font-weight: 700;
   letter-spacing: -0.01em;
   color: var(--texto-principal);
   transition: opacity 0.2s ease;
@@ -538,8 +544,8 @@ section,
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 34px;
-  height: 34px;
+  width: 36px;
+  height: 36px;
   background: linear-gradient(145deg, rgba(255, 255, 255, 0.14) 0%, rgba(255, 255, 255, 0.03) 100%);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
@@ -585,10 +591,10 @@ section,
   position: relative;
   text-decoration: none;
   font-family: var(--fonte-padrao);
-  color: rgba(255, 255, 255, 0.76);
-  font-size: 0.86rem;
+  color: rgba(255, 255, 255, 0.88);
+  font-size: 0.94rem;
   font-weight: 500;
-  padding: 7px 16px;
+  padding: 8px 18px;
   border-radius: 9999px;
   background: rgba(255, 255, 255, 0.04);
   border: 1px solid rgba(255, 255, 255, 0.08);
@@ -824,8 +830,8 @@ section,
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 36px;
-  height: 36px;
+  width: 40px;
+  height: 40px;
   padding: 0;
   background: rgba(255, 255, 255, 0.04);
   border: 1px solid rgba(255, 255, 255, 0.08);
@@ -1132,19 +1138,19 @@ section,
 
 .hero-title {
   font-family: var(--fonte-titulo);
-  font-size: 3.4rem;
+  font-size: 3.65rem;
   font-weight: 800;
   letter-spacing: -0.025em;
   color: var(--texto-principal);
   line-height: 1.15;
-  margin-bottom: 20px;
+  margin-bottom: 22px;
 }
 
 .hero-bio {
-  font-size: 0.88rem;
+  font-size: 1.05rem;
   color: var(--texto-secundario);
-  line-height: 1.7;
-  max-width: 640px;
+  line-height: 1.75;
+  max-width: 660px;
 }
 
 .hero-bio strong {
@@ -1753,16 +1759,18 @@ section,
 
 .section-title {
   font-family: var(--fonte-titulo);
-  font-size: 2.5rem;
-  font-weight: 800;
+  font-size: 2.85rem;
+  font-weight: 700;
   color: var(--texto-principal);
-  margin-bottom: 12px;
-  letter-spacing: -0.02em;
+  margin-bottom: 14px;
+  letter-spacing: -0.025em;
+  line-height: 1.2;
 }
 
 .section-desc {
-  font-size: 1.1rem;
+  font-size: 1.15rem;
   color: var(--texto-secundario);
+  line-height: 1.65;
   margin-bottom: 34px;
 }
 
@@ -2805,7 +2813,7 @@ section,
 /* Tipografia do Card */
 .tech-card-title {
   font-family: var(--fonte-titulo);
-  font-size: 1.25rem;
+  font-size: 1.35rem;
   font-weight: 700;
   color: var(--texto-principal);
   margin-bottom: 8px;
@@ -2815,15 +2823,15 @@ section,
 }
 
 .tech-card-sub {
-  font-size: 0.82rem;
+  font-size: 0.85rem;
   color: var(--azul-claro);
   font-weight: 600;
 }
 
 .tech-card-desc {
-  font-size: 0.9rem;
-  color: #e2e8f0;
-  line-height: 1.6;
+  font-size: 0.96rem;
+  color: #f1f5f9;
+  line-height: 1.65;
   margin-bottom: 18px;
   flex: 1;
 }
