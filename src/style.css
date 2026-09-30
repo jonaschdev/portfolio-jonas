@@ -1736,17 +1736,17 @@ section,
 }
 
 /* =========================================================================
-   SEÇÕES GERAIS (ESTRUTURA MAJESTOSA EM TELA CHEIA)
+   SEÇÕES GERAIS (ESTRUTURA UNIFICADA PARA TODAS AS SEÇÕES)
    ========================================================================= */
 .section-wrapper {
-  min-height: calc(100vh - 74px);
+  position: relative;
+  z-index: 1;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 90px 0;
+  padding: 70px 0;
   border-top: none;
-  position: relative;
-  z-index: 1;
+  box-sizing: border-box;
 }
 
 .section-label {
@@ -2920,77 +2920,8 @@ section,
 }
 
 /* =========================================================================
-   SEÇÃO MEUS PROJETOS (CARD ELEGANTE & COMPACTO)
+   SEÇÃO MEUS PROJETOS
    ========================================================================= */
-#projetos.section-wrapper,
-#projetos {
-  min-height: 0 !important;
-  height: auto !important;
-  padding: 60px 0 60px 0;
-  margin-bottom: 0 !important;
-  position: relative;
-  overflow-x: clip;
-  overflow-y: visible;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.projects-section-bleed {
-  width: 100%;
-}
-
-.projects-bleed-wrapper {
-  width: 100%;
-  position: relative;
-  overflow: visible;
-}
-
-#projectsPixelRoot {
-  width: 100%;
-}
-
-.projects-status-card {
-  background: rgba(18, 18, 24, 0.88);
-  backdrop-filter: blur(28px) saturate(180%);
-  -webkit-backdrop-filter: blur(28px) saturate(180%);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 24px;
-  padding: 32px 28px;
-  max-width: 580px;
-  width: 100%;
-  margin: 0 auto;
-  text-align: center;
-  position: relative;
-  z-index: 2;
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.1);
-  transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1),
-              border-color 0.45s cubic-bezier(0.16, 1, 0.3, 1),
-              box-shadow 0.45s cubic-bezier(0.16, 1, 0.3, 1);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-[data-theme="light"] .projects-status-card {
-  background: rgba(255, 255, 255, 0.9);
-  backdrop-filter: blur(28px) saturate(180%);
-  -webkit-backdrop-filter: blur(28px) saturate(180%);
-  border-color: rgba(15, 23, 42, 0.1);
-  box-shadow: 0 14px 32px rgba(15, 23, 42, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.9);
-}
-
-.projects-status-card:hover {
-  transform: translateY(-4px);
-  border-color: rgba(56, 189, 248, 0.5);
-  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.55), 0 0 24px rgba(56, 189, 248, 0.2);
-}
-
-[data-theme="light"] .projects-status-card:hover {
-  border-color: rgba(14, 165, 233, 0.45);
-  box-shadow: 0 16px 36px rgba(15, 23, 42, 0.1), 0 0 18px rgba(14, 165, 233, 0.15);
-}
-
 .projects-badge-status {
   display: inline-flex;
   align-items: center;
@@ -3053,12 +2984,6 @@ section,
 .contact-section {
   position: relative;
   overflow: visible;
-  min-height: 0 !important;
-  height: auto !important;
-  margin-top: 60px !important;
-  margin-bottom: 0 !important;
-  padding-top: 40px !important;
-  padding-bottom: 28px !important;
 }
 
 #contactWavesRoot {
@@ -4680,16 +4605,7 @@ section,
     font-size: 0.68rem;
   }
 
-  /* 2. SEÇÃO DE PROJETOS COMPACTA NO MOBILE */
-  #projetos.section-wrapper,
-  #projetos {
-    padding: 24px 0 16px 0;
-    margin-top: 0 !important;
-    margin-bottom: 0 !important;
-    min-height: auto;
-    display: block;
-  }
-
+  /* 2. SEÇÃO DE PROJETOS NO MOBILE */
   #projetos .section-title {
     font-size: 1.45rem;
     margin-bottom: 6px;
@@ -4722,17 +4638,9 @@ section,
     min-height: 42px;
   }
 
-  /* 3. SEÇÃO ENTRE EM CONTATO COMPACTA NO MOBILE COM RESPIRO INFERIOR EQUILIBRADO PARA A DOCK */
-  #contato.section-wrapper,
-  #contato,
-  .contact-section {
-    padding: 24px 0 54px 0 !important;
-    margin-top: 0 !important;
-    margin-bottom: 0 !important;
-    min-height: auto;
-    overflow-x: clip;
-    width: 100%;
-    box-sizing: border-box;
+  /* 3. SEÇÃO ENTRE EM CONTATO NO MOBILE */
+  #contato {
+    padding-bottom: 56px; /* Respiro inferior balanceado para a dock flutuante */
   }
 
   #contato .section-title {
